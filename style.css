@@ -1,6 +1,6 @@
 
 body {
-    background-color: #EDF1D6;
+    background-color: #F5EFE6;
     font-family: "Quicksand", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -9,7 +9,7 @@ body {
 }
 
 header {
-    background-color: #40513B;
+    background-color: #1A4D2E;
     margin: 0;
     box-shadow: 1px 1px 4px 0 rgba(0,0,0,.1);
     position: fixed;
@@ -23,29 +23,35 @@ header {
 
 header ul {
     list-style-type: none;
-    margin: 0;
     padding: 0;
+    margin-top: 25px;
 }
 
 header ul li {
     float: left;
     position: relative;
+    padding: 0 10px;
 }
 
 header ul li a {
     display: block;
-    color: #EDF1D6;
+    color: #F5EFE6;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+    transition: background-color 0.3s ease;
+    border-radius: 15px;
+    font-size: large;
 }
 
 header ul li a:hover {
-    background-color: #609966;
+    background-color: #4F6F52;
+    border-radius: 15px;
 }
 
 main {
     padding-top: 135px;
+    padding-left: 15px;
 }
 
 header .logo-image {
@@ -62,7 +68,7 @@ header .logo {
 
 footer {
     top: 1000px;
-    background-color: #40513B;
+    background-color: #1A4D2E;
     box-shadow: 1px 1px 4px 0 rgba(0,0,0,.1);
     position: relative;
     height: 100px;
@@ -71,4 +77,17 @@ footer {
     padding: 20px 0 ;
     transition: all .4s ease;
     -webkit-transition: all .4s ease;
+}
+
+.sign-up {
+    margin-right: 40px;
+    float: right;
+    a {
+        color:#4F6F52 !important;
+        background-color: #E8DFCA;
+        border-radius: 15px;
+    }
+    :hover {
+        background-color: #ffdb81;
+    }
 }
