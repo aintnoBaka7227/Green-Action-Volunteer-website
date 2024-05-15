@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1A4D2E">
+    <title>Green Action</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/style-admin.css">
+</head>
+
+<body>
+    <header>
+        <a href="https://www.foodbank.org.au" class="logo">
+            <img src="/assets/logo.png" alt="Logo" class="logo-image">
+        </a>
+        <ul>
+            <li><a class="nav-title" href="about.html" style="font-weight: bold;">Dashboard</a></li>
+            <li><a class="nav-title" href="location.html">Users</a></li>
+            <li><a class="nav-title" href="updates.html">Branches</a></li>
+            <li style="float: right; margin-right: 50px;"><a href="#log-in">Log In</a></li>
+            <li class="sign-up"><a href="#sign-up">Sign Up</a></li>
+            <li class="dropdown">
+                <button type="button" class="dropdown-toggle">SA<i class="fas fa-chevron-down"></i></button>
+                <ul class="dropdown-content">
+                    <li><a href="#">Option 1</a></li>
+                    <li><a href="#">Option 2</a></li>
+                    <li><a href="#">Option 3</a></li>
+                </ul>
+            </li>
+        </ul>
+    </header>
+    <main>
+        <div>Welcome back Khanh,</div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dropdownToggle = document.querySelector(".dropdown-toggle");
+
+            dropdownToggle.addEventListener("click", function () {
+                const dropdown = this.parentNode;
+                dropdown.classList.toggle("show");
+            });
+
+            document.addEventListener("click", function (event) {
+                if (!event.target.closest(".dropdown")) {
+                    const dropdowns = document.querySelectorAll(".dropdown");
+                    dropdowns.forEach(function (dropdown) {
+                        dropdown.classList.remove("show");
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
