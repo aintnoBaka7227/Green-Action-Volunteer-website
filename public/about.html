@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1A4D2E">
+    <title>Green Action</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheets/style.css">
+
+</head>
+
+<body>
+    <header>
+        <a href="https://www.foodbank.org.au" class="logo">
+            <img src="/assets/logo.png" alt="Logo" class="logo-image">
+        </a>
+        <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="location.html">Locations</a></li>
+            <li><a href="updates.html">Updates</a></li>
+            <li style="float: right; margin-right: 50px;"><a href="#log-in">Log In</a></li>
+            <li class="sign-up"><a href="#sign-up">Sign Up</a></li>
+            <div class="dropdown ">
+                <button class="dropdown-toggle">SA<i class="fas fa-chevron-down"></i></button>
+                <div class="dropdown-content">
+                  <a href="#">Option 1</a>
+                  <a href="#">Option 2</a>
+                  <a href="#">Option 3</a>
+                </div>
+            </div>
+        </ul>
+    </header>
+    <main>
+        <div class="content">
+            <h1 style="padding-top: 2%; color: #8CBE47; font-size:50px;">Who we are</h1>
+            <h2 style="padding-top: 1%; font-weight: lighter; padding-bottom: 1%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </h2>
+            <h1 style="color: #8CBE47; padding-top: 30px; text-align: center; font-size: 50px;">Our Mission</h1>
+            <div style="display: flex; padding-top: 30px; padding-right: 130px; padding-left: 100px;">
+              <div class="about-us-environment">
+                <div style="display: flex; justify-content: center; align-items: center; height: 300px;">
+                  <img src="/assets/hand holding a tree.png" alt="Description of the image">
+                </div>
+                <div style="margin-left: 10%; margin-right: 10%;">
+                  <h2>Do green actions</h2>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                </div>
+              </div>
+              <div class="about-us-environment">
+                <div style="display: flex; justify-content: center; align-items: center; height: 300px;">
+                  <img src="/assets/Caring for the environment.png" alt="Description of the image">
+                </div>
+                <div style="margin-left: 10%; margin-right: 10%;">
+                  <h2>For a green planet</h2>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                </div>
+              </div>
+            </div>
+            <div class="volunteer-with-us" style="margin-top: 100px;">
+              <div style="margin: 10%; padding-top: 50px;">
+                <h1 style="display: inline;">WANT TO HELP?</h1>
+                <button class="volunteer-with-us-button">Volunteer With Us</button>
+              </div>
+            </div>
+        </div>
+    </main>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        const dropdownToggle = document.querySelector(".dropdown-toggle");
+
+        dropdownToggle.addEventListener("click", function() {
+            const dropdown = this.parentNode;
+            dropdown.classList.toggle("show");
+        });
+
+        document.addEventListener("click", function(event) {
+            if (!event.target.closest(".dropdown")) {
+            const dropdowns = document.querySelectorAll(".dropdown");
+            dropdowns.forEach(function(dropdown) {
+                dropdown.classList.remove("show");
+            });
+            }
+        });
+        });
+    </script>
+
+
+    <footer></footer>
+</body>
