@@ -144,3 +144,38 @@ footer {
 .dropdown.show .dropdown-content {
     display: block;
 }
+
+.about-us-environment {
+    width: 450px;
+    height: 450px;
+    margin-left: auto;
+    border-radius: 15px;
+    background-color: #9FDB97;
+}
+
+.volunteer-with-us {
+    width: auto;
+    height: 150px;
+    margin-left: auto;
+    border-radius: 15px;
+    background-color: #9FDB97;
+}
+
+.volunteer-with-us button {
+    margin-right: 0px;
+    float: right;
+    color: #4F6F52 !important;
+    background-color: #E8DFCA;
+    border: none;
+    border-radius: 15px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 50px;
+    font-size: x-large;
+    font-family: "Quicksand", sans-serif;
+}
+
+.volunteer-with-us button:hover {
+    background-color: #ffdb81;
+}
