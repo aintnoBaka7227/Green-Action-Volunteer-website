@@ -25,7 +25,7 @@
   padding-top: 47px;
   display: inline-block;
   vertical-align:top;
-  float: right;
+  float:   right;
   border: none;
   border-radius: 15px;
   background-color: #9FDB97;
@@ -67,11 +67,10 @@
   background-color: #70CD81;
 }
 
-
 .event-title {
   color: #000;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: bold;
   position: relative;
   white-space: nowrap;
   display: inline;
@@ -105,4 +104,16 @@
   margin: 40px auto;
   position: relative;
   padding: 20px; /* Adjust padding as needed */
+}
+
+.innerdiv .resign-button {
+  width: 210px;
+  height: 10px;
+  top: 210px;
+  gap: 0px;
+  border-radius: 4px 0px 0px 0px;
+  opacity: 100;
+  font-weight: bold;
+  position: relative;
+  float: left;
 }
