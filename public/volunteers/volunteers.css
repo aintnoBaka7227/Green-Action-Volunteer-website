@@ -1,0 +1,104 @@
+
+.events-dashboard {
+  width: 480px;
+  height: 1000px;
+  border-radius: 15px;
+  background-color: #9FDB97;
+  opacity: 50%;
+}
+
+.events-dashboard h2 {
+  padding-left: 40px;
+  padding-top: 35px;
+  display: inline-block;
+  margin:0;
+  margin-right: 42px;
+}
+
+.events-dashboard button {
+  margin:0;
+  padding-right: 55px;
+  padding-top: 47px;
+  display: inline-block;
+  vertical-align:top;
+  float: right;
+  border: none;
+  border-radius: 15px;
+  background-color: #9FDB97;
+}
+
+
+.events-dashboard div h2{
+  opacity: 100
+}
+
+.updates-dashboard {
+  width: 700px;
+  height: auto;
+  margin-left: auto;
+  float: right;
+  border-radius: 15px;
+  background-color: #70CD81;
+  opacity: 50%;
+}
+
+.updates-dashboard h2 {
+  padding-left: 40px;
+  padding-top: 35px;
+  display: inline-block;
+  margin:0;
+  margin-right: 42px;
+  opacity: 100;
+}
+
+.updates-dashboard button {
+  margin:0;
+  padding-right: 55px;
+  padding-top: 47px;
+  display: inline-block;
+  vertical-align:top;
+  float: right;
+  border: none;
+  border-radius: 15px;
+  background-color: #70CD81;
+}
+
+
+.event-title {
+  color: #000;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+  white-space: nowrap;
+  display: inline;
+}
+
+.date {
+  color: #000;
+  font-size: 16px;
+  font-weight: 300;
+  position: relative;
+  white-space: nowrap;
+  display: inline;
+  float: right;
+}
+
+.textContainer {
+  padding-top: 15px;
+  position: relative;
+}
+
+.textBlock {
+  color: #000;
+  font-size: 12px;
+  font-weight: 300;
+}
+
+#innerdiv {
+  width: 80%;
+  height: auto;
+  border-radius: 15px;
+  margin: 40px auto;
+  position: relative;
+  padding: 20px; /* Adjust padding as needed */
+}
