@@ -50,8 +50,10 @@ header ul li a:hover {
 }
 
 main {
-    padding-top: 135px;
-    padding-left: 15px;
+    padding-top: 150px;
+    padding-left: 250px;
+    padding-right: 250px;
+
 }
 
 header .logo-image {
@@ -140,4 +142,27 @@ footer {
 
 .dropdown.show .dropdown-content {
     display: block;
+}
+
+.events-dashboard {
+    width: 480px;
+    height: 600px;
+    border-radius: 15px;
+    background-color: #9FDB97;
+    opacity: 50%;
+}
+
+.events-dashboard h2 {
+    padding-top: 15px;
+    padding-left: 50px;
+}
+
+.updates-dashboard {
+    width: 700px;
+    height: 600px;
+    margin-left: auto;
+    float: right;
+    border-radius: 15px;
+    background-color: #70CD81;
+    opacity: 50%;
 }
