@@ -1,4 +1,3 @@
-
 body {
     background-color: #F5EFE6;
     font-family: "Quicksand", sans-serif;
@@ -11,7 +10,7 @@ body {
 header {
     background-color: #8CBE47;
     margin: 0;
-    box-shadow: 1px 1px 4px 0 rgba(0,0,0,.1);
+    box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, .1);
     position: fixed;
     height: 100px;
     width: 100%;
@@ -51,9 +50,14 @@ header ul li a:hover {
 
 main {
     padding-top: 150px;
-    padding-left: 250px;
-    padding-right: 250px;
+    padding-left: 10%;
+    padding-right: 10%;
+}
 
+.page-heading {
+    font-size: x-large;
+    font-weight: bold;
+    color: #8CBE47;
 }
 
 header .logo-image {
@@ -75,12 +79,12 @@ header .logo {
 footer {
     top: 1000px;
     background-color: #1A4D2E;
-    box-shadow: 1px 1px 4px 0 rgba(0,0,0,.1);
+    box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, .1);
     position: relative;
     height: 100px;
     width: 105%;
     z-index: 1000;
-    padding: 20px 0 ;
+    padding: 20px 0;
     transition: all .4s ease;
     -webkit-transition: all .4s ease;
 }
@@ -88,11 +92,13 @@ footer {
 .sign-up {
     margin-right: 0px;
     float: right;
+
     a {
-        color:#4F6F52 !important;
+        color: #4F6F52 !important;
         background-color: #E8DFCA;
         border-radius: 15px;
     }
+
     :hover {
         background-color: #ffdb81;
     }
@@ -107,7 +113,7 @@ footer {
     float: right;
     position: relative;
     font-family: "Quicksand", sans-serif;
-  }
+}
 
 .dropdown-toggle {
     background-color: #E8DFCA;
@@ -169,4 +175,82 @@ footer {
     border-radius: 15px;
     background-color: #70CD81;
     opacity: 50%;
+}
+
+.grid-container {
+    margin-top: 5vh;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3vw;
+    /* Increase gap to prevent overlaying */
+}
+
+.grid-item {
+    margin: 0;
+    /* Remove padding and set margin to 0 */
+}
+
+.graph-item {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    min-height: 10ch;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: larger;
+}
+
+.graph-1 {
+    background-color: #A9CF9D;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 20vh;
+    padding: 20px;
+    /* Add padding to create space inside the graph */
+    box-sizing: border-box;
+    /* Include padding in the element's total width and height */
+}
+
+.graph-1-bar {
+    background-color: #E8DFCA;
+    margin: 0 auto;
+    width: 80%;
+    height: 30px;
+}
+
+.graph-1-bar-1 {
+    background-color: #1A4D2E;
+    width: 80%;
+    height: 100%;
+}
+
+.graph-2 {
+    margin-top: 3vw;
+    width: 100%;
+}
+
+.graph-3 {
+    padding: 20px;
+    padding-bottom: 60px;
+    background-color: #E4FF97;
+    height: 50vh;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.pie-chart-container {
+    /* Center the container horizontally */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.pie-chart {
+    display: flex;
+    justify-content: center;
+    width: 80%;
 }
