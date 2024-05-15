@@ -14,17 +14,22 @@
 <body>
     <header>
         <a href="https://www.foodbank.org.au" class="logo">
-            <img src="https://www.foodbank.org.au/wp-content/uploads/2019/02/LogoFoodbankAus.png" alt="Logo" class="logo-img">
+            <img src="/assets/logo.png" alt="Logo" class="logo-image">
         </a>
         <ul>
-            <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About Us</a></li>
             <li><a href="location.html">Locations</a></li>
             <li><a href="updates.html">Updates</a></li>
-            <li><a href="events.html">Events</a></li>
-            <li><a href="apply.html">Join Us</a></li>
+            <li style="float: right; margin-right: 50px;"><a href="#log-in">Log In</a></li>
             <li class="sign-up"><a href="#sign-up">Sign Up</a></li>
-            <li style="float: right;"><a href="#log-in">Log In</a></li>
+            <div class="dropdown ">
+                <button class="dropdown-toggle">SA<i class="fas fa-chevron-down"></i></button>
+                <div class="dropdown-content">
+                  <a href="#">Option 1</a>
+                  <a href="#">Option 2</a>
+                  <a href="#">Option 3</a>
+                </div>
+            </div>
         </ul>
     </header>
     <main>
@@ -32,5 +37,29 @@
             <p>Green Action</p>
         </div>
     </main>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        const dropdownToggle = document.querySelector(".dropdown-toggle");
+
+        dropdownToggle.addEventListener("click", function() {
+            const dropdown = this.parentNode;
+            dropdown.classList.toggle("show");
+        });
+
+        document.addEventListener("click", function(event) {
+            if (!event.target.closest(".dropdown")) {
+            const dropdowns = document.querySelectorAll(".dropdown");
+            dropdowns.forEach(function(dropdown) {
+                dropdown.classList.remove("show");
+            });
+            }
+        });
+        });
+    </script>
+
+
     <footer></footer>
 </body>
