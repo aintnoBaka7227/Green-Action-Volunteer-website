@@ -50,9 +50,8 @@ header ul li a:hover {
 
 main {
     padding-top: 150px;
-    padding-left: 250px;
-    padding-right: 250px;
-    padding-bottom: 150px;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
 header .logo-image {
@@ -73,11 +72,11 @@ header .logo {
 
 footer {
     top: 1000px;
-    background-color: #1A4D2E;
+    background-color: #8CBE47;
     box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, .1);
     position: relative;
     height: 100px;
-    width: 105%;
+    width: 100%;
     z-index: 1000;
     padding: 20px 0;
     transition: all .4s ease;
@@ -178,4 +177,75 @@ footer {
 
 .volunteer-with-us button:hover {
     background-color: #ffdb81;
+}
+
+.background-image-container {
+    width: 100vw; /* Set the desired width */
+    height: 40vw; /* Set the desired height */
+    overflow: hidden; /* Hide anything outside the container */
+}
+
+.background-image-container img {
+    width: 100%; /* Make the image fill the container */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.text-overlay {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the text */
+    text-align: center; /* Center-align the text */
+  }
+
+  .text-overlay p {
+    color: white; /* Set text color */
+    font-style: normal;
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 40px;
+    text-align: center;
+  }
+
+  .background-image-container button {
+    width: 30%;
+    color: #121808;
+    background-color: #70CD81;
+    border-radius: 20px;
+    height: 60px;
+    font-family: inherit;
+    border: 0;
+    opacity: 0.8;
+    font-size: 32px;
+    font-weight: 300;
+  }
+
+  .background-image-container button:hover {
+    background-color: #9FDB97
+  }
+
+  .latest-events {
+    width: 25vw;
+    height: 30vw;
+    margin-left: 4%;
+    border-radius: 15px;
+    background-color: #9FDB97;
+}
+
+.latest-events img {
+    width: 90%;
+    top: 0;
+}
+
+.green-trans-button {
+    color:#121808;
+    background-color: #70CD81;
+    border-radius: 20px;
+    font-family: inherit;
+    opacity: 0.8;
+    border: 0;
+    font-size: 20px;
+    height: 50px;
+    margin-top: 3%;
+    width: 60%;
 }
