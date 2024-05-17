@@ -54,6 +54,12 @@ main {
     padding-right: 10%;
 }
 
+.page-heading {
+    font-size: x-large;
+    font-weight: bold;
+    color: #8CBE47;
+}
+
 header .logo-image {
     width: 100%;
     height: 100%;
@@ -72,11 +78,11 @@ header .logo {
 
 footer {
     top: 1000px;
-    background-color: #8CBE47;
+    background-color: #1A4D2E;
     box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, .1);
     position: relative;
     height: 100px;
-    width: 100%;
+    width: 105%;
     z-index: 1000;
     padding: 20px 0;
     transition: all .4s ease;
@@ -96,6 +102,10 @@ footer {
     :hover {
         background-color: #ffdb81;
     }
+}
+
+.nav-title {
+    font-size: larger;
 }
 
 .dropdown {
@@ -144,108 +154,103 @@ footer {
     display: block;
 }
 
-.about-us-environment {
-    width: 450px;
-    height: 450px;
-    margin-left: auto;
+.events-dashboard {
+    width: 480px;
+    height: 600px;
     border-radius: 15px;
     background-color: #9FDB97;
+    opacity: 50%;
 }
 
-.volunteer-with-us {
-    width: auto;
-    height: 150px;
+.events-dashboard h2 {
+    padding-top: 15px;
+    padding-left: 50px;
+}
+
+.updates-dashboard {
+    width: 700px;
+    height: 600px;
     margin-left: auto;
-    border-radius: 15px;
-    background-color: #9FDB97;
-}
-
-.volunteer-with-us button {
-    margin-right: 0px;
     float: right;
-    color: #4F6F52 !important;
+    border-radius: 15px;
+    background-color: #70CD81;
+    opacity: 50%;
+}
+
+.grid-container {
+    margin-top: 5vh;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3vw;
+    /* Increase gap to prevent overlaying */
+}
+
+.grid-item {
+    margin: 0;
+    /* Remove padding and set margin to 0 */
+}
+
+.graph-item {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    min-height: 10ch;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: larger;
+}
+
+.graph-1 {
+    background-color: #A9CF9D;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 20vh;
+    padding: 20px;
+    /* Add padding to create space inside the graph */
+    box-sizing: border-box;
+    /* Include padding in the element's total width and height */
+}
+
+.graph-1-bar {
     background-color: #E8DFCA;
-    border: none;
-    border-radius: 15px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    height: 50px;
-    font-size: x-large;
-    font-family: "Quicksand", sans-serif;
+    margin: 0 auto;
+    width: 80%;
+    height: 30px;
 }
 
-.volunteer-with-us button:hover {
-    background-color: #ffdb81;
+.graph-1-bar-1 {
+    background-color: #1A4D2E;
+    width: 80%;
+    height: 100%;
 }
 
-.background-image-container {
-    width: 100vw; /* Set the desired width */
-    height: 40vw; /* Set the desired height */
-    overflow: hidden; /* Hide anything outside the container */
+.graph-2 {
+    margin-top: 3vw;
+    width: 100%;
 }
 
-.background-image-container img {
-    width: 100%; /* Make the image fill the container */
-    height: auto; /* Maintain aspect ratio */
+.graph-3 {
+    padding: 20px;
+    padding-bottom: 60px;
+    background-color: #E4FF97;
+    height: 50vh;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.text-overlay {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Center the text */
-    text-align: center; /* Center-align the text */
-  }
 
-  .text-overlay p {
-    color: white; /* Set text color */
-    font-style: normal;
-    font-weight: 300;
-    font-size: 32px;
-    line-height: 40px;
-    text-align: center;
-  }
-
-  .background-image-container button {
-    width: 30%;
-    color: #121808;
-    background-color: #70CD81;
-    border-radius: 20px;
-    height: 60px;
-    font-family: inherit;
-    border: 0;
-    opacity: 0.8;
-    font-size: 32px;
-    font-weight: 300;
-  }
-
-  .background-image-container button:hover {
-    background-color: #9FDB97
-  }
-
-  .latest-events {
-    width: 25vw;
-    height: 30vw;
-    margin-left: 4%;
-    border-radius: 15px;
-    background-color: #9FDB97;
+.pie-chart-container {
+    /* Center the container horizontally */
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-.latest-events img {
-    width: 90%;
-    top: 0;
-}
-
-.green-trans-button {
-    color:#121808;
-    background-color: #70CD81;
-    border-radius: 20px;
-    font-family: inherit;
-    opacity: 0.8;
-    border: 0;
-    font-size: 20px;
-    height: 50px;
-    margin-top: 3%;
-    width: 60%;
+.pie-chart {
+    display: flex;
+    justify-content: center;
+    width: 80%;
 }
