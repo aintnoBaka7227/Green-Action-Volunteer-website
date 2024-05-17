@@ -4,12 +4,12 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="theme-color" content="#1A4D2E">
-        <title>Volunteer-event webpage</title>
+        <title>Volunteer event</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="/stylesheets/style.css">
-        <link rel="stylesheet" href="volunteers.css">
+        <link rel="stylesheet" href="/stylesheets/style-volunteer.css">
     </head>
     <body>
         <header>
@@ -17,16 +17,21 @@
                 <img src="/assets/logo.png" alt="Logo" class="logo-image">
             </a>
             <ul>
-                <li><a href="about.html">Dashboard</a></li>
-                <li><a href="location.html">Updates</a></li>
-                <li><a href="updates.html">Events</a></li>
-                <li></li>
+                <li><a href="/volunteers/homepage.html">Dashboard</a></li>
+                <li><a href="/volunteers/update.html">Updates</a></li>
+                <li><a href="/volunteers/event.html" style="font-weight: bold;">Events</a></li>
+                <li style="float: right; margin-right: 30px; margin-top: -15px;">
+                    <a href="/volunteers/event.html">
+                        <img src="/assets/profile-pic.jpg" alt="profile pic" style="width: 50px; height: 50px; border-radius: 50%;">
+                    </a>
+                </li>
             </ul>
         </header>
         <main>
             <div class="content">
                 <h1 class="h1">Here's your events</h1>
             </div>
+
             <div style="display: flex; padding-top: 30px;">
               <div class="events-dashboard">
                 <h2>Confirmed Events</h2>
@@ -58,6 +63,7 @@
                     <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
                 </div>
               </div>
+
               <div class="updates-dashboard">
                 <h2>RSVP Upcoming Events</h2>
                 <button type="button">View All →</button>
@@ -89,7 +95,6 @@
                 </div>
               </div>
           </div>
-
 
         </main>
     </body>
