@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#8CBE47">
+        <title>Volunteer event</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/stylesheets/style.css">
+        <link rel="stylesheet" href="/stylesheets/style-volunteer.css">
+    </head>
+    <body>
+        <header>
+            <a href="homepage.html" class="logo">
+                <img src="/assets/logo.png" alt="Logo" class="logo-image">
+            </a>
+            <ul>
+                <li><a href="homepage.html">Dashboard</a></li>
+                <li><a href="updates.html">Updates</a></li>
+                <li><a href="events.html">Events</a></li>
+                <div class="dropdown " style="vertical-align: middle; margin-top: -0.73%; float: right; margin-right: 50px;">
+                    <button type="button" class="dropdown-toggle" style="background-color: transparent;"><img src="/assets/profile-pic.jpg" alt="profile pic" style="width: 50px; height: 50px; border-radius: 50%;"></button>
+                    <div class="dropdown-content">
+                        <a href="#">Profile</a>
+                        <a href="#">Settings</a>
+                        <a href="#">Log Out</a>
+                    </div>
+                </div>
+            </ul>
+        </header>
+        <main>
+            <div class="content">
+                <h1 class="h1">Here's your latest updates</h1>
+            </div>
+
+            <div style="margin-left: 10%; margin-right: 10%; margin-top: 5%;">
+                <hr style="border: 1px solid black; color: black; margin-top: 30px; margin-bottom: 20px;">
+                <div class="announcements-container">
+                    <div class="announcement">
+                        Announcement regarding the outfit for the Trash cleaning day Event
+                    </div>
+                    <div class="announcement-event">Event 1</div>
+                </div>
+                <div class="announcements-container" style="margin-top: 10px;">
+                    <div class="announcement-sub">
+                        Dear everyone, hope you guys had a great weekend. This week is finally the week of the event....
+                    </div>
+                    <div class="announcement-date">6 May 2024, 10:31</div>
+                </div>
+                <hr style="border: 1px solid black; color: black; margin-top: 30px; margin-bottom: 20px;">
+                <div class="announcements-container">
+                    <div class="announcement">
+                        Announcement regarding the outfit for the Trash cleaning day Event
+                    </div>
+                    <div class="announcement-event">Event 2</div>
+                </div>
+                <div class="announcements-container" style="margin-top: 10px;">
+                    <div class="announcement-sub">
+                        Dear everyone, hope you guys had a great weekend. This week is finally the week of the event....
+                    </div>
+                    <div class="announcement-date">6 May 2024, 10:31</div>
+                </div>
+                <hr style="border: 1px solid black; color: black; margin-top: 30px; margin-bottom: 20px;">
+                <div class="announcements-container">
+                    <div class="announcement">
+                        Announcement regarding the outfit for the Trash cleaning day Event
+                    </div>
+                    <div class="announcement-event">Event 3</div>
+                </div>
+                <div class="announcements-container" style="margin-top: 10px;">
+                    <div class="announcement-sub">
+                        Dear everyone, hope you guys had a great weekend. This week is finally the week of the event....
+                    </div>
+                    <div class="announcement-date">6 May 2024, 10:31</div>
+                </div>
+                <hr style="border: 1px solid black; color: black; margin-top: 30px; margin-bottom: 20px;">
+                <div class="announcements-container">
+                    <div class="announcement">
+                        Announcement regarding the outfit for the Trash cleaning day Event
+                    </div>
+                    <div class="announcement-event">Event 4</div>
+                </div>
+                <div class="announcements-container" style="margin-top: 10px;">
+                    <div class="announcement-sub">
+                        Dear everyone, hope you guys had a great weekend. This week is finally the week of the event....
+                    </div>
+                    <div class="announcement-date">6 May 2024, 10:31</div>
+                </div>
+                <hr style="border: 1px solid black; color: black; margin-top: 30px; margin-bottom: 20px;">
+                <div class="announcements-container">
+                    <div class="announcement">
+                        Announcement regarding the outfit for the Trash cleaning day Event
+                    </div>
+                    <div class="announcement-event">Event 5</div>
+                </div>
+                <div class="announcements-container" style="margin-top: 10px;">
+                    <div class="announcement-sub">
+                        Dear everyone, hope you guys had a great weekend. This week is finally the week of the event....
+                    </div>
+                    <div class="announcement-date">6 May 2024, 10:31</div>
+                </div>
+                <hr style="border: 1px solid black; color: black; margin-top: 30px; margin-bottom: 20px;">
+                <div class="announcements-container">
+                    <div class="announcement">
+                        Announcement regarding the outfit for the Trash cleaning day Event
+                    </div>
+                    <div class="announcement-event">Event 6</div>
+                </div>
+                <div class="announcements-container" style="margin-top: 10px;">
+                    <div class="announcement-sub">
+                        Dear everyone, hope you guys had a great weekend. This week is finally the week of the event....
+                    </div>
+                    <div class="announcement-date">6 May 2024, 10:31</div>
+                </div>
+            </div>
+        </main>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+            const dropdownToggle = document.querySelector(".dropdown-toggle");
+
+            dropdownToggle.addEventListener("click", function() {
+                const dropdown = this.parentNode;
+                dropdown.classList.toggle("show");
+            });
+
+            document.addEventListener("click", function(event) {
+                if (!event.target.closest(".dropdown")) {
+                const dropdowns = document.querySelectorAll(".dropdown");
+                dropdowns.forEach(function(dropdown) {
+                    dropdown.classList.remove("show");
+                });
+                }
+            });
+            });
+        </script>
+    </body>
+</html>

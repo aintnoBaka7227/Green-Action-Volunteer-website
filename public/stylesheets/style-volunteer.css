@@ -106,3 +106,44 @@
   padding: 20px; /* Adjust padding as needed */
 }
 
+
+
+
+
+
+
+
+.announcements-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.announcement {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.announcement-sub {
+  font-size: 15px;
+  text-align: left;
+}
+
+.announcement-date {
+  font-size: 15px;
+  text-align: right;
+}
+
+.announcement-event {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: 20px;
+}
+
+
+
+
+
+
