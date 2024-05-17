@@ -105,15 +105,3 @@
   position: relative;
   padding: 20px; /* Adjust padding as needed */
 }
-
-.innerdiv .resign-button {
-  width: 210px;
-  height: 10px;
-  top: 210px;
-  gap: 0px;
-  border-radius: 4px 0px 0px 0px;
-  opacity: 100;
-  font-weight: bold;
-  position: relative;
-  float: left;
-}
