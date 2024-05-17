@@ -3,12 +3,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#1A4D2E">
-    <title>Green Action</title>
+    <title>Volunteer homepage</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/stylesheets/style.css">
-    <link rel="stylesheet" href="volunteers.css">
+    <link rel="stylesheet" href="/stylesheets/style-volunteer.css">
 
 </head>
 
@@ -18,19 +18,14 @@
             <img src="/assets/logo.png" alt="Logo" class="logo-image">
         </a>
         <ul>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="location.html">Locations</a></li>
+            <li><a href="homepage.html">Dashboard</a></li>
             <li><a href="updates.html">Updates</a></li>
-            <li style="float: right; margin-right: 50px;"><a href="#log-in">Log In</a></li>
-            <li class="sign-up"><a href="#sign-up">Sign Up</a></li>
-            <div class="dropdown ">
-                <button type="button" class="dropdown-toggle">SA<i class="fas fa-chevron-down"></i></button>
-                <div class="dropdown-content">
-                  <a href="#">Option 1</a>
-                  <a href="#">Option 2</a>
-                  <a href="#">Option 3</a>
-                </div>
-            </div>
+            <li><a href="event.html">Events</a></li>
+            <li style="float: right; margin-right: 30px; margin-top: -15px;">
+                <a href="/volunteers/homepage.html">
+                    <img src="/assets/profile-pic.jpg" alt="profile pic" style="width: 50px; height: 50px; border-radius: 50%;">
+                </a>
+            </li>
         </ul>
     </header>
     <main>
@@ -180,32 +175,5 @@
             </div>
           </div>
       </div>
-
-
     </main>
-
-
-
-
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-        const dropdownToggle = document.querySelector(".dropdown-toggle");
-
-        dropdownToggle.addEventListener("click", function() {
-            const dropdown = this.parentNode;
-            dropdown.classList.toggle("show");
-        });
-
-        document.addEventListener("click", function(event) {
-            if (!event.target.closest(".dropdown")) {
-            const dropdowns = document.querySelectorAll(".dropdown");
-            dropdowns.forEach(function(dropdown) {
-                dropdown.classList.remove("show");
-            });
-            }
-        });
-        });
-    </script>
-
 </body>
