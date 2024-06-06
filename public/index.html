@@ -4,11 +4,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#8CBE47">
     <title>Green Action</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="stylesheets/style.css">
     <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 </head>
 
 <body>
@@ -41,80 +43,36 @@
         </div>
     </div>
 
-    <main>
+    <main id="app">
         <h1 style="color: #8CBE47; font-size: 50px; text-align: center; margin-top: -5%;">Latest Events</h1>
 
         <div style="display: flex; padding-top: 30px;">
-            <div class="latest-events">
+            <div class="latest-events" v-for="event in events" :key="event.event_id">
                 <div style="display: flex; justify-content: center; align-items: center; height: 260px; overflow: hidden;">
                     <img src="assets/event.png" alt="Description of the image">
                 </div>
                 <div style="margin-left: 5%; margin-right: 5%; margin-top: -5%;">
-                    <h2>Event Name</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                    <div style="text-align: center;"><button type="button" class="green-trans-button">Find out more</button></div>
-                </div>
-            </div>
-
-            <div class="latest-events">
-                <div style="display: flex; justify-content: center; align-items: center; height: 260px; overflow: hidden;">
-                    <img src="assets/event.png" alt="Description of the image">
-                </div>
-                <div style="margin-left: 5%; margin-right: 5%; margin-top: -5%;">
-                    <h2>Event Name</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                    <div style="text-align: center;"><button type="button" class="green-trans-button">Find out more</button></div>
-                </div>
-            </div>
-
-            <div class="latest-events">
-                <div style="display: flex; justify-content: center; align-items: center; height: 260px; overflow: hidden;">
-                    <img src="assets/event.png" alt="Description of the image">
-                </div>
-                <div style="margin-left: 5%; margin-right: 5%; margin-top: -5%;">
-                    <h2>Event Name</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                    <h2>{{ event.event_type }}</h2>
+                    <small>{{ event.street_address }}, {{ event.city }} {{event.state}}</small>
+                    <p>{{ event.content }}</p>
                     <div style="text-align: center;"><button type="button" class="green-trans-button">Find out more</button></div>
                 </div>
             </div>
         </div>
+
         <h1 style="color: #8CBE47; font-size: 50px; text-align: center; margin-top: 5%;">Our Updates</h1>
         <div style="display: flex; padding-top: 30px;">
-            <div class="latest-events">
+            <div class="latest-events" v-for="update in updates" :key="update.update_id">
                 <div style="display: flex; justify-content: center; align-items: center; height: 260px; overflow: hidden;">
                     <img src="assets/event.png" alt="Description of the image">
                 </div>
                 <div style="margin-left: 5%; margin-right: 5%; margin-top: -5%;">
-                    <h2>Update</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                    <div style="text-align: center;"><button type="button" class="green-trans-button">Find out more</button></div>
-                </div>
-            </div>
-
-            <div class="latest-events">
-                <div style="display: flex; justify-content: center; align-items: center; height: 260px; overflow: hidden;">
-                    <img src="assets/event.png" alt="Description of the image">
-                </div>
-                <div style="margin-left: 5%; margin-right: 5%; margin-top: -5%;">
-                    <h2>Update</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                    <div style="text-align: center;"><button type="button" class="green-trans-button">Find out more</button></div>
-                </div>
-            </div>
-
-            <div class="latest-events">
-                <div style="display: flex; justify-content: center; align-items: center; height: 260px; overflow: hidden;">
-                    <img src="assets/event.png" alt="Description of the image">
-                </div>
-                <div style="margin-left: 5%; margin-right: 5%; margin-top: -5%;">
-                    <h2>Update</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                    <h2>{{ update.update_title }}</h2>
+                    <p>{{ update.content }}</p>
                     <div style="text-align: center;"><button type="button" class="green-trans-button">Find out more</button></div>
                 </div>
             </div>
         </div>
-
-
     </main>
 
 
@@ -141,4 +99,6 @@
 
 
     <footer></footer>
+    <script src="javascripts/Guest.js"></script>
+
 </body>
