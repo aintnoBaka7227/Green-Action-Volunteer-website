@@ -1,10 +1,12 @@
 new Vue({
     el: '#app',
     data: {
-        events: []
+        events: [],
+        updates: []
     },
     created() {
         this.fetchEvents();
+        this.fetchUpdates();
     },
     methods: {
         fetchEvents() {
@@ -13,7 +15,16 @@ new Vue({
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     this.events = JSON.parse(xhr.responseText);
-                    console.log('Fetched events:', this.events);
+                }
+            };
+            xhr.send();
+        },
+        fetchUpdates() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/getPublicUpdates', true);
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    this.updates = JSON.parse(xhr.responseText);
                 }
             };
             xhr.send();
