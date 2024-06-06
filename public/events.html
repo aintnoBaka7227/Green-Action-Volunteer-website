@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="stylesheets/style.css">
     <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 </head>
 
 <body>
@@ -34,48 +34,15 @@
         </ul>
     </header>
 
-    <main>
+    <main id="app">
         <h1 style="color: #8CBE47; font-size: 50px;">Our events</h1>
         <div class="event-container">
-            <div class="event-card">
+            <div class="event-card" v-for="event in events" :key="event.event_id">
                 <img src="assets/event.png" alt="update name" class="event-image">
-
                 <div class="event-content">
-                    <h2>Event name</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                    <div class="button-container">
-                        <a href="#" class="read-more-button">Read more</a>
-                    </div>
-                </div>
-            </div>
-            <div class="event-card">
-                <img src="assets/event.png" alt="update name" class="event-image">
-
-                <div class="event-content">
-                    <h2>Event name</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                    <div class="button-container">
-                        <a href="#" class="read-more-button">Read more</a>
-                    </div>
-                </div>
-            </div>
-            <div class="event-card">
-                <img src="assets/event.png" alt="update name" class="event-image">
-
-                <div class="event-content">
-                    <h2>Event name</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                    <div class="button-container">
-                        <a href="#" class="read-more-button">Read more</a>
-                    </div>
-                </div>
-            </div>
-            <div class="event-card">
-                <img src="assets/event.png" alt="update name" class="event-image">
-
-                <div class="event-content">
-                    <h2>Event name</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                    <h2>{{ event.event_type }}</h2>
+                    <p>{{ event.street_address }}, {{ event.city }}, {{ event.state }} {{ event.postcode }}</p>
+                    <p>{{ event.content }}</p>
                     <div class="button-container">
                         <a href="#" class="read-more-button">Read more</a>
                     </div>
@@ -85,8 +52,6 @@
         <hr style="margin-top: 50px;">
         <i class="fa-solid fa-angle-down"></i>
         <a href="#" class="load-button">See more</a>
-    </div>
-
     </main>
 
 
@@ -111,6 +76,6 @@
         });
     </script>
 
-
     <footer></footer>
+    <script src="javascripts/GuestEvents.js"></script>
 </body>
