@@ -3,10 +3,24 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// database connection
+var mysql = require('mysql');
+
+var dbConnectionPool = mysql.createPool({
+    host: 'localhost',
+    database: 'greenAction'
+});
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+// middleware
+app.use(function(req, res, next) {
+    req.pool = dbConnectionPool;
+    next();
+});
 
 app.use(logger('dev'));
 app.use(express.json());
