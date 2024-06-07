@@ -33,7 +33,7 @@
                 </div>
             </div>
         </ul>
-    </header>
+      </header>
     <main>
         <div class="page-heading">Welcome back Nguyen, You're in the SA branch</div>
         <div class="grid-container">
@@ -62,28 +62,7 @@
             </div>
         </div>
     </main>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-        const dropdowns = document.querySelectorAll(".dropdown");
-
-        dropdowns.forEach(function(dropdown) {
-            const dropdownToggle = dropdown.querySelector(".dropdown-toggle");
-
-            dropdownToggle.addEventListener("click", function(event) {
-                dropdown.classList.toggle("show");
-                event.stopPropagation(); // Prevents the click event from bubbling up to the document
-            });
-        });
-
-        document.addEventListener("click", function(event) {
-            if (!event.target.closest(".dropdown")) {
-                dropdowns.forEach(function(dropdown) {
-                    dropdown.classList.remove("show");
-                });
-            }
-        });
-        });
-    </script>
+    <script src="/javascripts/Manager.js"></script>
 </body>
 
 </html>

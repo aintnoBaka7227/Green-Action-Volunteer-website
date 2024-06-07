@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#8CBE47">
+        <title>Manager events</title>
+        <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/stylesheets/style.css">
+        <link rel="stylesheet" href="/stylesheets/style-manager.css">
+        <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    </head>
+    <body>
+        <header>
+          <a href="homepage.html" class="logo">
+              <img src="/assets/logo.png" alt="Logo" class="logo-image">
+          </a>
+          <ul>
+              <li><a class="nav-title" href="homepage.html">Dashboard</a></li>
+              <li><a class="nav-title" href="members.html">Members</a></li>
+              <li><a class="nav-title" id="nav-events" href="events.html">Events</a></li>
+              <li><a class="nav-title" href="updates.html">Updates</a></li>
+              <div class="dropdown">
+                  <button type="button" class="dropdown-toggle" style="background-color: transparent;"><img id="profile-pic" src="/assets/profile-pic.jpg" alt="profile pic"></button>
+                  <div class="dropdown-content">
+                      <a href="#">Profile</a>
+                      <a href="#">Settings</a>
+                      <a href="#">Log Out</a>
+                  </div>
+              </div>
+          </ul>
+        </header>
+        <main id="app">
+            <div class="content">
+                <h1 class="h1">Events</h1>
+                <div class="events-modifier">
+                    <select>
+                        <option value="all">All updates</option>
+                    </select>
+                    <select>
+                        <option value="newest">Sort by newest</option>
+                    </select>
+                    <input type="text" placeholder="Search...">
+                    <button type="button" class="add-new-events">+ New event</button>
+                </div>
+                <hr>
+                <div class="event-container">
+                    <div class="event-card" v-for="event in events" :key="event.event_id">
+                        <img src="../assets/event.png" alt="update name" class="event-image">
+                        <div class="event-content">
+                            <h2>{{ event.event_type }}</h2>
+                            <p>{{ event.street_address }}, {{ event.city }}, {{ event.state }} {{ event.postcode }}</p>
+                            <p>{{ event.content }}</p>
+                            <div class="button-container">
+                                <a href="#" class="read-more-button">Read more</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr style="margin-top: 50px;">
+                <i class="fa-solid fa-angle-down"></i>
+                <a href="#" class="load-button">See more</a>
+            </div>
+        </main>
+        <script src="../javascripts/Manager.js"></script>
+        <footer></footer>
+    </body>
+</html>

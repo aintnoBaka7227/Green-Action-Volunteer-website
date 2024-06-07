@@ -1,3 +1,7 @@
+.h1 {
+    color: #8CBE47;
+  }
+
 body {
     background-color: #F5EFE6;
     font-family: "Quicksand", sans-serif;
@@ -77,12 +81,12 @@ header .logo {
 
 
 footer {
-    top: 1000px;
-    background-color: #1A4D2E;
+    top: 100px;
+    background-color: #8CBE47;
     box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, .1);
     position: relative;
     height: 100px;
-    width: 105%;
+    width: 100%;
     z-index: 1000;
     padding: 20px 0;
     transition: all .4s ease;
@@ -106,13 +110,28 @@ footer {
 
 .nav-title {
     font-size: larger;
+    border-radius: 0;
+}
+
+#nav-events {
+    font-weight: bold;
+    border-bottom: 3px solid;
+}
+
+#profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
 }
 
 .dropdown {
-    margin-right: 10px;
     float: right;
     position: relative;
     font-family: "Quicksand", sans-serif;
+    align-items: center;
+    margin-right: 50px;
+    display: box;
+    margin-top: -1.2%;
 }
 
 .dropdown-toggle {
@@ -253,4 +272,36 @@ footer {
     display: flex;
     justify-content: center;
     width: 80%;
+}
+
+.events-modifier {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.events-modifier select,
+.events-modifier input,
+.events-modifier .add-new-events {
+    margin-right: 10px;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: large;
+}
+
+.events-modifier select {
+    width: 20%;
+}
+
+.events-modifier input {
+    width: 35%;
+}
+
+.events-modifier .add-new-events {
+    background-color: #3c8e40;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
 }

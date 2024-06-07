@@ -104,13 +104,6 @@
   padding: 20px; /* Adjust padding as needed */
 }
 
-
-
-
-
-
-
-
 .announcements-container {
   display: flex;
   justify-content: space-between;
@@ -139,10 +132,6 @@
   flex-shrink: 0;
   margin-left: 20px;
 }
-
-
-
-
 
 
 .button {
@@ -184,3 +173,4 @@ hr {
   border: 1px;
   padding: 1px 40px;
 }
+

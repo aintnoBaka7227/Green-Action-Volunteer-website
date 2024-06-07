@@ -118,24 +118,6 @@
                 </div>
             </div>
         </main>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-            const dropdownToggle = document.querySelector(".dropdown-toggle");
-
-            dropdownToggle.addEventListener("click", function() {
-                const dropdown = this.parentNode;
-                dropdown.classList.toggle("show");
-            });
-
-            document.addEventListener("click", function(event) {
-                if (!event.target.closest(".dropdown")) {
-                const dropdowns = document.querySelectorAll(".dropdown");
-                dropdowns.forEach(function(dropdown) {
-                    dropdown.classList.remove("show");
-                });
-                }
-            });
-            });
-        </script>
+        <script src="Manager.js"></script>
     </body>
 </html>
