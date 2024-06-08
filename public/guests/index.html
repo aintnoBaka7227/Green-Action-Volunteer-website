@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#8CBE47">
+    <title>Green Action</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../stylesheets/guest-style.css">
+    <link rel="stylesheet" href="../stylesheets/guest-index-style.css">
+    <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <a href="index.html" class="logo"><img src="../images/logo.png" alt="Logo" class="logo-image"></a>
+        <ul>
+            <div class="section">
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="updates.html">Updates</a></li>
+                <li><a href="events.html">Events</a></li>
+            </div>
+            <div class="section">
+                <li><a href="#log-in">Log In</a></li>
+                <li class="sign-up"><a href="#sign-up">Sign Up</a></li>
+                <div class="dropdown">
+                    <button type="button" class="dropdown-toggle">SA<i class="fas fa-chevron-down"></i></button>
+                    <div class="dropdown-content">
+                        <a href="#">SA</a>
+                        <a href="#">TAS</a>
+                        <a href="#">VIC</a>
+                    </div>
+                </div>
+            </div>
+        </ul>
+    </header>
+
+    <div class="background-image-container">
+        <div class="text-overlay">
+            <p>“Environment is no one&#39;s property to destroy; <br> it&#39;s everyone&#39;s responsibility to
+                protect.” <br>- Mohith Agadi -</p>
+            <button type="button">Apply now</button>
+        </div>
+    </div>
+
+    <main>
+        <div class="latest-events">
+            <h1>Latest Events</h1>
+            <div class="latest-events-list">
+                <div class="latest-events-card">
+                    <img src="../images/event.png" alt="Description of the image">
+                    <div>
+                        <h2>Event Name</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                        <div><button type="button" class="green-trans-button">Find out more</button></div>
+                    </div>
+                </div>
+
+                <div class="latest-events-card">
+                    <img src="../images/event.png" alt="Description of the image">
+                    <div>
+                        <h2>Event Name</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                        <div><button type="button" class="green-trans-button">Find out more</button></div>
+                    </div>
+                </div>
+
+                <div class="latest-events-card">
+                    <img src="../images/event.png" alt="Description of the image">
+                    <div>
+                        <h2>Event Name</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                        <div><button type="button" class="green-trans-button">Find out more</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="latest-events">
+            <h1>Our Updates</h1>
+            <div class="latest-events-list">
+                <div class="latest-events-card">
+                    <img src="../images/event.png" alt="Description of the image">
+                    <div>
+                        <h2>Event Name</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                        <div><button type="button" class="green-trans-button">Find out more</button></div>
+                    </div>
+                </div>
+
+                <div class="latest-events-card">
+                    <img src="../images/event.png" alt="Description of the image">
+                    <div>
+                        <h2>Event Name</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                        <div><button type="button" class="green-trans-button">Find out more</button></div>
+                    </div>
+                </div>
+
+                <div class="latest-events-card">
+                    <img src="../images/event.png" alt="Description of the image">
+                    <div>
+                        <h2>Event Name</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                        <div><button type="button" class="green-trans-button">Find out more</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dropdownToggle = document.querySelector(".dropdown-toggle");
+
+            dropdownToggle.addEventListener("click", function () {
+                const dropdown = this.parentNode;
+                dropdown.classList.toggle("show");
+            });
+
+            document.addEventListener("click", function (event) {
+                if (!event.target.closest(".dropdown")) {
+                    const dropdowns = document.querySelectorAll(".dropdown");
+                    dropdowns.forEach(function (dropdown) {
+                        dropdown.classList.remove("show");
+                    });
+                }
+            });
+        });
+    </script>
+    <footer>
+        
+    </footer>
+</body>
