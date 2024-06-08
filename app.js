@@ -48,7 +48,7 @@ function authorize(role) {
             return res.status(403).send('Forbidden');
         }
         next();
-    }
+    };
 }
 
 
