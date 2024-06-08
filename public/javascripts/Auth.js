@@ -16,7 +16,7 @@ function login() {
               document.getElementById("loginWarning").innerText = "Login successful";
               window.location.href = '/profile';
           } else if (this.status === 400) {
-              document.getElementById("loginWarning").innerText = this.responseText;
+              document.getElementById("loginWarning").innerText = "Wrong password";
           } else {
               document.getElementById("loginWarning").innerText = "An error occurred. Please try again later.";
           }
