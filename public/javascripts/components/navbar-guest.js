@@ -2,7 +2,7 @@
 var navbarGuest = Vue.component('navbar-guest', {
     template: `
       <header>
-        <a href="guests/index.html" class="logo"><img src="../images/logo.png" alt="Logo" class="logo-image"></a>
+        <a href="index.html" class="logo"><img src="../images/logo.png" alt="Logo" class="logo-image"></a>
         <ul>
           <div class="section">
             <li><a href="guests/about.html">About Us</a></li>
