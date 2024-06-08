@@ -1,0 +1,32 @@
+main {
+    padding: 40px 80px;
+}
+
+main h1 {
+    color: #8CBE47;
+    font-size: xx-large;
+}
+
+.dashboard-list {
+    display: flex;
+    gap: 20px;
+}
+
+.events-dashboard {
+    background-color: #C1E7BB;
+    flex-basis: 40%;
+    padding: 40px;
+    border-radius: 40px;
+}
+
+.updates-dashboard {
+    background-color: #A5DFAD;
+    flex-basis: 60%;
+    padding: 40px;
+    border-radius: 40px;
+}
+
+.event-first-line {
+    display: flex;
+    justify-content: space-between;
+}

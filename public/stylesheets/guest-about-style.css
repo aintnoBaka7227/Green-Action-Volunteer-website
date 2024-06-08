@@ -1,0 +1,69 @@
+main {
+    padding: 40px 80px;
+    display: flex;
+    flex-direction: column;
+}
+
+main h1 {
+    color: #8CBE47;
+    font-size: xx-large;
+}
+
+main h2 {
+    font-weight: 400;
+}
+
+.about-us-list {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 0px 80px;
+}
+
+.about-us-card {
+    padding: 30px;
+    background-color: #C1E7BB;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.about-us-card .img-container {
+    display: flex;
+    justify-content: center;
+}
+
+.about-us-card h2 {
+    font-weight: 700;
+}
+
+.volunteer-with-us {
+    margin-top: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background-color: #C1E7BB;
+    border-radius: 15px;
+}
+
+.volunteer-with-us h1 {
+    color: black;
+}
+
+.volunteer-with-us-button {
+    border: none;
+    font-size: 20px;
+    font-family: inherit;
+    padding: 14px 16px;
+    border-radius: 15px;
+    background-color: #E8DFCA;
+    font-size: x-large;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.volunteer-with-us button:hover {
+    background-color: #ffdb81;
+}

@@ -1,0 +1,57 @@
+main {
+    padding: 0px 80px;
+}
+
+main h1 {
+    font-size: xx-large;
+    color: #8CBE47;
+}
+
+.event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.event-card {
+    display: flex;
+    background-color: #C1E7BB;
+    border-radius: 15px;
+    padding: 15px;
+    justify-content: start;
+    gap: 20px;
+}
+
+.event-image {
+    height: 30vh;
+}
+
+.event-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.event-content h2 {
+    margin: 0px;
+}
+
+.event-content p {
+    margin: 0px;
+}
+
+.read-more-button {
+    margin-top: 12px;
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 20px;
+    width: max-content;
+    transition: all 0.1s ease-in-out;
+}
+
+.read-more-button:hover {
+    transform: translate(0px, -5px);;
+}

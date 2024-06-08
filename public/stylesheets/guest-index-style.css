@@ -1,0 +1,105 @@
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  padding: 80px, 0px;
+}
+
+main h1 {
+  color: #8CBE47;
+  text-align: center;
+}
+
+/* Image + Call-to-action CSS */
+
+.background-image-container {
+  height: 50vh;
+  width: 100%;
+  position: relative;
+  background-image: url('../images/plant-background.png');
+  background-size: cover; /* Ensure the image covers the container */
+  background-position: center; /* Center the image */
+}
+
+.text-overlay {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the text */
+  text-align: center; /* Center-align the text */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text-overlay p {
+  color: white; /* Set text color */
+  font-style: normal;
+  font-weight: 300;
+  font-size: 28px;
+  line-height: 40px;
+  text-align: center;
+}
+
+.background-image-container button {
+  width: 30%;
+  color: #121808;
+  background-color: #70CD81;
+  border-radius: 20px;
+  height: 60px;
+  font-family: inherit;
+  border: 0;
+  opacity: 0.9;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.background-image-container button:hover {
+  background-color: #9FDB97
+}
+
+/* Latest CSS */
+
+.latest-events {
+  width: 100%;
+}
+
+.latest-events-list {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+.latest-events-card {
+  width: calc((100% - 80px) / 3);
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #9FDB97;
+}
+
+.latest-events-card img {
+  max-width: 100%;
+}
+
+.green-trans-button {
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+  color:#121808;
+  background-color: #E8DFCA;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: background-color 0.3s ease;
+}
+
+.green-trans-button:hover {
+  background-color: #ffdb81;
+}
+
+
