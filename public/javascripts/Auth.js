@@ -47,7 +47,7 @@ function signup() {
       if (this.readyState === 4) {
           if (this.status === 200) {
               document.getElementById("warning").innerText = "Signup successful";
-              window.location.href = '/profile';
+              window.location.href = '/volunteers/homepage.html';
           } else if (this.status === 400) {
               document.getElementById("warning").innerText = this.responseText;
           } else {
@@ -71,7 +71,7 @@ function googleLogin(idToken) {
   xhttp.onreadystatechange = function () {
       if (this.readyState === 4) {
           if (this.status === 200) {
-              window.location.href = `/profile`;
+              window.location.href = '/volunteers/homepage.html';
           } else if (this.status === 400) {
               document.getElementById("loginWarning").innerText = this.responseText;
           } else {
@@ -83,3 +83,4 @@ function googleLogin(idToken) {
   xhttp.setRequestHeader('Content-Type', 'application/json');
   xhttp.send(JSON.stringify({ credential: idToken }));
 }
+
