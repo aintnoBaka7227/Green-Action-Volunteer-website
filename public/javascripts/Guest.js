@@ -3,16 +3,17 @@ window.onload = function () {
         el: '#app',
         data: {
             events: [],
-            updates: []
+            updates: [],
+            branch: 'SA'
         },
         created() {
-            this.fetchEvents();
+            this.fetchEvents(this.branch);
             this.fetchUpdates();
         },
         methods: {
-            fetchEvents() {
+            fetchEvents(branch) {
                 const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/getPublicEvents', true);
+                xhr.open('GET', `/getPublicEvents?branch=${branch}`, true);
                 xhr.onreadystatechange = () => {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         this.events = JSON.parse(xhr.responseText);
