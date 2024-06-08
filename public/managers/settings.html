@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#8CBE47">
+    <title>Settings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/style-manager.css">
+</head>
+
+<body>
+    <header>
+        <a href="homepage.html" class="logo">
+            <img src="/assets/logo.png" alt="Logo" class="logo-image">
+        </a>
+        <ul>
+            <li><a class="nav-title" href="homepage.html">Dashboard</a></li>
+            <li><a class="nav-title" href="members.html">Members</a></li>
+            <li><a class="nav-title" href="events.html">Events</a></li>
+            <li><a class="nav-title" href="updates.html">Updates</a></li>
+            <li class="dropdown" style="vertical-align: middle; margin-top: -0.73%; float: right; margin-right: 50px;">
+                <button type="button" class="dropdown-toggle" style="background-color: transparent;">
+                    <img src="/assets/profile-pic.jpg" alt="profile pic"
+                        style="width: 50px; height: 50px; border-radius: 50%;">
+                </button>
+                <div class="dropdown-content">
+                    <a href="profile.html">Profile</a>
+                    <a href="/settings.html" style="font-weight: bold;">Settings</a>
+                    <a href="logout.html">Log Out</a>
+                </div>
+            </li>
+        </ul>
+    </header>
+    <main>
+        <div class="page-heading">Settings</div>
+        <div class="settings-container">
+            <section class="user-info">
+                <h2>User Information</h2>
+                <form>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" value="Nguyen" readonly><br>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="nguyen@example.com"><br>
+
+                    <label for="branch">Branch:</label>
+                    <input type="text" id="branch" name="branch" value="SA" readonly><br>
+
+                    <input type="submit" value="Save Changes">
+                </form>
+            </section>
+
+            <section class="notification-settings">
+                <h2>Notification Settings</h2>
+                <form>
+                    <label for="email-notifications">Email Notifications:</label>
+                    <input type="checkbox" id="email-notifications" name="email-notifications" checked><br>
+
+                    <label for="sms-notifications">SMS Notifications:</label>
+                    <input type="checkbox" id="sms-notifications" name="sms-notifications"><br>
+
+                    <input type="submit" value="Save Settings">
+                </form>
+            </section>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dropdowns = document.querySelectorAll(".dropdown");
+
+            dropdowns.forEach(function (dropdown) {
+                const dropdownToggle = dropdown.querySelector(".dropdown-toggle");
+
+                dropdownToggle.addEventListener("click", function (event) {
+                    dropdown.classList.toggle("show");
+                    event.stopPropagation(); // Prevents the click event from bubbling up to the document
+                });
+            });
+
+            document.addEventListener("click", function (event) {
+                if (!event.target.closest(".dropdown")) {
+                    dropdowns.forEach(function (dropdown) {
+                        dropdown.classList.remove("show");
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
