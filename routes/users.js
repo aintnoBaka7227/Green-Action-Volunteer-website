@@ -9,42 +9,64 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/login', function (req, res, next) {
-  req.pool.getConnection(function (cerr, connection) {
-      if (cerr) {
-          console.log(cerr);
-          res.status(500).send("Internal Server Error");
-          return;
-      }
+    req.pool.getConnection(function (cerr, connection) {
+        if (cerr) {
+            console.log(cerr);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
 
-      let query = 'SELECT * FROM User WHERE email=?;';
-      connection.query(query, [req.body.email], function (err, results, fields) {
-          connection.release();
+        let query = `
+            SELECT
+                u.*,
+                CASE
+                    WHEN v.user_id IS NOT NULL THEN 'volunteer'
+                    WHEN a.user_id IS NOT NULL THEN 'admin'
+                    WHEN m.user_id IS NOT NULL THEN 'manager'
+                    ELSE 'unknown'
+                END AS role
+            FROM User u
+            LEFT JOIN Volunteer v ON u.user_id = v.user_id
+            LEFT JOIN Admin a ON u.user_id = a.user_id
+            LEFT JOIN Manager m ON u.user_id = m.user_id
+            WHERE u.email=?;
+        `;
+        connection.query(query, [req.body.email], function (err, results, fields) {
+            connection.release();
 
-          if (err) {
-              console.log(err);
-              res.status(500).send("Internal Server Error");
-              return;
-          }
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
 
-          if (!results[0]) {
-              res.status(400).send("Email not found!");
-              return;
-          }
+            if (!results[0]) {
+                res.status(400).send("Email not found!");
+                return;
+            }
 
-          // Compare the passwords directly (not recommended in production)
-          if (req.body.password !== results[0].password) {
-              res.status(400).send("Incorrect password");
-              return;
-          }
+            // Compare the passwords directly (not recommended in production)
+            if (req.body.password !== results[0].password) {
+                res.status(400).send("Incorrect password");
+                return;
+            }
 
-          // Set session variables
-          // req.session.user_id = results[0].user_id;
-          // if (results[0].admin) req.session.admin = true;
+            // Here, you can access the user's role from the 'role' column in the results
+            console.log(results);
+            const role = results[0].role;
 
-          res.sendStatus(200);
-      });
-  });
+            req.session.role = role;
+            // Set session variables or perform any other actions based on the user's role
+            // For example:
+            // if (role === 'admin') {
+            //     req.session.admin = true;
+            // }
+
+            res.status(200).json({ role: req.session.role });
+        });
+    });
 });
+
 
 
 router.post('/signup', function (req, res, next) {
@@ -99,8 +121,6 @@ router.post('/glogin', async function (req, res) {
       });
       const payload = ticket.getPayload();
       const email = payload.email;
-      const firstName = payload.given_name;
-      const lastName = payload.family_name;
 
       req.pool.getConnection(function (cerr, connection) {
           if (cerr) {
@@ -109,7 +129,20 @@ router.post('/glogin', async function (req, res) {
               return;
           }
 
-          let query = 'SELECT * FROM User WHERE email = ?;';
+          let query = `
+              SELECT
+                  CASE
+                      WHEN v.user_id IS NOT NULL THEN 'volunteer'
+                      WHEN a.user_id IS NOT NULL THEN 'admin'
+                      WHEN m.user_id IS NOT NULL THEN 'manager'
+                      ELSE 'unknown'
+                  END AS role
+              FROM User u
+              LEFT JOIN Volunteer v ON u.user_id = v.user_id
+              LEFT JOIN Admin a ON u.user_id = a.user_id
+              LEFT JOIN Manager m ON u.user_id = m.user_id
+              WHERE u.email = ?;
+          `;
           connection.query(query, [email], function (err, results) {
               connection.release(); // Release the connection back to the pool
               if (err) {
@@ -118,22 +151,14 @@ router.post('/glogin', async function (req, res) {
                   return;
               }
 
-              if (results.length > 0) {
-                  // User exists, log them in
-                  res.status(200).send("Login successful");
-              } else {
-                  // User does not exist, create a new user
-                  let insertQuery = 'INSERT INTO User (first_name, last_name, email) VALUES (?, ?, ?);';
-                  connection.query(insertQuery, [firstName, lastName, email], function (insertErr, insertResults) {
-                      if (insertErr) {
-                          console.log(insertErr);
-                          res.status(500).send("Internal Server Error");
-                          return;
-                      }
-
-                      res.status(200).send("Signup and login successful");
-                  });
+              if (results.length === 0) {
+                  // User not found, handle appropriately
+                  res.status(404).send("User not found");
+                  return;
               }
+
+              const role = results[0].role;
+
           });
       });
   } catch (error) {
@@ -143,4 +168,6 @@ router.post('/glogin', async function (req, res) {
 });
 
 
+
 module.exports = router;
+
