@@ -10,32 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../stylesheets/guest-style.css">
     <link rel="stylesheet" href="../stylesheets/guest-index-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+    <script src="../javascripts/components/navbar-guest.js" defer></script>
+
 </head>
 
 <body>
-    <header>
-        <a href="index.html" class="logo"><img src="../images/logo.png" alt="Logo" class="logo-image"></a>
-        <ul>
-            <div class="section">
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="updates.html">Updates</a></li>
-                <li><a href="events.html">Events</a></li>
-            </div>
-            <div class="section">
-                <li><a href="#log-in">Log In</a></li>
-                <li class="sign-up"><a href="#sign-up">Sign Up</a></li>
-                <div class="dropdown">
-                    <button type="button" class="dropdown-toggle">SA<i class="fas fa-chevron-down"></i></button>
-                    <div class="dropdown-content">
-                        <a href="#">SA</a>
-                        <a href="#">TAS</a>
-                        <a href="#">VIC</a>
-                    </div>
-                </div>
-            </div>
-        </ul>
-    </header>
+    <div id="app">
+    <navbar-guest></navbar-guest>
 
     <div class="background-image-container">
         <div class="text-overlay">
@@ -110,6 +93,7 @@
             </div>
         </div>
     </main>
+    </div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const dropdownToggle = document.querySelector(".dropdown-toggle");
@@ -129,7 +113,14 @@
             });
         });
     </script>
+    <script>
+        window.onload = function() {
+          new Vue({
+            el: '#app'
+          });
+        }
+      </script>
     <footer>
-        
+
     </footer>
 </body>
