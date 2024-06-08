@@ -10,110 +10,74 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../stylesheets/guest-style.css">
     <link rel="stylesheet" href="../stylesheets/guest-events-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
-
+    <script src="../javascripts/components/navbar-guest.js" defer></script>
 </head>
 
 <body>
-    <header>
-        <a href="index.html" class="logo"><img src="../images/logo.png" alt="Logo" class="logo-image"></a>
-        <ul>
-            <div class="section">
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="updates.html">Updates</a></li>
-                <li><a href="events.html">Events</a></li>
-            </div>
-            <div class="section">
-                <li><a href="#log-in">Log In</a></li>
-                <li class="sign-up"><a href="#sign-up">Sign Up</a></li>
-                <div class="dropdown">
-                    <button type="button" class="dropdown-toggle">SA<i class="fas fa-chevron-down"></i></button>
-                    <div class="dropdown-content">
-                        <a href="#">SA</a>
-                        <a href="#">TAS</a>
-                        <a href="#">VIC</a>
+    <div id="app">
+        <main>
+            <h1>Our latest updates</h1>
+            <div class="event-list">
+                <div class="event-card">
+                    <img src="../images/event.png" alt="update name" class="event-image">
+                    <div class="event-content">
+                        <div><h2>Update title</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                            voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div>
+                        <a href="#" class="read-more-button">Read more</a>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img src="../images/event.png" alt="update name" class="event-image">
+                    <div class="event-content">
+                        <div><h2>Update title</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                            voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div>
+                        <a href="#" class="read-more-button">Read more</a>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img src="../images/event.png" alt="update name" class="event-image">
+                    <div class="event-content">
+                        <div><h2>Update title</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                            voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div>
+                        <a href="#" class="read-more-button">Read more</a>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img src="../images/event.png" alt="update name" class="event-image">
+                    <div class="event-content">
+                        <div><h2>Update title</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                            voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div>
+                        <a href="#" class="read-more-button">Read more</a>
                     </div>
                 </div>
             </div>
-        </ul>
-    </header>
-    <main>
-        <h1>Our latest updates</h1>
-        <div class="event-list">
-            <div class="event-card">
-                <img src="../images/event.png" alt="update name" class="event-image">
-                <div class="event-content">
-                    <div><h2>Update title</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div>
-                    <a href="#" class="read-more-button">Read more</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <img src="../images/event.png" alt="update name" class="event-image">
-                <div class="event-content">
-                    <div><h2>Update title</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div>
-                    <a href="#" class="read-more-button">Read more</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <img src="../images/event.png" alt="update name" class="event-image">
-                <div class="event-content">
-                    <div><h2>Update title</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div>
-                    <a href="#" class="read-more-button">Read more</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <img src="../images/event.png" alt="update name" class="event-image">
-                <div class="event-content">
-                    <div><h2>Update title</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div>
-                    <a href="#" class="read-more-button">Read more</a>
-                </div>
-            </div>
-        </div>
-        <hr style="margin-top: 50px;">
-        <i class="fa-solid fa-angle-down"></i>
-        <a href="#" class="load-button">See more</a>
-        </div>
+            <hr style="margin-top: 50px;">
+            <i class="fa-solid fa-angle-down"></i>
+            <a href="#" class="load-button">See more</a>
 
-    </main>
+        </main>
 
-
-
+        <footer></footer>
+    </div>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const dropdownToggle = document.querySelector(".dropdown-toggle");
-
-            dropdownToggle.addEventListener("click", function () {
-                const dropdown = this.parentNode;
-                dropdown.classList.toggle("show");
-            });
-
-            document.addEventListener("click", function (event) {
-                if (!event.target.closest(".dropdown")) {
-                    const dropdowns = document.querySelectorAll(".dropdown");
-                    dropdowns.forEach(function (dropdown) {
-                        dropdown.classList.remove("show");
-                    });
-                }
-            });
-        });
-    </script>
-
-
-    <footer></footer>
+        window.onload = function() {
+          new Vue({
+            el: '#app'
+          });
+        }
+      </script>
 </body>

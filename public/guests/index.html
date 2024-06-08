@@ -13,6 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
     <script src="../javascripts/components/navbar-guest.js" defer></script>
+    <script src="../javascripts/components/guest-event-card.js" defer></script>
 
 </head>
 
@@ -32,69 +33,59 @@
         <div class="latest-events">
             <h1>Latest Events</h1>
             <div class="latest-events-list">
-                <div class="latest-events-card">
-                    <img src="../images/event.png" alt="Description of the image">
-                    <div>
-                        <h2>Event Name</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                        <div><button type="button" class="green-trans-button">Find out more</button></div>
-                    </div>
-                </div>
+                <guest-event-card
+                    event-name="Event Name"
+                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                    button-text="Find out more"
+                    image-url="../images/event.png"
+                ></guest-event-card>
 
-                <div class="latest-events-card">
-                    <img src="../images/event.png" alt="Description of the image">
-                    <div>
-                        <h2>Event Name</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                        <div><button type="button" class="green-trans-button">Find out more</button></div>
-                    </div>
-                </div>
+                <guest-event-card
+                    event-name="Event Name"
+                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                    button-text="Find out more"
+                    image-url="../images/event.png"
+                ></guest-event-card>
 
-                <div class="latest-events-card">
-                    <img src="../images/event.png" alt="Description of the image">
-                    <div>
-                        <h2>Event Name</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                        <div><button type="button" class="green-trans-button">Find out more</button></div>
-                    </div>
-                </div>
+                <guest-event-card
+                    event-name="Event Name"
+                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                    button-text="Find out more"
+                    image-url="../images/event.png"
+                ></guest-event-card>
             </div>
         </div>
 
         <div class="latest-events">
             <h1>Our Updates</h1>
             <div class="latest-events-list">
-                <div class="latest-events-card">
-                    <img src="../images/event.png" alt="Description of the image">
-                    <div>
-                        <h2>Event Name</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                        <div><button type="button" class="green-trans-button">Find out more</button></div>
-                    </div>
-                </div>
+                <guest-event-card
+                    event-name="Event Name"
+                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                    button-text="Find out more"
+                    image-url="../images/event.png"
+                ></guest-event-card>
 
-                <div class="latest-events-card">
-                    <img src="../images/event.png" alt="Description of the image">
-                    <div>
-                        <h2>Event Name</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                        <div><button type="button" class="green-trans-button">Find out more</button></div>
-                    </div>
-                </div>
+                <guest-event-card
+                    event-name="Event Name"
+                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                    button-text="Find out more"
+                    image-url="../images/event.png"
+                ></guest-event-card>
 
-                <div class="latest-events-card">
-                    <img src="../images/event.png" alt="Description of the image">
-                    <div>
-                        <h2>Event Name</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                        <div><button type="button" class="green-trans-button">Find out more</button></div>
-                    </div>
-                </div>
+                <guest-event-card
+                    event-name="Event Name"
+                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                    button-text="Find out more"
+                    image-url="../images/event.png"
+                ></guest-event-card>
             </div>
         </div>
     </main>
+    <footer>
+    </footer>
     </div>
-    
+
     <script>
         window.onload = function() {
           new Vue({
@@ -102,7 +93,5 @@
           });
         }
       </script>
-    <footer>
 
-    </footer>
 </body>
