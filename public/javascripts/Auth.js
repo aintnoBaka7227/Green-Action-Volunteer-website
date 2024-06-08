@@ -11,10 +11,11 @@ function login() {
 
   let xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
+    console.log("get");
       if (this.readyState === 4) {
           if (this.status === 200) {
               document.getElementById("loginWarning").innerText = "Login successful";
-              window.location.href = '/profile';
+              window.location.href = '/volunteers'; // Redirect on success
           } else if (this.status === 400) {
               document.getElementById("loginWarning").innerText = "Wrong password";
           } else {
@@ -27,6 +28,7 @@ function login() {
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send(JSON.stringify({ email, password }));
 }
+
 
 function signup() {
   let firstName = document.getElementById("first_name").value;
@@ -47,7 +49,7 @@ function signup() {
       if (this.readyState === 4) {
           if (this.status === 200) {
               document.getElementById("warning").innerText = "Signup successful";
-              window.location.href = '/volunteers/homepage.html';
+              window.location.href = '/volunteers/index.html';
           } else if (this.status === 400) {
               document.getElementById("warning").innerText = this.responseText;
           } else {
@@ -71,7 +73,7 @@ function googleLogin(idToken) {
   xhttp.onreadystatechange = function () {
       if (this.readyState === 4) {
           if (this.status === 200) {
-              window.location.href = '/volunteers/homepage.html';
+              window.location.href = '/volunteers/index.html';
           } else if (this.status === 400) {
               document.getElementById("loginWarning").innerText = this.responseText;
           } else {

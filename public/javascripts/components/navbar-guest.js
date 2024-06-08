@@ -10,8 +10,8 @@ var navbarGuest = Vue.component('navbar-guest', {
             <li><a href="/guests/events.html">Events</a></li>
           </div>
           <div class="section">
-            <li><a href="#log-in">Log In</a></li>
-            <li class="sign-up"><a href="#sign-up">Sign Up</a></li>
+            <li><a href="../logins.html">Log In</a></li>
+            <li class="sign-up"><a href="../signups.html">Sign Up</a></li>
             <div class="dropdown" :class="{ show: isDropdownVisible }">
               <button type="button" class="dropdown-toggle" @click="toggleDropdown">SA<i class="fas fa-chevron-down"></i></button>
               <div class="dropdown-content">
