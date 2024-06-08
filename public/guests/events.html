@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
     <script src="../javascripts/components/navbar-guest.js" defer></script>
-    <script src="../javascripts/components/guest-event-card.js" defer></script>
+    <script src="../javascripts/Guest.js" defer></script>
 
 </head>
 
@@ -23,34 +23,16 @@
         <main>
             <h1>Our events</h1>
             <div class="event-list">
-                <guest-event-card
-                    image-url="../images/event.png"
-                    event-name="Event Name"
-                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-                    read-more-link="#"
-                    read-more-text="Read more"
-                ></guest-event-card>
-                <guest-event-card
-                    image-url="../images/event.png"
-                    event-name="Event Name"
-                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-                    read-more-link="#"
-                    read-more-text="Read more"
-                ></guest-event-card>
-                <guest-event-card
-                    image-url="../images/event.png"
-                    event-name="Event Name"
-                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-                    read-more-link="#"
-                    read-more-text="Read more"
-                ></guest-event-card>
-                <guest-event-card
-                    image-url="../images/event.png"
-                    event-name="Event Name"
-                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-                    read-more-link="#"
-                    read-more-text="Read more"
-                ></guest-event-card>
+                <div class="event-card" v-for="event in events">
+                    <img src="../images/event.png" alt="Event" class="event-image">
+                    <div class="event-content">
+                        <div>
+                            <h2>{{ event.event_type }}</h2>
+                            <p>{{ event.content }}</p>
+                        </div>
+                        <a href="readMoreLink" class="read-more-button">Read more</a>
+                    </div>
+                </div>
             </div>
             <hr style="margin-top: 50px;">
             <i class="fa-solid fa-angle-down"></i>
@@ -59,11 +41,4 @@
         </main>
         <footer></footer>
     </div>
-    <script>
-        window.onload = function() {
-          new Vue({
-            el: '#app'
-          });
-        }
-      </script>
 </body>

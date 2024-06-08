@@ -13,85 +13,51 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
     <script src="../javascripts/components/navbar-guest.js" defer></script>
-    <script src="../javascripts/components/latest-event-card.js" defer></script>
+    <script src="../javascripts/Guest.js" defer></script>
 
 </head>
 
 <body>
     <div id="app">
-    <navbar-guest></navbar-guest>
+        <navbar-guest></navbar-guest>
 
-    <div class="background-image-container">
-        <div class="text-overlay">
-            <p>“Environment is no one&#39;s property to destroy; <br> it&#39;s everyone&#39;s responsibility to
-                protect.” <br>- Mohith Agadi -</p>
-            <button type="button">Apply now</button>
-        </div>
-    </div>
-
-    <main>
-        <div class="latest-events">
-            <h1>Latest Events</h1>
-            <div class="latest-events-list">
-                <latest-event-card
-                    event-name="Event Name"
-                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
-                    button-text="Find out more"
-                    image-url="../images/event.png"
-                ></latest-event-card>
-
-                <latest-event-card
-                    event-name="Event Name"
-                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
-                    button-text="Find out more"
-                    image-url="../images/event.png"
-                ></latest-event-card>
-
-                <latest-event-card
-                    event-name="Event Name"
-                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
-                    button-text="Find out more"
-                    image-url="../images/event.png"
-                ></latest-event-card>
+        <div class="background-image-container">
+            <div class="text-overlay">
+                <p>“Environment is no one&#39;s property to destroy; <br> it&#39;s everyone&#39;s responsibility to
+                    protect.” <br>- Mohith Agadi -</p>
+                <button type="button">Apply now</button>
             </div>
         </div>
 
-        <div class="latest-events">
-            <h1>Our Updates</h1>
-            <div class="latest-events-list">
-                <latest-event-card
-                    event-name="Event Name"
-                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
-                    button-text="Find out more"
-                    image-url="../images/event.png"
-                ></latest-event-card>
-
-                <latest-event-card
-                    event-name="Event Name"
-                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
-                    button-text="Find out more"
-                    image-url="../images/event.png"
-                ></latest-event-card>
-
-                <latest-event-card
-                    event-name="Event Name"
-                    event-description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
-                    button-text="Find out more"
-                    image-url="../images/event.png"
-                ></latest-event-card>
+        <main>
+            <div class="latest-events">
+                <h1>Latest Events</h1>
+                <div class="latest-events-list">
+                    <div class="latest-events-card" v-for="event in events" :key="event.event_id">
+                        <img src="../images/event.png" alt="Description of the image">
+                        <div>
+                            <h2>{{ event.event_type }}</h2>
+                            <p>{{ event.content }}</p>
+                            <div><button type="button" class="green-trans-button">Find out more</button></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </main>
-    <footer>
-    </footer>
+
+            <div class="latest-events">
+                <h1>Our Updates</h1>
+                <div class="latest-events-list">
+                    <div class="latest-events-card" v-for="update in updates" :key="update.update_id">
+                        <img src="../images/event.png" alt="Description of the image">
+                        <div>
+                            <h2>{{ update.update_title }}</h2>
+                            <p>{{ update.content }}</p>
+                            <div><button type="button" class="green-trans-button">Find out more</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer></footer>
     </div>
-
-    <script>
-        window.onload = function() {
-          new Vue({
-            el: '#app'
-          });
-        }
-      </script>
-
 </body>
