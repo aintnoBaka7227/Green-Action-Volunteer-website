@@ -17,8 +17,7 @@ var navbarManager = Vue.component('navbar-manager', {
                 <div class="dropdown" :class="{ show: isDropdownVisible }">
                     <button class="dropdown-toggle" @click="toggleDropdown"><img class="profile-pic" src="../images/profile-pic.jpg" alt="profile pic"></button>
                     <div class="dropdown-content">
-                        <a href="#">Profile</a>
-                        <a href="#">Settings</a>
+                        <a href="../profile-settings.html">Profile Settings</a>
                         <a href="#">Log Out</a>
                     </div>
                 </div>

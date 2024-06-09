@@ -58,6 +58,9 @@ router.post('/login', function (req, res, next) {
             req.session.role = results[0].role;
             console.log("User Role:", results[0].role);
 
+            req.session.user_id = results[0].user_id;
+            console.log("User ID:", results[0].user_id);
+
             // Send response with status and role in JSON format
             res.status(200).json({ status: "OK", role: req.session.role });
         });
@@ -99,6 +102,12 @@ router.post('/signup', function (req, res, next) {
                   res.status(500).send("Internal Server Error");
                   return;
               }
+              // Set session variable for the role
+              req.session.role = results[0].role;
+              console.log("User Role:", results[0].role);
+
+              req.session.user_id = results[0].user_id;
+              console.log("User ID:", results[0].user_id);
 
               res.sendStatus(200); // Signup successful
           });
@@ -166,6 +175,9 @@ router.post('/glogin', async function (req, res) {
                         req.session.role = results[0].role;
                         console.log("User Role:", results[0].role);
 
+                        req.session.user_id = results[0].user_id;
+                        console.log("User ID:", results[0].user_id);
+
                         // Send response with status and role in JSON format
                         res.status(200).json({ status: "OK", role: req.session.role });
                     });
@@ -191,5 +203,75 @@ router.post('/glogin', async function (req, res) {
         res.status(400).send("Invalid token");
     }
 });
+
+function isAuthenticated(req, res, next) {
+    console.log(req.session);
+    console.log(req.session.user_id);
+
+    if (req.session && req.session.user_id) {
+        return next();
+    } else {
+        res.status(401).send('Unauthorized');
+    }
+}
+
+
+router.get('/me', isAuthenticated, function(req, res) {
+    const userId = req.session.user_id;
+
+    const query = 'SELECT first_name, last_name, email, phone_number, gender, DOB FROM User WHERE user_id = ?';
+
+    req.pool.getConnection(function(cerr, connection) {
+        if (cerr) {
+            console.log(cerr);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+
+        connection.query(query, [userId], function(err, results) {
+            connection.release();
+
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+
+            if (results.length > 0) {
+                res.json(results[0]);
+            } else {
+                res.status(404).send("User not found");
+            }
+        });
+    });
+});
+
+router.post('/edit', isAuthenticated, function(req, res) {
+    const userId = req.session.user_id;
+    const { first_name, last_name, phone_number, gender, DOB, password } = req.body;
+
+    const query = 'UPDATE User SET first_name = ?, last_name = ?, phone_number = ?, gender = ?, DOB = ?, password = ? WHERE user_id = ?';
+
+    dbConnectionPool.getConnection(function(cerr, connection) {
+        if (cerr) {
+            console.log(cerr);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+
+        connection.query(query, [first_name, last_name, phone_number, gender, DOB, password, userId], function(err, results) {
+            connection.release();
+
+            if (err) {
+                console.log(err);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+
+            res.status(200).send("User updated successfully");
+        });
+    });
+});
+
 
 module.exports = router;
