@@ -69,12 +69,11 @@
 }
 
 .event-content p {
-    
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* Limit to 3 lines */
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis; /* Show ellipsis if text is truncated */
+    text-overflow: ellipsis;
 }
 
 .button-container {
