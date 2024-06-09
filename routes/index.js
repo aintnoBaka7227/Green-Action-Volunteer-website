@@ -14,7 +14,7 @@ router.get('/getPublicEvents', function(req, res, next) {
       res.sendStatus(500);
       return;
     }
-    var query = 'SELECT * FROM Event WHERE is_public = 1 AND branch_id = (SELECT branch_id FROM Branch WHERE state = ?)'
+    var query = 'SELECT * FROM Event WHERE is_public = 1 AND branch_id = (SELECT branch_id FROM Branch WHERE state = ?)';
     connection.query(query, [branch], function(err, rows, fields) {
       connection.release();
       if (err) {

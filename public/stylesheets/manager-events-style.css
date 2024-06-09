@@ -1,0 +1,103 @@
+#nav-events {
+    font-weight: bold;
+}
+
+.events-modifier {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.events-modifier select,
+.events-modifier input,
+.events-modifier .add-new-events {
+    margin-right: 10px;
+    padding: 7px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: medium;
+}
+
+.events-modifier select {
+    width: 20%;
+}
+
+.events-modifier input {
+    width: 35%;
+}
+
+.events-modifier .add-new-events {
+    background-color: #3c8e40;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+/* event list */
+.event-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.event-card {
+    display: flex;
+    background-color: rgba(159, 219, 151, 0.6);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 80vw;
+    max-height: 15vw;
+    width: 100%;
+}
+
+.event-image {
+    width: 20%;
+    object-fit: cover;
+    margin: 2%;
+}
+
+.event-content {
+    padding: 20px;
+    width: 100%;
+    color: #000;
+}
+
+.event-content h2 {
+    margin-top: 0;
+}
+
+.event-content p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.read-more-button {
+    margin-top: 12px;
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 20px;
+    width: max-content;
+    transition: all 0.1s ease-in-out;
+}
+
+.read-more-button:hover {
+    transform: translate(0px, -5px);
+}
+
+.load-button {
+    text-decoration: none;
+    color: black;
+}
