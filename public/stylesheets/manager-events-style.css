@@ -69,7 +69,12 @@
 }
 
 .event-content p {
-    margin: 20px 0;
+    
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limit to 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Show ellipsis if text is truncated */
 }
 
 .button-container {
@@ -78,17 +83,19 @@
 }
 
 .read-more-button {
-    display: inline-block;
-    padding: 10px 20px;
+    margin-top: 12px;
+    padding: 8px 16px;
     background-color: #4CAF50;
     color: white;
     text-decoration: none;
-    border-radius: 17px;
-    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border-radius: 20px;
+    width: max-content;
+    transition: all 0.1s ease-in-out;
 }
 
 .read-more-button:hover {
-    background-color: #3c8e40;
+    transform: translate(0px, -5px);
 }
 
 .load-button {
