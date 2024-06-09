@@ -8,10 +8,10 @@ var navbarManager = Vue.component('navbar-manager', {
         </a>
         <ul>
             <div class="section">
-                <li><a class="nav-title" :href="generateLink('homepage.html')">Dashboard</a></li>
-                <li><a class="nav-title" :href="generateLink('members.html')">Members</a></li>
-                <li><a class="nav-title" :href="generateLink('updates.html')">Updates</a></li>
-                <li><a class="nav-title" :href="generateLink('events.html')">Events</a></li>
+                <li><a class="nav-title" id="nav-homepage" :href="generateLink('homepage.html')">Dashboard</a></li>
+                <li><a class="nav-title" id="nav-members" :href="generateLink('members.html')">Members</a></li>
+                <li><a class="nav-title" id="nav-updates":href="generateLink('updates.html')">Updates</a></li>
+                <li><a class="nav-title" id="nav-events" :href="generateLink('events.html')">Events</a></li>
             </div>
             <div class="section">
                 <div class="dropdown" :class="{ show: isDropdownVisible }">

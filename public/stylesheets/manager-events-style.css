@@ -1,3 +1,40 @@
+#nav-events {
+    font-weight: bold;
+}
+
+.events-modifier {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.events-modifier select,
+.events-modifier input,
+.events-modifier .add-new-events {
+    margin-right: 10px;
+    padding: 7px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: medium;
+}
+
+.events-modifier select {
+    width: 20%;
+}
+
+.events-modifier input {
+    width: 35%;
+}
+
+.events-modifier .add-new-events {
+    background-color: #3c8e40;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+/* event list */
 .event-container {
     display: flex;
     flex-direction: column;

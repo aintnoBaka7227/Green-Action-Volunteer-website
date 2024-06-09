@@ -101,7 +101,7 @@ header .logo-image {
 }
 
 main {
-    padding-top: 150px;
+    padding-top: 50px;
     padding-left: 10%;
     padding-right: 10%;
 }
@@ -110,7 +110,6 @@ main h1 {
     color: #8CBE47;
     font-size: xx-large;
 }
-
 
 footer {
     top: 100px;
@@ -124,3 +123,4 @@ footer {
     transition: all .4s ease;
     -webkit-transition: all .4s ease;
 }
+
