@@ -1,0 +1,79 @@
+main {
+    padding: 40px 80px;
+}
+
+main h1 {
+    color: #8CBE47;
+}
+
+.announcement-first-line {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 800;
+    font-size: large;
+    padding-top: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    gap: 10vw;
+}
+
+.announcement-card {
+    padding: 20px 0px 0px 0px;
+}
+
+.announcement-second-line {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 40px;
+    padding-right: 40px;
+    gap: 10vw;
+}
+
+.announcement-management {
+    display: flex;
+    justify-content: space-between;
+    gap: 5%;
+}
+
+.announcement-filter,
+.announcement-sort {
+    flex: 2;
+    /* Each button takes 2/10 (20%) of the available space */
+    background-color: transparent;
+    border-color: black;
+    border-width: 2px;
+    padding: 8px 16px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    font-size: inherit;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.announcement-management input[type="search"] {
+    flex: 6;
+    /* The input takes 6/10 (60%) of the available space */
+    padding: 5px;
+    padding-inline: 20px;
+    /* Optional: Add some padding to the input */
+}
+
+.announcement-title {
+    text-decoration: none;
+    color: black;
+}
+
+.announcement-title:hover {
+    text-decoration: underline;
+}
+
+.announcement-search {
+    background-color: transparent;
+    border-color: black;
+    border-width: 2px;
+    padding: 8px 16px;
+    border-radius: 15px;
+    font-size: inherit;
+    font-family: inherit;
+}

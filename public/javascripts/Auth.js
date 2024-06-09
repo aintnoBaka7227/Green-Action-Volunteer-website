@@ -13,10 +13,21 @@ function login() {
   xhttp.onreadystatechange = function () {
       if (this.readyState === 4) {
           if (this.status === 200) {
+              let response = JSON.parse(this.responseText);
               document.getElementById("loginWarning").innerText = "Login successful";
-              window.location.href = '/profile';
+
+              // Redirect based on user role
+              if (response.role === 'volunteer') {
+                  window.location.href = '/volunteers';
+              } else if (response.role === 'admin') {
+                  window.location.href = '/admins';
+              } else if (response.role === 'manager') {
+                  window.location.href = '/managers';
+              } else {
+                  document.getElementById("loginWarning").innerText = "Role not recognized.";
+              }
           } else if (this.status === 400) {
-              document.getElementById("loginWarning").innerText = this.responseText;
+              document.getElementById("loginWarning").innerText = "Wrong email or password";
           } else {
               document.getElementById("loginWarning").innerText = "An error occurred. Please try again later.";
           }
@@ -27,6 +38,8 @@ function login() {
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send(JSON.stringify({ email, password }));
 }
+
+
 
 function signup() {
   let firstName = document.getElementById("first_name").value;
@@ -47,7 +60,7 @@ function signup() {
       if (this.readyState === 4) {
           if (this.status === 200) {
               document.getElementById("warning").innerText = "Signup successful";
-              window.location.href = '/volunteers/homepage.html';
+              window.location.href = '/volunteers/index.html';
           } else if (this.status === 400) {
               document.getElementById("warning").innerText = this.responseText;
           } else {
@@ -71,7 +84,7 @@ function googleLogin(idToken) {
   xhttp.onreadystatechange = function () {
       if (this.readyState === 4) {
           if (this.status === 200) {
-              window.location.href = '/volunteers/homepage.html';
+              window.location.href = '/volunteers/index.html';
           } else if (this.status === 400) {
               document.getElementById("loginWarning").innerText = this.responseText;
           } else {
