@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User Information</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+    <h1>Edit Your Information</h1>
+    <form id="editUserForm">
+        <div>
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" required>
+        </div>
+        <div>
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required readonly>
+        </div>
+        <div>
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" required>
+        </div>
+        <div>
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div>
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <button type="submit">Save Changes</button>
+        </div>
+    </form>
+
+    <script>
+        // Function to populate the form fields with the current user data
+        async function loadUserData() {
+            try {
+                const response = await fetch('/users/me');
+                const userData = await response.json();
+
+                document.getElementById('first_name').value = userData.first_name;
+                document.getElementById('last_name').value = userData.last_name;
+                document.getElementById('email').value = userData.email;
+                document.getElementById('phone_number').value = userData.phone_number;
+                document.getElementById('gender').value = userData.gender;
+                document.getElementById('dob').value = userData.DOB.split('T')[0]; // Format date for input
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        // Function to handle form submission
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const formData = {
+                first_name: document.getElementById('first_name').value,
+                last_name: document.getElementById('last_name').value,
+                phone_number: document.getElementById('phone_number').value,
+                gender: document.getElementById('gender').value,
+                DOB: document.getElementById('dob').value,
+                password: document.getElementById('password').value
+            };
+
+            try {
+                const response = await fetch('/users/edit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    alert('User updated successfully');
+                } else {
+                    alert('Error updating user');
+                }
+            } catch (error) {
+                console.error('Error updating user:', error);
+            }
+        }
+
+        // Load user data when the page loads
+        window.onload = loadUserData;
+
+        // Add event listener to the form
+        document.getElementById('editUserForm').addEventListener('submit', handleFormSubmit);
+    </script>
+</body>
+</html>
