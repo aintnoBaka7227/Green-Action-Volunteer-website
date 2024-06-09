@@ -1,4 +1,5 @@
 window.onload = function () {
+    // eslint-disable-next-line no-undef
     new Vue({
         el: '#app',
         data: {
@@ -32,4 +33,4 @@ window.onload = function () {
             }
         }
     });
-}
+};

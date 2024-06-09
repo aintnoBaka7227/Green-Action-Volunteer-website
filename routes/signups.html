@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./stylesheets/signup-style.css">
+    <link rel="stylesheet" href="../stylesheets/guest-style.css">
+    <link rel="stylesheet" href="../stylesheets/guest-about-style.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="/javascripts/Auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+    <script src="../javascripts/components/navbar-guest.js" defer></script>
+    <title>User Signup/Login</title>
+</head>
+<body>
+    <div id="app">
+        <navbar-guest></navbar-guest>
+        <div class="container">
+            <h1>User Signup</h1>
+            <form id="signupForm" @submit.prevent="signup">
+                <div class="form-group">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" id="first_name" name="first_name" v-model="first_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" id="last_name" name="last_name" v-model="last_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" v-model="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone_number">Phone Number:</label>
+                    <input type="tel" id="phone_number" name="phone_number" v-model="phone_number" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <input type="text" id="gender" name="gender" v-model="gender" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" v-model="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="DOB">Date of Birth:</label>
+                    <input type="date" id="DOB" name="DOB" v-model="DOB" required>
+                </div>
+                <button type="submit" class="signup-button">Sign Up</button>
+            </form>
+            <p id="warning" class="warning-message"></p>
+
+            <h1>Or</h1>
+            <div id="g_id_onload"
+                data-client_id="198821023017-acnrsha9l5f807koqqu2g0dp800tn0nf.apps.googleusercontent.com"
+                data-context="signin"
+                data-ux_mode="popup"
+                data-callback="handleCredentialResponse"
+                data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            new Vue({
+                el: '#app',
+                data: {
+                    first_name: '',
+                    last_name: '',
+                    email: '',
+                    phone_number: '',
+                    gender: '',
+                    password: '',
+                    DOB: ''
+                },
+                methods: {
+                    signup() {
+                        // Your signup logic here
+                    },
+                    handleCredentialResponse(response) {
+                        // Handle the response from Google Sign-In
+                    }
+                },
+                mounted() {
+                    // Ensure Google Sign-In button is re-rendered correctly
+                    const initializeGoogleSignIn = () => {
+                        const script = document.createElement('script');
+                        script.src = 'https://accounts.google.com/gsi/client';
+                        script.async = true;
+                        script.defer = true;
+                        document.head.appendChild(script);
+                    };
+                    initializeGoogleSignIn();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
