@@ -1,0 +1,60 @@
+.event-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.event-card {
+    display: flex;
+    background-color: rgba(159, 219, 151, 0.6);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 80vw;
+    max-height: 15vw;
+    width: 100%;
+}
+
+.event-image {
+    width: 20%;
+    object-fit: cover;
+    margin: 2%;
+}
+
+.event-content {
+    padding: 20px;
+    width: 100%;
+    color: #000;
+}
+
+.event-content h2 {
+    margin-top: 0;
+}
+
+.event-content p {
+    margin: 20px 0;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.read-more-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 17px;
+    transition: background-color 0.3s ease;
+}
+
+.read-more-button:hover {
+    background-color: #3c8e40;
+}
+
+.load-button {
+    text-decoration: none;
+    color: black;
+}
