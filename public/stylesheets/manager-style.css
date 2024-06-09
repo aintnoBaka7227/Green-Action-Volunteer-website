@@ -97,6 +97,11 @@ header .logo-image {
     display: block;
 }
 
+main h1 {
+    color: #8CBE47;
+    font-size: xx-large;
+}
+
 
 footer {
     top: 100px;
