@@ -53,9 +53,14 @@
                 },
                 methods: {
                     login() {
+                        login();
+                        console.log("Login method called");
+                        console.log("Email:", this.email);
+                        console.log("Password:", this.password);
                         // Your login logic here
                     },
                     handleCredentialResponse(response) {
+                        console.log("Google Sign-In response:", response);
                         // Handle the response from Google Sign-In
                     }
                 },

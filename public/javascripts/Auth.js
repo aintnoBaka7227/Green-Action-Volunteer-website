@@ -11,13 +11,23 @@ function login() {
 
   let xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
-    console.log("get");
       if (this.readyState === 4) {
           if (this.status === 200) {
+              let response = JSON.parse(this.responseText);
               document.getElementById("loginWarning").innerText = "Login successful";
-              window.location.href = '/volunteers'; // Redirect on success
+
+              // Redirect based on user role
+              if (response.role === 'volunteer') {
+                  window.location.href = '/volunteers';
+              } else if (response.role === 'admin') {
+                  window.location.href = '/admins';
+              } else if (response.role === 'manager') {
+                  window.location.href = '/managers';
+              } else {
+                  document.getElementById("loginWarning").innerText = "Role not recognized.";
+              }
           } else if (this.status === 400) {
-              document.getElementById("loginWarning").innerText = "Wrong password";
+              document.getElementById("loginWarning").innerText = "Wrong email or password";
           } else {
               document.getElementById("loginWarning").innerText = "An error occurred. Please try again later.";
           }
@@ -28,6 +38,7 @@ function login() {
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send(JSON.stringify({ email, password }));
 }
+
 
 
 function signup() {
