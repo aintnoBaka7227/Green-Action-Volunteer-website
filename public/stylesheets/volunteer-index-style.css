@@ -22,7 +22,7 @@ main h1 {
 .upcoming-events-title {
     display: flex;
     justify-content: space-between;
-    padding-bottom: 18px;
+    padding-bottom: 30px;
 }
 
 .upcoming-events-title h2 {
