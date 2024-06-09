@@ -4,7 +4,6 @@ main {
 
 main h1 {
     color: #8CBE47;
-    font-size: xx-large;
 }
 
 .dashboard-list {
@@ -18,6 +17,14 @@ main h1 {
     padding: 40px;
     border-radius: 40px;
 }
+
+.updates-dashboard {
+    background-color: #A5DFAD;
+    flex-basis: 60%;
+    padding: 40px;
+    border-radius: 40px;
+}
+
 
 .upcoming-events-title {
     display: flex;
@@ -37,13 +44,6 @@ main h1 {
     background-color: transparent;
 }
 
-.updates-dashboard {
-    background-color: #A5DFAD;
-    flex-basis: 60%;
-    padding: 40px;
-    border-radius: 40px;
-}
-
 .event-first-line {
     display: flex;
     justify-content: space-between;
@@ -56,5 +56,33 @@ main h1 {
 }
 
 .event-title:hover {
+    text-decoration: underline;
+}
+
+.event-card-buttons {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.event-resign {
+    border: none;
+    background-color: #8CBE47;
+    filter: drop-shadow(2px 2px 4px #828282);
+    font-size: inherit;
+    font-family: inherit;
+    padding: 4px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.event-learn-more {
+    text-decoration: none;
+    color: black;
+}
+
+.event-learn-more:hover {
     text-decoration: underline;
 }
