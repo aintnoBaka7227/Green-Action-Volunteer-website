@@ -11,12 +11,33 @@
     <link rel="stylesheet" href="../stylesheets/guest-about-style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
-    <script src="../javascripts/components/navbar-guest.js" defer></script>
+    <script src="../javascripts/Guest.js" defer></script>
 </head>
 
 <body>
     <div id="app">
-      <navbar-guest></navbar-guest>
+      <header>
+        <a href="/guests/index.html" class="logo"><img src="../images/logo.png" alt="Logo" class="logo-image"></a>
+        <ul>
+          <div class="section">
+            <li><a href="/guests/about.html">About Us</a></li>
+            <li><a href="/guests/updates.html">Updates</a></li>
+            <li><a href="/guests/events.html">Events</a></li>
+          </div>
+          <div class="section">
+            <li><a href="../logins.html">Log In</a></li>
+            <li class="sign-up"><a href="../signups.html">Sign Up</a></li>
+            <div class="dropdown" :class="{ show: isDropdownVisible }">
+              <button type="button" class="dropdown-toggle" @click="toggleDropdown">{{ selectedBranch }}<i class="fas fa-chevron-down"></i></button>
+              <div class="dropdown-content">
+                <a href="#" @click.prevent="selectBranch('SA')">SA</a>
+                <a href="#" @click.prevent="selectBranch('VIC')">VIC</a>
+                <a href="#" @click.prevent="selectBranch('NSW')">NSW</a>
+              </div>
+            </div>
+          </div>
+        </ul>
+    </header>
       <main>
           <h1>Who we are</h1>
           <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </h2>
@@ -48,11 +69,4 @@
       </main>
       <footer></footer>
     </div>
-    <script>
-      window.onload = function() {
-        new Vue({
-          el: '#app'
-        });
-      }
-    </script>
 </body>

@@ -8,13 +8,14 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/getPublicEvents', function(req, res, next) {
+  const branch = req.query.branch;
   req.pool.getConnection(function(err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
     }
-    var query = 'SELECT * FROM Event WHERE is_public = 1';
-    connection.query(query, function(err, rows, fields) {
+    var query = 'SELECT * FROM Event WHERE is_public = 1 AND branch_id = (SELECT branch_id FROM Branch WHERE state = ?)'
+    connection.query(query, [branch], function(err, rows, fields) {
       connection.release();
       if (err) {
         res.sendStatus(500);
@@ -26,13 +27,14 @@ router.get('/getPublicEvents', function(req, res, next) {
 });
 
 router.get('/getPublicUpdates', function(req, res, next) {
+  const branch = req.query.branch;
   req.pool.getConnection(function(err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
     }
-    var query = 'SELECT * FROM EventUpdate WHERE is_public = 1';
-    connection.query(query, function(err, rows, fields) {
+    var query = 'SELECT * FROM EventUpdate WHERE is_public = 1 AND branch_id = (SELECT branch_id FROM Branch WHERE state = ?)';
+    connection.query(query, [branch], function(err, rows, fields) {
       connection.release();
       if (err) {
         res.sendStatus(500);
