@@ -16,11 +16,43 @@
         <script src="../javascripts/components/navbar-manager.js" defer></script>
     </head>
     <body>
-        <div id="app">
+        <div id="members">
             <navbar-manager user-type="managers"></navbar-manager>
             <main>
                 <div class="content">
                     <h1 class="h1">Members List</h1>
+                    <div class="members-modifier">
+                        <input type="text" placeholder="Search...">
+                        <button type="button" class="add-new-volunteers">+ Add New Volunteers</button>
+                        <button type="button" class="remove-volunteers">+ Remove Volunteers</button>
+                    </div>
+                    <div class="members-list">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>User's Name</th>
+                                    <th>Email</th>
+                                    <th>Notification Status</th>
+                                    <th>DOB</th>
+                                    <th>Gender</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(member, index) in fetchMembers" :key="member.volunteer_id">
+                                    <td>{{ index + 1 }}</td>
+                                    <td>
+                                        {{ member.first_name }} {{ member.last_name }}
+                                        <div class="phone">{{ member.phone_number }}</div>
+                                    </td>
+                                    <td>{{ member.email }}</td>
+                                    <td :class="member.is_subscribed_notis ? 'subscribed' : 'not-subscribed'">{{ member.is_subscribed_notis ? 'Subscribed' : 'Not Subscribed' }}</td>
+                                    <td>{{ member.DOB }}</td>
+                                    <td>{{ member.gender }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </main>
         </div>

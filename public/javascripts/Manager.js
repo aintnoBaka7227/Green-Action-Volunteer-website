@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+// retrieve all events of the manager's branch (demo without checking the manager branch)
+// no add or remove events functionality
 window.onload = function () {
     // eslint-disable-next-line no-undef
     new Vue({
@@ -53,5 +55,32 @@ window.onload = function () {
         }
     });
 
+};
+
+// fetch members
+window.onload = function () {
+    // eslint-disable-next-line no-undef
+    new Vue({
+        el: "#members",
+        data: {
+            members: [],
+            selectedBranch: 'SA',
+        },
+        created() {
+            this.fetchMembers(this.selectedBranch);
+        },
+        methods: {
+            fetchMembers(branch) {
+                const membersXhr = new XMLHttpRequest();
+                membersXhr.open('GET', `/managers/getBranchMembers?branch=${branch}`, true);
+                membersXhr.onreadystatechange = () => {
+                    if (membersXhr.readyState === 4 && membersXhr.status === 200) {
+                    this.members = JSON.parse(membersXhr.responseText);
+                    }
+                };
+                membersXhr.send();
+            }
+        }
+    });
 };
 
