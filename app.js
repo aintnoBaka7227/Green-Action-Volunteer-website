@@ -3,7 +3,7 @@ const session = require('express-session');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const managersRouter = require('./routes/managers');
@@ -12,16 +12,31 @@ const adminsRouter = require('./routes/admins');
 
 
 const dbConnectionPool = mysql.createPool({
-    host: 'localhost',
+    host: '127.0.0.1',
     database: 'greenAction'
 });
 
 const app = express();
 
 // Middleware to add database connection pool to request object
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     req.pool = dbConnectionPool;
     next();
+});
+
+// Define a route to test the database connection
+app.get('/test-db-connection', (req, res) => {
+    // Attempt to fetch some data from the database
+    dbConnectionPool.query('SELECT 1 + 1 AS result', (error, results) => {
+        if (error) {
+            // If there's an error, log it and send an error response
+            console.error('Error testing database connection:', error);
+            return res.status(500).send(error);
+        }
+
+        // If successful, send a success response
+        res.send('Database connection test successful. Result: ' + results[0].result);
+    });
 });
 
 app.use(logger('dev'));
@@ -42,7 +57,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 function authorize(role) {
-    return function(req, res, next) {
+    return function (req, res, next) {
         console.log(req.session.role);
         if (req.session.role !== role) {
             return res.status(403).send('Forbidden');
