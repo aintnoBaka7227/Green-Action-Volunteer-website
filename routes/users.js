@@ -273,5 +273,14 @@ router.post('/edit', isAuthenticated, function(req, res) {
     });
 });
 
+router.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).send('An error occurred. Please try again later.');
+        }
+        res.clearCookie('connect.sid', { path: '/' });
+        res.status(200).send('Logout successful');
+    });
+});
 
 module.exports = router;

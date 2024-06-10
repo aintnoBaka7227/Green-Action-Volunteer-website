@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-undef
 var navbarUser = Vue.component('navbar-user', {
     props: ['userType'],
     template: `
@@ -17,7 +16,7 @@ var navbarUser = Vue.component('navbar-user', {
                     <button class="dropdown-toggle" @click="toggleDropdown"><img class="profile-pic" src="../images/profile-pic.jpg" alt="profile pic"></button>
                     <div class="dropdown-content">
                         <a href="../profile-settings.html">Profile Settings</a>
-                        <a href="#">Log Out</a>
+                        <a href="#" @click.prevent="logout">Log Out</a>
                     </div>
                 </div>
             </div>
@@ -40,6 +39,23 @@ var navbarUser = Vue.component('navbar-user', {
         },
         generateLink(page) {
             return `/${this.userType}/${page}`;
+        },
+        async logout() {
+            try {
+                const response = await fetch('/users/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (response.ok) {
+                    window.location.href = '/';
+                } else {
+                    console.error('Logout failed:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error during logout:', error);
+            }
         }
     },
     mounted() {
@@ -49,3 +65,4 @@ var navbarUser = Vue.component('navbar-user', {
         document.removeEventListener("click", this.closeDropdowns);
     }
 });
+
