@@ -54,6 +54,8 @@ router.post('/login', function (req, res, next) {
 
             console.log("Login method called");
 
+            console.log("User info:", results[0]);
+
             // Set session variable for the role
             req.session.role = results[0].role;
             console.log("User Role:", results[0].role);

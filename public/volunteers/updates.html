@@ -1,146 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#8CBE47">
-    <title>Volunteer updates</title>
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/stylesheets/volunteer-style.css">
-    <link rel="stylesheet" href="/stylesheets/volunteer-updates-style.css">
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
-    <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="../javascripts/components/navbar-user.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#8CBE47">
+  <title>Volunteer updates</title>
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/stylesheets/volunteer-style.css">
+  <link rel="stylesheet" href="/stylesheets/volunteer-updates-style.css">
+  <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="../javascripts/components/navbar-user.js"></script>
+  <script src="../javascripts/components/volunteers/update-card.js"></script>
 </head>
-
 <body>
-    <div id="app">
-        <navbar-user user-type="volunteers"></navbar-user>
-        <main>
-            <h1>Here's your latest updates</h1>
+  <div id="app">
+    <navbar-user user-type="volunteers"></navbar-user>
+    <main>
+      <h1>Here's your latest updates</h1>
+      <div class="announcement-management">
+        <select v-model="filterOption" class="announcement-filter">
+            <option value="all">All updates</option>
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+        </select>
+        <select v-model="sortOption" class="announcement-sort">
+            <option value="newest">Sort by newest</option>
+            <option value="oldest">Sort by oldest</option>
+        </select>
+        <input type="search" class="announcement-search" placeholder="Search..." v-model="searchQuery" />
+      </div>
+      <div>
+        <event-update-card
+          v-for="update in filteredUpdates"
+          :title="update.update_title"
+          :content="update.content"
+          :name="update.eventName"
+          :date="formatDate(update.eventDate)"
+          :location="update.branch_name"
 
-            <div class="announcement-management">
-                <button type="button" class="announcement-filter">
-                    All updates<i class="fas fa-chevron-down"></i>
-                </button>
-                <button type="button" class="announcement-sort">
-                    Sort by newest<i class="fas fa-chevron-down"></i>
-                </button>
-                <input type="search" class="announcement-search" placeholder="Search..." />
-            </div>
+        ></event-update-card>
+      </div>
+    </main>
+  </div>
 
-            <div>
-                <div class="announcement-card">
-                    <hr>
-                    <div class="announcement-first-line">
-                        <a href="/updates/example.html" class="announcement-title">
-                            Announcement regarding the outfit for the Trash cleaning day Event
-                        </a>
-                        <div class="announcement-event-name">Event 1</div>
-                    </div>
-                    <div class="announcement-second-line">
-                        <div class="announcement-sub">
-                            Dear everyone, hope you guys had a great weekend. This week is finally the week of the
-                            event....
-                        </div>
-                        <div class="announcement-date">6 May 2024, 10:31</div>
-                    </div>
-                </div>
-                <div class="announcement-card">
-                    <hr>
-                    <div class="announcement-first-line">
-                        <a href="/updates/example.html" class="announcement-title">
-                            Announcement regarding the outfit for the Trash cleaning day Event
-                        </a>
-                        <div class="announcement-event-name">Event 2</div>
-                    </div>
-                    <div class="announcement-second-line">
-                        <div class="announcement-sub">
-                            Dear everyone, hope you guys had a great weekend. This week is finally the week of the
-                            event....
-                        </div>
-                        <div class="announcement-date">6 May 2024, 10:31</div>
-                    </div>
-                </div>
-                <div class="announcement-card">
-                    <hr>
-                    <div class="announcement-first-line">
-                        <a href="/updates/example.html" class="announcement-title">
-                            Announcement regarding the outfit for the Trash cleaning day Event
-                        </a>
-                        <div class="announcement-event-name">Event 3</div>
-                    </div>
-                    <div class="announcement-second-line">
-                        <div class="announcement-sub">
-                            Dear everyone, hope you guys had a great weekend. This week is finally the week of the
-                            event....
-                        </div>
-                        <div class="announcement-date">6 May 2024, 10:31</div>
-                    </div>
-                </div>
-                <div class="announcement-card">
-                    <hr>
-                    <div class="announcement-first-line">
-                        <a href="/updates/example.html" class="announcement-title">
-                            Announcement regarding the outfit for the Trash cleaning day Event
-                        </a>
-                        <div class="announcement-event-name">Event 4</div>
-                    </div>
-                    <div class="announcement-second-line">
-                        <div class="announcement-sub">
-                            Dear everyone, hope you guys had a great weekend. This week is finally the week of the
-                            event....
-                        </div>
-                        <div class="announcement-date">6 May 2024, 10:31</div>
-                    </div>
-                </div>
-                <div class="announcement-card">
-                    <hr>
-                    <div class="announcement-first-line">
-                        <a href="/updates/example.html" class="announcement-title">
-                            Announcement regarding the outfit for the Trash cleaning day Event
-                        </a>
-                        <div class="announcement-event-name">Event 5</div>
-                    </div>
-                    <div class="announcement-second-line">
-                        <div class="announcement-sub">
-                            Dear everyone, hope you guys had a great weekend. This week is finally the week of the
-                            event....
-                        </div>
-                        <div class="announcement-date">6 May 2024, 10:31</div>
-                    </div>
-                </div>
-                <div class="announcement-card">
-                    <hr>
-                    <div class="announcement-first-line">
-                        <a href="/updates/example.html" class="announcement-title">
-                            Announcement regarding the outfit for the Trash cleaning day Event
-                        </a>
-                        <div class="announcement-event-name">Event 6</div>
-                    </div>
-                    <div class="announcement-second-line">
-                        <div class="announcement-sub">
-                            Dear everyone, hope you guys had a great weekend. This week is finally the week of the
-                            event....
-                        </div>
-                        <div class="announcement-date">6 May 2024, 10:31</div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-    <script>
-        window.onload = function () {
-            new Vue({
-                el: '#app'
+  <script>
+    new Vue({
+        el: '#app',
+        data: {
+            updates: [],
+            searchQuery: '',
+            sortOption: 'newest', // Default to sort by newest
+            filterOption: 'all' // Default to show all updates
+        },
+        computed: {
+            sortedUpdates() {
+            let filtered = this.updates;
+            if (this.filterOption === 'public') {
+                filtered = filtered.filter(update => update.is_public === 1);
+            } else if (this.filterOption === 'private') {
+                filtered = filtered.filter(update => update.is_public === 0);
+            }
+
+            if (this.sortOption === 'newest') {
+                return filtered.slice().sort((a, b) => new Date(b.eventDate) - new Date(a.eventDate));
+            } else if (this.sortOption === 'oldest') {
+                return filtered.slice().sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate));
+            }
+            },
+            filteredUpdates() {
+            return this.sortedUpdates.filter(update => {
+                return update.update_title.toLowerCase().includes(this.searchQuery.toLowerCase());
             });
+            }
+        },
+        methods: {
+            fetchUpdates() {
+            fetch('/volunteers/event-updates')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response JSON:', data)
+                    this.updates = data;
+                })
+                .catch(error => {
+                console.error('Error fetching updates:', error);
+                });
+            },
+            formatDate(dateString) {
+              const options = { year: 'numeric', month: 'long', day: 'numeric'};
+              return new Date(dateString).toLocaleDateString(undefined, options);
+            }
+        },
+        created() {
+            this.fetchUpdates();
         }
-    </script>
-</body>
+    });
 
+
+  </script>
+
+</body>
 </html>

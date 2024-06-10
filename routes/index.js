@@ -45,6 +45,9 @@ router.get('/getPublicUpdates', function(req, res, next) {
   });
 });
 
+
+
+
 /* GET user data for editing. */
 router.get('/getUserData', function(req, res, next) {
   if (!req.session.user_id) {
