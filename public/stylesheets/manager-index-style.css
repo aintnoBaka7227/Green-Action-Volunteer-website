@@ -1,7 +1,6 @@
 main {
-    padding-top: 150px;
-    padding-left: 10%;
-    padding-right: 10%;
+    padding-left: 60px;
+    padding-right: 60px;
 }
 
 .page-heading {
@@ -37,13 +36,8 @@ main {
     margin-top: 5vh;
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 3vw;
+    gap: 40px;
     /* Increase gap to prevent overlaying */
-}
-
-.grid-item {
-    margin: 0;
-    /* Remove padding and set margin to 0 */
 }
 
 .graph-item {
@@ -56,47 +50,67 @@ main {
     font-size: larger;
 }
 
+.grid-item-1 {
+    width: 100%;
+}
+
 .graph-1 {
-    background-color: #A9CF9D;
+    background-color: #82C86C;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 20vh;
     padding: 20px;
+    gap: 20px;
     /* Add padding to create space inside the graph */
     box-sizing: border-box;
     /* Include padding in the element's total width and height */
 }
 
 .graph-1-bar {
-    background-color: #E8DFCA;
+    background-color: #FCEFC3;
     margin: 0 auto;
     width: 80%;
     height: 30px;
 }
 
 .graph-1-bar-1 {
-    background-color: #1A4D2E;
+    background-color: #34623C;
     width: 80%;
     height: 100%;
 }
 
+.graph-1-text{
+    display: flex;
+    gap: 20px;
+}
+
 .graph-2 {
     margin-top: 3vw;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .graph-3 {
-    padding: 20px;
-    padding-bottom: 60px;
+    padding: 40px;
     background-color: #E4FF97;
-    height: 50vh;
     display: flex;
-    width: 100%;
+    gap: 20px;
     flex-direction: column;
     justify-content: space-between;
 }
 
+.graph-3-description {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.graph-3-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
 
 .pie-chart-container {
     /* Center the container horizontally */
@@ -109,4 +123,57 @@ main {
     display: flex;
     justify-content: center;
     width: 80%;
+}
+
+.chart-container {
+    display: flex;
+    padding: 40px 0px;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(#2ecc71 0% calc(var(--percentage) * 100%), #fff calc(var(--percentage) * 100%) 100%);
+}
+
+.chart::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background-color: #f7ffb3;
+}
+
+.chart::after {
+    content: attr(data-people) ' people';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: x-large;
+    font-family: inherit;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+}
+
+.chart-title {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1em;
+    color: #333;
+}
+
+.graph-2 {
+    background-color: #FCEFC3;
+    padding: 20px;
 }

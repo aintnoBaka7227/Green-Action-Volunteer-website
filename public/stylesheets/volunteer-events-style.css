@@ -86,3 +86,33 @@ main h1 {
 .event-learn-more:hover {
     text-decoration: underline;
 }
+
+.event-rsvp {
+    display: flex;
+    justify-content: space-around;
+    font-size: large;
+    padding: 20px 0px;
+}
+
+.event-rsvp-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.event-rsvp-yes, .event-rsvp-no {
+    font-size: inherit;
+    font-family: inherit;
+    border-radius: 8px;
+    border-width: 3px;
+    padding: 2px 32px;
+    background-color: #E8DFCA;
+    cursor: pointer;
+}
+
+.event-rsvp-yes {
+    border-color: green;
+}
+
+.event-rsvp-no {
+    border-color: red;
+}
