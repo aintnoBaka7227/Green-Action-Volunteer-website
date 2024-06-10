@@ -182,18 +182,31 @@ router.post('/glogin', async function (req, res) {
                         res.status(200).json({ status: "OK", role: req.session.role });
                     });
                 } else {
-                    // User does not exist, create a new user
+                    // User does not exist, create a new user and set role as 'volunteer' by default
                     let insertQuery = 'INSERT INTO User (first_name, last_name, email) VALUES (?, ?, ?);';
-                    connection.query(insertQuery, [firstName, lastName, email], function (insertErr, insertResults) {
-                        connection.release(); // Release the connection back to the pool
-
+                    let values = [firstName, lastName, email];
+                    connection.query(insertQuery, values, function (insertErr, insertResults) {
                         if (insertErr) {
                             console.log(insertErr);
                             res.status(500).send("Internal Server Error");
                             return;
                         }
 
-                        res.status(200).send("Signup and login successful");
+                        // Set the role as 'volunteer' for the new user
+                        let volunteerQuery = 'INSERT INTO Volunteer (user_id) VALUES (?)';
+                        let userId = insertResults.insertId;
+                        connection.query(volunteerQuery, [userId], function (volunteerErr, volunteerResults) {
+                            connection.release(); // Release the connection back to the pool
+
+                            if (volunteerErr) {
+                                console.log(volunteerErr);
+                                res.status(500).send("Internal Server Error");
+                                return;
+                            }
+                            req.session.role = "Volunteer";
+                            console.log("User Role:", req.session.role);
+                            res.status(200).json({ status: "OK", role: req.session.role });
+                        });
                     });
                 }
             });
@@ -203,6 +216,7 @@ router.post('/glogin', async function (req, res) {
         res.status(400).send("Invalid token");
     }
 });
+
 
 function isAuthenticated(req, res, next) {
     console.log(req.session);
