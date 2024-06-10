@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-undef
-var navbarManager = Vue.component('navbar-manager', {
+Vue.component('navbar-manager', {
     props: ['userType'],
     template: `
       <header>
@@ -8,9 +8,9 @@ var navbarManager = Vue.component('navbar-manager', {
         </a>
         <ul>
             <div class="section">
-                <li><a class="nav-title" id="nav-homepage" :href="generateLink('homepage.html')">Dashboard</a></li>
+                <li><a class="nav-title" id="nav-homepage" :href="generateLink('index.html')">Dashboard</a></li>
                 <li><a class="nav-title" id="nav-members" :href="generateLink('members.html')">Members</a></li>
-                <li><a class="nav-title" id="nav-updates":href="generateLink('updates.html')">Updates</a></li>
+                <li><a class="nav-title" id="nav-updates" :href="generateLink('updates.html')">Updates</a></li>
                 <li><a class="nav-title" id="nav-events" :href="generateLink('events.html')">Events</a></li>
             </div>
             <div class="section">
