@@ -45,24 +45,7 @@ router.get('/getPublicUpdates', function(req, res, next) {
   });
 });
 
-/* Move this to volunteers.js */
-router.get('/event-updates', function(req, res, next) {
-  req.pool.getConnection(function(err, connection) {
-    if (err) {
-      res.sendStatus(500);
-      return;
-    }
-    var query = 'SELECT eu.update_id, eu.update_title, eu.content, eu.is_public, eu.branch_id, eu.event_id, e.event_type AS eventName, e.date AS eventDate FROM EventUpdate eu JOIN Event e ON eu.event_id = e.event_id';
-    connection.query(query, function(err, rows, fields) {
-      connection.release();
-      if (err) {
-        res.sendStatus(500);
-        return;
-      }
-      res.json(rows);
-    });
-  });
-});
+
 
 
 /* GET user data for editing. */

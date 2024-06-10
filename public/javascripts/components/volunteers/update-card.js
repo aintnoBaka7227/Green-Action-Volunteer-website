@@ -7,7 +7,7 @@ var EventUpdateCard = Vue.component('event-update-card', {
         <a class="announcement-title">
           {{ title }}
         </a>
-        <div class="announcement-event-name">{{ name }}</div>
+        <div class="announcement-event-name">{{ location }}: {{ name }}</div>
       </div>
       <div class="announcement-second-line">
         <div class="announcement-sub">
@@ -31,6 +31,10 @@ var EventUpdateCard = Vue.component('event-update-card', {
       required: true
     },
     date: {
+      type: String,
+      required: true
+    },
+    location: {
       type: String,
       required: true
     }
