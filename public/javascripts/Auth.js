@@ -13,19 +13,21 @@ function login() {
   xhttp.onreadystatechange = function () {
       if (this.readyState === 4) {
           if (this.status === 200) {
-              let response = JSON.parse(this.responseText);
-              document.getElementById("loginWarning").innerText = "Login successful";
+            let response = JSON.parse(this.responseText);
+            console.log(response);
 
-              // Redirect based on user role
-              if (response.role === 'volunteer') {
-                  window.location.href = '/volunteers';
-              } else if (response.role === 'admin') {
-                  window.location.href = '/admins';
-              } else if (response.role === 'manager') {
-                  window.location.href = '/managers';
-              } else {
-                  document.getElementById("loginWarning").innerText = "Role not recognized.";
-              }
+            document.getElementById("loginWarning").innerText = "Login successful";
+
+            // Redirect based on user role
+            if (response.role === 'volunteer') {
+                window.location.href = '/volunteers';
+            } else if (response.role === 'admin') {
+                window.location.href = '/admins';
+            } else if (response.role === 'manager') {
+                window.location.href = '/managers';
+            } else {
+                document.getElementById("loginWarning").innerText = "User not assinged a role";
+            }
           } else if (this.status === 400) {
               document.getElementById("loginWarning").innerText = "Wrong email or password";
           } else {
@@ -59,8 +61,8 @@ function signup() {
   xhttp.onreadystatechange = function () {
       if (this.readyState === 4) {
           if (this.status === 200) {
-              document.getElementById("warning").innerText = "Signup successful";
-              window.location.href = '/volunteers/index.html';
+            document.getElementById("warning").innerText = "Signup successful";
+            window.location.href = 'profile-settings.html';
           } else if (this.status === 400) {
               document.getElementById("warning").innerText = this.responseText;
           } else {
@@ -84,7 +86,20 @@ function googleLogin(idToken) {
   xhttp.onreadystatechange = function () {
       if (this.readyState === 4) {
           if (this.status === 200) {
-              window.location.href = '/volunteers/index.html';
+            let response = JSON.parse(this.responseText);
+
+            document.getElementById("loginWarning").innerText = "Login successful";
+
+            if (response.role === 'volunteer') {
+                window.location.href = '/volunteers';
+            } else if (response.role === 'admin') {
+                window.location.href = '/admins';
+            } else if (response.role === 'manager') {
+                window.location.href = '/managers';
+            } else {
+                document.getElementById("loginWarning").innerText = "User not assinged a role";
+                window.location.href = 'profile-settings.html';
+            }
           } else if (this.status === 400) {
               document.getElementById("loginWarning").innerText = this.responseText;
           } else {
