@@ -1,5 +1,5 @@
 // load toogle for profile pics
-document.addEventListener("DOMContentLoaded", function() {
+/*document.addEventListener("DOMContentLoaded", function() {
     const dropdownToggle = document.querySelector(".dropdown-toggle");
 
     dropdownToggle.addEventListener("click", function() {
@@ -15,11 +15,11 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         }
     });
-});
+});*/
 
 // retrieve all events of the manager's branch (demo without checking the manager branch)
 // no add or remove events functionality
-window.onload = function () {
+window.addEventListener('load', function () {
     // eslint-disable-next-line no-undef
     new Vue({
         el: '#app',
@@ -54,14 +54,14 @@ window.onload = function () {
             },
         }
     });
+});
 
-};
-
+/*
 // fetch members
-window.onload = function () {
+window.addEventListener('load', function () {
     // eslint-disable-next-line no-undef
     new Vue({
-        el: "#members",
+        el: '#members',
         data: {
             members: [],
             selectedBranch: 'SA',
@@ -82,5 +82,5 @@ window.onload = function () {
             }
         }
     });
-};
-
+});
+*/

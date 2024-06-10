@@ -16,7 +16,9 @@ router.get('/getBranchMembers', function(req, res, next) {
       res.sendStatus(500);
       return;
     }
-    var query = 'SELECT Volunteer.*, User.* FROM Volunteer INNER JOIN User ON Volunteer.user_id = User.user_id WHERE Volunteer.branch_id = (SELECT branch_id FROM Branch WHERE state = ?)';
+    var query = `SELECT Volunteer.*, User.* FROM Volunteer
+    INNER JOIN User ON Volunteer.user_id = User.user_id
+    WHERE Volunteer.branch_id = (SELECT branch_id FROM Branch WHERE state = ?)`;
     connection.query(query, [branch], function(err, rows, fields) {
       connection.release();
       if (err) {
