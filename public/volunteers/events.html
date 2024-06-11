@@ -51,10 +51,10 @@
                             v-for="event in events"
                             :key="event.event_id"
                             :event-id="event.event_id"
-                            :volunteer-id="event.volunteer_id"
                             :event-name="event.event_type"
                             :event-date="formatDate(event.date)"
                             :event-description="event.content"
+                            @rsvp="handleRsvp"
                         ></rsvp-card>
                     </div>
                 </div>
@@ -67,8 +67,8 @@
           new Vue({
             el: '#app',
             data: {
-              userName: '', // To store user's name
-              userVolunteerId: 1, // Example volunteer ID; this should be dynamically set based on the logged-in user
+              userName: '',
+              userVolunteerId: null,
               events: [],
               rsvpEvents: [],
               updates: []
@@ -79,49 +79,71 @@
             },
             methods: {
               fetchEvents() {
-                    fetch('/volunteers/available-events')
-                    .then(response => {
-                        if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.events = data;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching events:', error);
-                    });
-                },
-                fetchRSVPEvents() {
-                    fetch(`/volunteers/rsvp-events`)
-                    .then(response => {
-                        if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.rsvpEvents = data;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching RSVP events:', error);
-                    });
-                },
-                formatDate(dateString) {
-                    const options = { year: 'numeric', month: 'long', day: 'numeric'};
-                    return new Date(dateString).toLocaleDateString(undefined, options);
-                },
-                handleEventResigned(eventId) {
-                    const index = this.rsvpEvents.findIndex(event => event.event_id === eventId);
-                    if (index !== -1) {
-                        const event = this.rsvpEvents.splice(index, 1)[0];
-                        this.events.push(event);
+                fetch('/volunteers/available-events')
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok');
                     }
+                    return response.json();
+                  })
+                  .then(data => {
+                    this.events = data;
+                  })
+                  .catch(error => {
+                    console.error('Error fetching events:', error);
+                  });
+              },
+              fetchRSVPEvents() {
+                fetch('/volunteers/rsvp-events')
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                  })
+                  .then(data => {
+                    this.rsvpEvents = data;
+                  })
+                  .catch(error => {
+                    console.error('Error fetching RSVP events:', error);
+                  });
+              },
+              formatDate(dateString) {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                return new Date(dateString).toLocaleDateString(undefined, options);
+              },
+              handleEventResigned(eventId) {
+                const index = this.rsvpEvents.findIndex(event => event.event_id === eventId);
+                if (index !== -1) {
+                  const event = this.rsvpEvents.splice(index, 1)[0];
+                  this.events.push(event);
                 }
+              },
+              handleRsvp(eventId) {
+                fetch('/volunteers/add-rsvp', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ eventId })
+                })
+                  .then(response => response.json())
+                  .then(data => {
+                    if (data.success) {
+                      alert('RSVP added successfully!');
+                      this.fetchEvents();
+                      this.fetchRSVPEvents();
+                    } else {
+                      alert('Failed to add RSVP.');
+                    }
+                  })
+                  .catch(error => {
+                    console.error('Error:', error);
+                  });
+              }
             }
           });
         }
-    </script>
+      </script>
 </body>
 </html>

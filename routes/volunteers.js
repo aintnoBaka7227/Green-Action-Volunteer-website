@@ -258,57 +258,58 @@ router.get('/user-name', function(req, res, next) {
   });
 });
 
-// careful this might ot work because of multiple volunteer ids
+// check events rsvpd
 router.get('/rsvp-events', (req, res) => {
   req.pool.getConnection((err, connection) => {
-      if (err) {
-          res.sendStatus(500);
-          return;
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    const userId = req.session.user_id;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    const volunteerQuery = `
+      SELECT volunteer_id
+      FROM Volunteer
+      WHERE user_id = ?
+    `;
+
+    connection.query(volunteerQuery, [userId], (volunteerError, volunteerResults) => {
+      if (volunteerError) {
+        console.error('Error fetching volunteer IDs:', volunteerError);
+        return res.status(500).json({ error: 'Internal server error' });
       }
 
-      const userId = req.session.user_id;
-
-      if (!userId) {
-          return res.status(400).json({ error: 'User ID is required' });
+      if (volunteerResults.length === 0) {
+        return res.status(404).json({ error: 'No volunteer IDs found for the user' });
       }
 
-      const volunteerQuery = `
-          SELECT volunteer_id
-          FROM Volunteer
-          WHERE user_id = ?
+      const volunteerIds = volunteerResults.map(row => row.volunteer_id);
+
+      const query = `
+        SELECT Event.event_id, Event.event_type, Event.date, Event.content, EventRSVP.volunteer_id
+        FROM Event
+        INNER JOIN EventRSVP ON Event.event_id = EventRSVP.event_id
+        WHERE EventRSVP.volunteer_id IN (?)
       `;
 
-      connection.query(volunteerQuery, [userId], (volunteerError, volunteerResults) => {
-          if (volunteerError) {
-              console.error('Error fetching volunteer IDs:', volunteerError);
-              return res.status(500).json({ error: 'Internal server error' });
-          }
+      connection.query(query, [volunteerIds], (error, results) => {
+        if (error) {
+          console.error('Error fetching RSVP events:', error);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
 
-          if (volunteerResults.length === 0) {
-              return res.status(404).json({ error: 'No volunteer IDs found for the user' });
-          }
-
-          const volunteerIds = volunteerResults.map(row => row.volunteer_id);
-
-          const query = `
-              SELECT Event.event_id, Event.event_type, Event.date, Event.content, EventRSVP.volunteer_id
-              FROM Event
-              INNER JOIN EventRSVP ON Event.event_id = EventRSVP.event_id
-              WHERE EventRSVP.volunteer_id IN (?)
-          `;
-
-          connection.query(query, [volunteerIds], (error, results) => {
-              if (error) {
-                  console.error('Error fetching RSVP events:', error);
-                  return res.status(500).json({ error: 'Internal server error' });
-              }
-
-              console.log(results);
-              res.json(results);
-          });
+        console.log(results);
+        res.json(results);
       });
+    });
   });
 });
+
 
 
 router.get('/available-events', (req, res) => {
@@ -382,7 +383,7 @@ router.get('/available-events', (req, res) => {
                     return res.status(404).json({ error: 'No events found for the branches' });
                 }
 
-                const eventIds = eventsResults.map(row => row.event_id);
+                const event_ids = eventsResults.map(row => row.event_id);
 
                 // Query to get all RSVP events for the volunteer IDs
                 const rsvpQuery = `
@@ -397,10 +398,10 @@ router.get('/available-events', (req, res) => {
                         return res.status(500).json({ error: 'Internal server error' });
                     }
 
-                    const rsvpEventIds = rsvpResults.map(row => row.event_id);
+                    const rsvpevent_ids = rsvpResults.map(row => row.event_id);
 
                     // Filter out the events that the volunteer has RSVPed for
-                    const availableEvents = eventsResults.filter(event => !rsvpEventIds.includes(event.event_id));
+                    const availableEvents = eventsResults.filter(event => !rsvpevent_ids.includes(event.event_id));
                     console.log(availableEvents);
                     res.json(availableEvents);
                 });
@@ -419,8 +420,9 @@ router.post('/resign', (req, res) => {
     }
 
     const { volunteerId, eventId } = req.body;
+    const event_id = eventId;
 
-    if (!volunteerId || !eventId) {
+    if (!volunteerId || !event_id) {
         return res.status(400).json({ error: 'Volunteer ID and Event ID are required' });
     }
 
@@ -429,7 +431,7 @@ router.post('/resign', (req, res) => {
         WHERE volunteer_id = ? AND event_id = ?
     `;
 
-    connection.query(resignQuery, [volunteerId, eventId], (resignError, results) => {
+    connection.query(resignQuery, [volunteerId, event_id], (resignError, results) => {
         connection.release();
 
         if (resignError) {
@@ -441,5 +443,71 @@ router.post('/resign', (req, res) => {
     });
   });
 });
+
+// add rsvp
+router.post('/add-rsvp', (req, res) => {
+  console.log('Session:', req.session); // Log session to check user_id
+  console.log('Request body:', req.body); // Log request body to check event_id
+
+  req.pool.getConnection((err, connection) => {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    const userId = req.session.user_id;
+    const event_id = req.body.eventId.event_id;
+    console.log(event_id);
+    if (!userId || !event_id) {
+      console.log(userId);
+      console.log(event_id);
+
+      console.error('User ID or Event ID is missing');
+      connection.release();
+      return res.status(400).json({ error: 'User ID and Event ID are required' });
+    }
+
+    const volunteerQuery = `
+      SELECT v.volunteer_id
+      FROM Volunteer v
+      JOIN Event e ON v.branch_id = e.branch_id
+      WHERE v.user_id = ? AND e.event_id = ?
+    `;
+
+    connection.query(volunteerQuery, [userId, event_id], (volunteerError, volunteerResults) => {
+      if (volunteerError) {
+        console.error('Error fetching volunteer ID:', volunteerError);
+        connection.release();
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      if (volunteerResults.length === 0) {
+        console.error('No matching volunteer found');
+        connection.release();
+        return res.status(404).json({ error: 'No matching volunteer found for the user and event' });
+      }
+
+      const volunteerId = volunteerResults[0].volunteer_id;
+
+      const insertQuery = `
+        INSERT INTO EventRSVP (event_id, volunteer_id)
+        VALUES (?, ?)
+      `;
+
+      connection.query(insertQuery, [event_id, volunteerId], (insertError) => {
+        connection.release();
+        if (insertError) {
+          console.error('Error inserting RSVP:', insertError);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        res.json({ success: true });
+      });
+    });
+  });
+});
+
+
+
 
 module.exports = router;
