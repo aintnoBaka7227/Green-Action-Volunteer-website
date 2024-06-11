@@ -258,5 +258,188 @@ router.get('/user-name', function(req, res, next) {
   });
 });
 
-module.exports = router;
+// careful this might ot work because of multiple volunteer ids
+router.get('/rsvp-events', (req, res) => {
+  req.pool.getConnection((err, connection) => {
+      if (err) {
+          res.sendStatus(500);
+          return;
+      }
 
+      const userId = req.session.user_id;
+
+      if (!userId) {
+          return res.status(400).json({ error: 'User ID is required' });
+      }
+
+      const volunteerQuery = `
+          SELECT volunteer_id
+          FROM Volunteer
+          WHERE user_id = ?
+      `;
+
+      connection.query(volunteerQuery, [userId], (volunteerError, volunteerResults) => {
+          if (volunteerError) {
+              console.error('Error fetching volunteer IDs:', volunteerError);
+              return res.status(500).json({ error: 'Internal server error' });
+          }
+
+          if (volunteerResults.length === 0) {
+              return res.status(404).json({ error: 'No volunteer IDs found for the user' });
+          }
+
+          const volunteerIds = volunteerResults.map(row => row.volunteer_id);
+
+          const query = `
+              SELECT Event.event_id, Event.event_type, Event.date, Event.content, EventRSVP.volunteer_id
+              FROM Event
+              INNER JOIN EventRSVP ON Event.event_id = EventRSVP.event_id
+              WHERE EventRSVP.volunteer_id IN (?)
+          `;
+
+          connection.query(query, [volunteerIds], (error, results) => {
+              if (error) {
+                  console.error('Error fetching RSVP events:', error);
+                  return res.status(500).json({ error: 'Internal server error' });
+              }
+
+              console.log(results);
+              res.json(results);
+          });
+      });
+  });
+});
+
+
+router.get('/available-events', (req, res) => {
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    const userId = req.session.user_id;
+
+    if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    // Query to get all volunteer IDs associated with the user ID
+    const volunteerQuery = `
+        SELECT volunteer_id
+        FROM Volunteer
+        WHERE user_id = ?
+    `;
+
+    connection.query(volunteerQuery, [userId], (volunteerError, volunteerResults) => {
+        if (volunteerError) {
+            console.error('Error fetching volunteer IDs:', volunteerError);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        // Check if volunteer IDs are found
+        if (volunteerResults.length === 0) {
+            return res.status(404).json({ error: 'No volunteer IDs found for the user' });
+        }
+
+        const volunteerIds = volunteerResults.map(row => row.volunteer_id);
+
+        // Query to get all branch IDs associated with the volunteer IDs
+        const branchQuery = `
+            SELECT DISTINCT branch_id
+            FROM Volunteer
+            WHERE volunteer_id IN (?)
+        `;
+
+        connection.query(branchQuery, [volunteerIds], (branchError, branchResults) => {
+            if (branchError) {
+                console.error('Error fetching branch IDs:', branchError);
+                return res.status(500).json({ error: 'Internal server error' });
+            }
+
+            // Check if branch IDs are found
+            if (branchResults.length === 0) {
+                return res.status(404).json({ error: 'No branch IDs found for the volunteers' });
+            }
+
+            const branchIds = branchResults.map(row => row.branch_id);
+
+            // Query to get all events for the branch IDs
+            const eventsQuery = `
+                SELECT event_id, event_type, date, content
+                FROM Event
+                WHERE branch_id IN (?)
+            `;
+
+            connection.query(eventsQuery, [branchIds], (eventsError, eventsResults) => {
+                if (eventsError) {
+                    console.error('Error fetching events:', eventsError);
+                    return res.status(500).json({ error: 'Internal server error' });
+                }
+
+                // Check if events are found
+                if (eventsResults.length === 0) {
+                    return res.status(404).json({ error: 'No events found for the branches' });
+                }
+
+                const eventIds = eventsResults.map(row => row.event_id);
+
+                // Query to get all RSVP events for the volunteer IDs
+                const rsvpQuery = `
+                    SELECT event_id
+                    FROM EventRSVP
+                    WHERE volunteer_id IN (?)
+                `;
+
+                connection.query(rsvpQuery, [volunteerIds], (rsvpError, rsvpResults) => {
+                    if (rsvpError) {
+                        console.error('Error fetching RSVP events:', rsvpError);
+                        return res.status(500).json({ error: 'Internal server error' });
+                    }
+
+                    const rsvpEventIds = rsvpResults.map(row => row.event_id);
+
+                    // Filter out the events that the volunteer has RSVPed for
+                    const availableEvents = eventsResults.filter(event => !rsvpEventIds.includes(event.event_id));
+                    console.log(availableEvents);
+                    res.json(availableEvents);
+                });
+            });
+        });
+    });
+  });
+});
+
+// remove rsvp event
+router.post('/resign', (req, res) => {
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    const { volunteerId, eventId } = req.body;
+
+    if (!volunteerId || !eventId) {
+        return res.status(400).json({ error: 'Volunteer ID and Event ID are required' });
+    }
+
+    const resignQuery = `
+        DELETE FROM EventRSVP
+        WHERE volunteer_id = ? AND event_id = ?
+    `;
+
+    connection.query(resignQuery, [volunteerId, eventId], (resignError, results) => {
+        connection.release();
+
+        if (resignError) {
+            console.error('Error resigning from event:', resignError);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        res.json({ success: true });
+    });
+  });
+});
+
+module.exports = router;

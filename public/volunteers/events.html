@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,17 +11,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../stylesheets/volunteer-style.css">
     <link rel="stylesheet" href="../stylesheets/volunteer-events-style.css">
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="../javascripts/components/navbar-user.js" defer></script>
+    <script src="../javascripts/components/volunteers/my-events-card.js" defer></script>
+    <script src="../javascripts/components/volunteers/rsvp-card.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-
 <body>
     <div id="app">
         <navbar-user user-type="volunteers"></navbar-user>
         <main>
             <h1>Here's your events</h1>
-
             <div class="dashboard-list">
                 <div class="events-dashboard">
                     <div class="upcoming-events-title">
@@ -29,142 +29,16 @@
                         <a href="/volunteers/events.html">View All →</a>
                     </div>
                     <div class="innerdiv">
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-card-buttons">
-                                <button type="button" class="event-resign">Resign from this event</button>
-                                <a href="/events/example.html" class="event-learn-more">Learn more</a>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-card-buttons">
-                                <button type="button" class="event-resign">Resign from this event</button>
-                                <a href="/events/example.html" class="event-learn-more">Learn more</a>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-card-buttons">
-                                <button type="button" class="event-resign">Resign from this event</button>
-                                <a href="/events/example.html" class="event-learn-more">Learn more</a>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-card-buttons">
-                                <button type="button" class="event-resign">Resign from this event</button>
-                                <a href="/events/example.html" class="event-learn-more">Learn more</a>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-card-buttons">
-                                <button type="button" class="event-resign">Resign from this event</button>
-                                <a href="/events/example.html" class="event-learn-more">Learn more</a>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-card-buttons">
-                                <button type="button" class="event-resign">Resign from this event</button>
-                                <a href="/events/example.html" class="event-learn-more">Learn more</a>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-card-buttons">
-                                <button type="button" class="event-resign">Resign from this event</button>
-                                <a href="/events/example.html" class="event-learn-more">Learn more</a>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-card-buttons">
-                                <button type="button" class="event-resign">Resign from this event</button>
-                                <a href="/events/example.html" class="event-learn-more">Learn more</a>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
+                        <my-events-card
+                            v-for="event in rsvpEvents"
+                            :key="event.event_id"
+                            :event-id="event.event_id"
+                            :volunteer-id="event.volunteer_id"
+                            :event-name="event.event_type"
+                            :event-date="formatDate(event.date)"
+                            :event-description="event.content"
+                            @event-resigned="handleEventResigned"
+                        ></my-events-card>
                     </div>
                 </div>
                 <div class="updates-dashboard">
@@ -173,176 +47,81 @@
                         <a href="/volunteers/updates.html">View All →</a>
                     </div>
                     <div class="innerdiv">
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-rsvp">
-                                <div class="event-rsvp-text">Are you coming?</div>
-                            <div class="event-rsvp-buttons">
-                                <button type="button" class="event-rsvp-yes">Yes</button>
-                                <button type="button" class="event-rsvp-no">No</button>
-                            </div>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-rsvp">
-                                <div class="event-rsvp-text">Are you coming?</div>
-                            <div class="event-rsvp-buttons">
-                                <button type="button" class="event-rsvp-yes">Yes</button>
-                                <button type="button" class="event-rsvp-no">No</button>
-                            </div>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-rsvp">
-                                <div class="event-rsvp-text">Are you coming?</div>
-                            <div class="event-rsvp-buttons">
-                                <button type="button" class="event-rsvp-yes">Yes</button>
-                                <button type="button" class="event-rsvp-no">No</button>
-                            </div>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-rsvp">
-                                <div class="event-rsvp-text">Are you coming?</div>
-                            <div class="event-rsvp-buttons">
-                                <button type="button" class="event-rsvp-yes">Yes</button>
-                                <button type="button" class="event-rsvp-no">No</button>
-                            </div>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-rsvp">
-                                <div class="event-rsvp-text">Are you coming?</div>
-                            <div class="event-rsvp-buttons">
-                                <button type="button" class="event-rsvp-yes">Yes</button>
-                                <button type="button" class="event-rsvp-no">No</button>
-                            </div>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-rsvp">
-                                <div class="event-rsvp-text">Are you coming?</div>
-                            <div class="event-rsvp-buttons">
-                                <button type="button" class="event-rsvp-yes">Yes</button>
-                                <button type="button" class="event-rsvp-no">No</button>
-                            </div>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-rsvp">
-                                <div class="event-rsvp-text">Are you coming?</div>
-                            <div class="event-rsvp-buttons">
-                                <button type="button" class="event-rsvp-yes">Yes</button>
-                                <button type="button" class="event-rsvp-no">No</button>
-                            </div>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
-                        <div class="event-card">
-                            <div class="event-first-line">
-                                <a href="/events/example.html" class="event-title">AVA - Meet and Greet</a>
-                                <div class="date">23/05/2024</div>
-                            </div>
-                            <div class="text-container">
-                                <div class="text-block">
-                                    Meet like-minded people and enjoy the fun under the sun. This opportunity is good
-                                    for someone is handsome (like me).
-                                </div>
-                            </div>
-                            <div class="event-rsvp">
-                                <div class="event-rsvp-text">Are you coming?</div>
-                            <div class="event-rsvp-buttons">
-                                <button type="button" class="event-rsvp-yes">Yes</button>
-                                <button type="button" class="event-rsvp-no">No</button>
-                            </div>
-                            </div>
-                            <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
-                        </div>
+                        <rsvp-card
+                            v-for="event in events"
+                            :key="event.event_id"
+                            :event-id="event.event_id"
+                            :volunteer-id="event.volunteer_id"
+                            :event-name="event.event_type"
+                            :event-date="formatDate(event.date)"
+                            :event-description="event.content"
+                        ></rsvp-card>
                     </div>
                 </div>
             </div>
         </main>
     </div>
+
     <script>
         window.onload = function () {
-            new Vue({
-                el: '#app'
-            });
+          new Vue({
+            el: '#app',
+            data: {
+              userName: '', // To store user's name
+              userVolunteerId: 1, // Example volunteer ID; this should be dynamically set based on the logged-in user
+              events: [],
+              rsvpEvents: [],
+              updates: []
+            },
+            mounted() {
+              this.fetchEvents();
+              this.fetchRSVPEvents();
+            },
+            methods: {
+              fetchEvents() {
+                    fetch('/volunteers/available-events')
+                    .then(response => {
+                        if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        this.events = data;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching events:', error);
+                    });
+                },
+                fetchRSVPEvents() {
+                    fetch(`/volunteers/rsvp-events`)
+                    .then(response => {
+                        if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        this.rsvpEvents = data;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching RSVP events:', error);
+                    });
+                },
+                formatDate(dateString) {
+                    const options = { year: 'numeric', month: 'long', day: 'numeric'};
+                    return new Date(dateString).toLocaleDateString(undefined, options);
+                },
+                handleEventResigned(eventId) {
+                    const index = this.rsvpEvents.findIndex(event => event.event_id === eventId);
+                    if (index !== -1) {
+                        const event = this.rsvpEvents.splice(index, 1)[0];
+                        this.events.push(event);
+                    }
+                }
+            }
+          });
         }
     </script>
 </body>
+</html>
