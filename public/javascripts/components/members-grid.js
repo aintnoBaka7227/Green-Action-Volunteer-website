@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <vue-good-table
                 :columns="columns"
                 :rows="members"
+                ref="mytable"
                 :search-options="{
                   enabled: true
                 }"
@@ -21,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         data() {
             return {
                 members: [],
+                selectedRows: [],
                 selectedBranch: '',
                 columns: [
                     { label: 'First Name', field: 'first_name' },
@@ -30,7 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
                       type: 'boolean',
                       formatter: (value) => value ? 'Subscribed' : 'Not Subscribed' },
                     { label: 'DOB', field: 'formatted_dob' },
-                    { label: 'Gender', field: 'gender' }
+                    { label: 'Gender', field: 'gender' },
+                    { label: 'Volunteer ID', field: 'volunteer_id'}
                 ],
             };
         },
@@ -63,7 +66,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 email: member.email,
                                 is_subscribed_notis: member.is_subscribed_notis ? 'Subscribed' : 'Not Subscribed',
                                 formatted_dob: new Date(member.DOB).toLocaleDateString(),
-                                gender: member.gender
+                                gender: member.gender,
+                                volunteer_id: member.volunteer_id
                             };
                         });
                     }
@@ -75,30 +79,37 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.selectedRows = selectedRows;
             },
 
-            removeSelectedVolunteers() {
-                if (this.selectedRows.length === 0) {
+            removeMembers() {
+                const tableRef = this.$refs.mytable;
+
+                // Check if there are any selected rows
+                if (!tableRef.selectedRows || tableRef.selectedRows.length === 0) {
                     alert("No volunteers selected");
                     return;
                 }
 
-                const idsToRemove = this.selectedRows.map(row => row.volunteers_id);
+                const idsToRemove = tableRef.selectedRows.map(row => row.volunteer_id);
 
                 const removeXhr = new XMLHttpRequest();
-                removeXhr.open('POST', '/volunteers/remove', true);
+                removeXhr.open('POST', '/managers/removeBranchMembers', true);
                 removeXhr.setRequestHeader('Content-Type', 'application/json');
                 removeXhr.onreadystatechange = () => {
                     if (removeXhr.readyState === 4 && removeXhr.status === 200) {
-                        // Remove the volunteers from the members list
-                        this.members = this.members.filter(member => !idsToRemove.includes(member.volunteers_id));
-                        this.selectedRows = []; // Clear the selection
+                        this.fetchMembers(this.selectedBranch);
+                        this.selectedRows = [];
                     }
                 };
                 removeXhr.send(JSON.stringify({ ids: idsToRemove }));
+            },
+
+            addNewMember() {
+
             }
 
         },
-        mounted () {
+        mounted() {
             document.getElementById('remove-volunteers').addEventListener('click', this.removeMembers);
+            document.getElementById('add-new-volunteers').addEventListener('click', this.addMember);
         }
     });
 });

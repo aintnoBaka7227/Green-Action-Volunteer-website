@@ -66,7 +66,73 @@ router.get('/getBranchMembers', function(req, res, next) {
 });
 
 router.post('/removeBranchMembers', function(req, res, next) {
-
+    const idsToRemove = req.body.ids;
+    req.pool.getConnection(function(err, connection) {
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      var query = `DELETE FROM Volunteer WHERE volunteer_id IN (?)`;
+      connection.query(query, [idsToRemove], function(err, result, fields) {
+        connection.release();
+        if (err) {
+          res.sendStatus(500);
+          return;
+        }
+        if (result.affectedRows > 0) {
+          return res.status(200).json({message: 'Members removed successfully'});
+        }
+      });
+    });
 });
+
+router.post('/createVolunteer', function(req, res, next) {
+  // Extract the user_id from the request body
+  const { user_id } = req.body;
+
+  // Establish database connection and execute the user existence check query
+  req.pool.getConnection(function(err, connection) {
+      if (err) {
+          return res.sendStatus(500);
+      }
+
+      // Check if the user exists in the User table
+      const userCheckQuery = 'SELECT * FROM User WHERE user_id = ?';
+      connection.query(userCheckQuery, [user_id], function(err, userResult) {
+          if (err) {
+              connection.release();
+              return res.sendStatus(500);
+          }
+
+          // If the user does not exist, return an error message
+          if (userResult.length === 0) {
+              connection.release();
+              return res.status(404).json({ error: 'The user does not exist' });
+          }
+
+          // If the user exists, proceed with creating the new volunteer member
+          // Execute the insert query to create the new volunteer member
+          const insertQuery = 'INSERT INTO Volunteer (user_id) VALUES (?)';
+
+          connection.query(insertQuery, [user_id], function(err, result) {
+              connection.release(); // Release the connection
+
+              if (err) {
+                  return res.sendStatus(500);
+              }
+
+              // Check if the new member was successfully inserted
+              if (result.affectedRows > 0) {
+                  // Respond with success message
+                  return res.status(201).json({ message: 'New volunteer member created successfully' });
+              } else {
+                  // No rows affected (insertion failed)
+                  return res.status(500).json({ error: 'Failed to create new volunteer member' });
+              }
+          });
+      });
+  });
+});
+
 
 module.exports = router;
