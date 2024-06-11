@@ -1,150 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#8CBE47">
-    <title>Volunteer homepage</title>
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../stylesheets/volunteer-style.css">
-    <link rel="stylesheet" href="../stylesheets/volunteer-events-style.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="../javascripts/components/navbar-user.js" defer></script>
-    <script src="../javascripts/components/volunteers/my-events-card.js" defer></script>
-    <script src="../javascripts/components/volunteers/rsvp-card.js" defer></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#8CBE47">
+  <title>Volunteer updates</title>
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/stylesheets/volunteer-style.css">
+  <link rel="stylesheet" href="/stylesheets/volunteer-updates-style.css">
+  <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="../javascripts/components/navbar-user.js"></script>
+  <script src="../javascripts/components/volunteers/update-card.js"></script>
 </head>
-
 <body>
-    <div id="app">
-        <navbar-user user-type="volunteers"></navbar-user>
-        <main>
-            <h1>Here's your events</h1>
-            <div class="dashboard-list">
-                <div class="events-dashboard">
-                    <div class="upcoming-events-title">
-                        <h2>Confirmed events</h2>
-                        <a href="/volunteers/events.html">View All →</a>
-                    </div>
-                    <div class="innerdiv">
-                        <my-events-card
-                            v-for="event in rsvpEvents"
-                            :key="event.id"
-                            :event-id="event.id"
-                            :volunteer-id="userVolunteerId"
-                            :event-name="event.event_type"
-                            :event-date="formatDate(event.date)"
-                            :event-description="event.content"
-                        ></my-events-card>
-                    </div>
-                </div>
-                <div class="updates-dashboard">
-                    <div class="upcoming-events-title">
-                        <h2>RSVP Upcoming Events</h2>
-                        <a href="/volunteers/updates.html">View All →</a>
-                    </div>
-                    <div class="innerdiv">
-                        <rsvp-card
-                            v-for="event in events"
-                            :key="event.id"
-                            :event-id="event.id"
-                            :volunteer-id="userVolunteerId"
-                            :event-name="event.event_type"
-                            :event-date="formatDate(event.date)"
-                            :event-description="event.content"
-                        ></rsvp-card>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
+  <div id="app">
+    <navbar-user user-type="volunteers"></navbar-user>
+    <main>
+      <h1>Here's your latest updates</h1>
+      <div class="announcement-management">
+        <select v-model="filterOption" class="announcement-filter">
+            <option value="all">All updates</option>
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+        </select>
+        <select v-model="sortOption" class="announcement-sort">
+            <option value="newest">Sort by newest</option>
+            <option value="oldest">Sort by oldest</option>
+        </select>
+        <input type="search" class="announcement-search" placeholder="Search..." v-model="searchQuery" />
+      </div>
+      <div>
+        <event-update-card
+          v-for="update in filteredUpdates"
+          :title="update.update_title"
+          :content="update.content"
+          :name="update.eventName"
+          :date="formatDate(update.eventDate)"
+          :location="update.branch_name"
 
-    <script>
-        window.onload = function () {
-          new Vue({
-            el: '#app',
-            data: {
-              userName: '', // To store user's name
-              userVolunteerId: 1, // Example volunteer ID; this should be dynamically set based on the logged-in user
-              events: [],
-              rsvpEvents: [],
-              updates: []
-            },
-            mounted() {
-              this.fetchEvents();
-              this.fetchRSVPEvents();
-            },
-            methods: {
-              fetchEvents() {
-                    fetch('/volunteers/available-events')
-                    .then(response => {
-                        if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.events = data;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching events:', error);
-                    });
-                },
-                fetchRSVPEvents() {
-                    fetch(`/volunteers/rsvp-events`)
-                    .then(response => {
-                        if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.rsvpEvents = data;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching RSVP events:', error);
-                    });
-                },
-                formatDate(dateString) {
-                    const options = { year: 'numeric', month: 'long', day: 'numeric'};
-                    return new Date(dateString).toLocaleDateString(undefined, options);
-                },
-                resignFromEvent(volunteerId, eventId) {
-                    fetch('/events/resign', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ volunteerId, eventId }),
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Successfully resigned from the event.');
-                            this.fetchRSVPEvents(); // Refresh the list of RSVP events
-                        } else {
-                            alert('Failed to resign from the event.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error resigning from event:', error);
-                    });
-                }
+        ></event-update-card>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    new Vue({
+        el: '#app',
+        data: {
+            updates: [],
+            searchQuery: '',
+            sortOption: 'newest', // Default to sort by newest
+            filterOption: 'all' // Default to show all updates
+        },
+        computed: {
+            sortedUpdates() {
+            let filtered = this.updates;
+            if (this.filterOption === 'public') {
+                filtered = filtered.filter(update => update.is_public === 1);
+            } else if (this.filterOption === 'private') {
+                filtered = filtered.filter(update => update.is_public === 0);
             }
-          });
 
-          // Attach event listener for resign buttons
-          $(document).on('click', '.event-resign', function() {
-              const volunteerId = $(this).data('volunteer-id');
-              const eventId = $(this).data('event-id');
-              new Vue().resignFromEvent(volunteerId, eventId);
-          });
+            if (this.sortOption === 'newest') {
+                return filtered.slice().sort((a, b) => new Date(b.eventDate) - new Date(a.eventDate));
+            } else if (this.sortOption === 'oldest') {
+                return filtered.slice().sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate));
+            }
+            },
+            filteredUpdates() {
+            return this.sortedUpdates.filter(update => {
+                return update.update_title.toLowerCase().includes(this.searchQuery.toLowerCase());
+            });
+            }
+        },
+        methods: {
+            fetchUpdates() {
+            fetch('/volunteers/event-updates')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response JSON:', data)
+                    this.updates = data;
+                })
+                .catch(error => {
+                console.error('Error fetching updates:', error);
+                });
+            },
+            formatDate(dateString) {
+              const options = { year: 'numeric', month: 'long', day: 'numeric'};
+              return new Date(dateString).toLocaleDateString(undefined, options);
+            }
+        },
+        created() {
+            this.fetchUpdates();
         }
-    </script>
-</body>
+    });
 
+
+  </script>
+
+</body>
 </html>
