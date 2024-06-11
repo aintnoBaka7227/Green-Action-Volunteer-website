@@ -1,22 +1,3 @@
-// load toogle for profile pics
-/*document.addEventListener("DOMContentLoaded", function() {
-    const dropdownToggle = document.querySelector(".dropdown-toggle");
-
-    dropdownToggle.addEventListener("click", function() {
-        const dropdown = this.parentNode;
-        dropdown.classList.toggle("show");
-    });
-
-    document.addEventListener("click", function(event) {
-        if (!event.target.closest(".dropdown")) {
-        const dropdowns = document.querySelectorAll(".dropdown");
-        dropdowns.forEach(function(dropdown) {
-            dropdown.classList.remove("show");
-        });
-        }
-    });
-});*/
-
 // retrieve all events of the manager's branch (demo without checking the manager branch)
 // no add or remove events functionality
 window.addEventListener('load', function () {
@@ -56,31 +37,3 @@ window.addEventListener('load', function () {
     });
 });
 
-/*
-// fetch members
-window.addEventListener('load', function () {
-    // eslint-disable-next-line no-undef
-    new Vue({
-        el: '#members',
-        data: {
-            members: [],
-            selectedBranch: 'SA',
-        },
-        created() {
-            this.fetchMembers(this.selectedBranch);
-        },
-        methods: {
-            fetchMembers(branch) {
-                const membersXhr = new XMLHttpRequest();
-                membersXhr.open('GET', `/managers/getBranchMembers?branch=${branch}`, true);
-                membersXhr.onreadystatechange = () => {
-                    if (membersXhr.readyState === 4 && membersXhr.status === 200) {
-                    this.members = JSON.parse(membersXhr.responseText);
-                    }
-                };
-                membersXhr.send();
-            }
-        }
-    });
-});
-*/

@@ -2,3 +2,20 @@
     font-weight: bold;
 }
 
+.members-modifier button {
+    margin-right: 10px;
+    padding: 7px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: medium;
+    background-color: #3c8e40;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    float: right;
+}
+
+.members-list {
+    margin-top: 60px;
+}

@@ -14,13 +14,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     selectionInfoClass: 'table-selection-info',
                     selectionText: 'selected'
                 }"
+                @on-selected-rows-change="updateSelectedRows"
                 >
             </vue-good-table>
         `,
         data() {
             return {
                 members: [],
-                selectedBranch: 'SA',
+                selectedBranch: '',
                 columns: [
                     { label: 'First Name', field: 'first_name' },
                     { label: 'Last Name', field: 'last_name' },
@@ -34,9 +35,22 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         },
         created() {
-            this.fetchMembers(this.selectedBranch);
+            this.fetchManagerBranch();
         },
         methods: {
+            fetchManagerBranch() {
+                const branchXhr = new XMLHttpRequest();
+                branchXhr.open('GET', '/managers/getManagerBranch', true);
+                branchXhr.onreadystatechange = () => {
+                    if (branchXhr.readyState === 4 && branchXhr.status === 200) {
+                        const response = JSON.parse(branchXhr.responseText);
+                        this.selectedBranch = response.state;
+                        this.fetchMembers(this.selectedBranch);
+                    }
+                };
+                branchXhr.send();
+            },
+
             fetchMembers(branch) {
                 const membersXhr = new XMLHttpRequest();
                 membersXhr.open('GET', `/managers/getBranchMembers?branch=${branch}`, true);
@@ -55,7 +69,36 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 };
                 membersXhr.send();
+            },
+
+            updateSelectedRows(selectedRows) {
+                this.selectedRows = selectedRows;
+            },
+
+            removeSelectedVolunteers() {
+                if (this.selectedRows.length === 0) {
+                    alert("No volunteers selected");
+                    return;
+                }
+
+                const idsToRemove = this.selectedRows.map(row => row.volunteers_id);
+
+                const removeXhr = new XMLHttpRequest();
+                removeXhr.open('POST', '/volunteers/remove', true);
+                removeXhr.setRequestHeader('Content-Type', 'application/json');
+                removeXhr.onreadystatechange = () => {
+                    if (removeXhr.readyState === 4 && removeXhr.status === 200) {
+                        // Remove the volunteers from the members list
+                        this.members = this.members.filter(member => !idsToRemove.includes(member.volunteers_id));
+                        this.selectedRows = []; // Clear the selection
+                    }
+                };
+                removeXhr.send(JSON.stringify({ ids: idsToRemove }));
             }
+
+        },
+        mounted () {
+            document.getElementById('remove-volunteers').addEventListener('click', this.removeMembers);
         }
     });
 });
