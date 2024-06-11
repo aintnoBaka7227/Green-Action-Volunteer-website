@@ -56,8 +56,7 @@ var myEventsCard = Vue.component('my-events-card', {
       })
       .then(data => {
         if (data.success) {
-          alert('Successfully resigned from the event.');
-          this.$emit('event-resigned');
+          location.reload(); // Reload the page on successful resignation
         } else {
           alert('Failed to resign from the event.');
         }
