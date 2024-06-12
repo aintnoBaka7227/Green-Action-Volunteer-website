@@ -47,7 +47,8 @@ router.get('/getManagerBranch', function (req, res, next) {
 router.get('/events/:event_id', (req, res) => {
   const eventId = req.params.event_id;
   // Path to the HTML file'
-  res.sendFile('/public/managers/event.html');
+  const filePath = path.join(__dirname, '..', 'public', 'managers', 'event.html');
+  res.sendFile(filePath);
 });
 
 router.get('/getManagerEvents', function (req, res, next) {
@@ -385,6 +386,102 @@ router.delete('/deleteEvent/:eventId', (req, res, next) => {
     });
   });
 });
+
+router.get('/getEventInfo', (req, res, next) => {
+  const eventId = req.query.eventId; // Retrieve eventId from query parameters
+
+  // Query to fetch event information based on event_id
+  const query = 'SELECT * FROM Event WHERE event_id = ?';
+
+  req.pool.getConnection((err, connection) => {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    connection.query(query, [eventId], (err, rows) => {
+      connection.release(); // Release the connection
+
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+
+      // Send the event information as a response
+      if (rows.length > 0) {
+        const eventInfo = {
+          event_id: rows[0].event_id,
+          event_type: rows[0].event_type,
+          time: rows[0].time,
+          date: rows[0].date,
+          state: rows[0].state,
+          postcode: rows[0].postcode,
+          branch_id: rows[0].branch_id
+        };
+        res.json(eventInfo);
+      } else {
+        res.sendStatus(404); // Event not found
+      }
+    });
+  });
+});
+
+
+router.get('/getEventAttendees', (req, res, next) => {
+  const eventId = parseInt(req.query.eventId, 10);
+
+  if (isNaN(eventId)) {
+      res.status(400).send('Invalid event ID');
+      return;
+  }
+
+  req.pool.getConnection((err, connection) => {
+      if (err) {
+          res.sendStatus(500);
+          return;
+      }
+
+      // Query to get all volunteer_ids for the given event_id
+      connection.query('SELECT volunteer_id FROM EventRSVP WHERE event_id = ?', [eventId], (err, rsvpRows) => {
+          if (err) {
+              connection.release();
+              res.sendStatus(500);
+              return;
+          }
+
+          if (rsvpRows.length === 0) {
+              connection.release();
+              res.json([]);
+              return;
+          }
+
+          const volunteerIds = rsvpRows.map(row => row.volunteer_id);
+
+          // Query to get user_ids for all volunteer_ids
+          connection.query('SELECT user_id FROM Volunteer WHERE volunteer_id IN (?)', [volunteerIds], (err, volunteerRows) => {
+              if (err) {
+                  connection.release();
+                  res.sendStatus(500);
+                  return;
+              }
+
+              const userIds = volunteerRows.map(row => row.user_id);
+
+              // Query to get user info for all user_ids
+              connection.query('SELECT user_id, first_name, last_name, email, phone_number FROM User WHERE user_id IN (?)', [userIds], (err, userRows) => {
+                  connection.release();
+                  if (err) {
+                      res.sendStatus(500);
+                      return;
+                  }
+
+                  res.json(userRows);
+              });
+          });
+      });
+  });
+});
+
 
 
 module.exports = router;

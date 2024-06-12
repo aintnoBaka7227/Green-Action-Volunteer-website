@@ -6,16 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Details</title>
     <link rel="stylesheet" href="/stylesheets/manager-style.css">
+    <link rel="stylesheet" href="/stylesheets/manager-event-style.css">
+    <link rel="stylesheet" href="https://unpkg.com/vue-good-table@2.21.10/dist/vue-good-table.css">
+    <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="/javascripts/components/managers/navbar-manager.js" defer></script>
-    <script src="/javascripts/Manager.js" defer></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParts = window.location.pathname.split('/');
-            const eventId = urlParts[urlParts.length - 1];
-            document.getElementById('event-id').textContent = eventId;
-        });
-    </script>
+    <script src="https://unpkg.com/vue-good-table@2.21.10/dist/vue-good-table.js"></script>
+    <script src="/javascripts/components/managers/navbar-manager.js"></script>
+    <script src="/javascripts/components/managers/event-members-table.js"></script>
 </head>
 
 <body>
@@ -23,12 +20,61 @@
         <navbar-manager user-type="managers"></navbar-manager>
         <main>
             <div class="content">
-                <h1 class="h1">Events</h1>
-                <div>Event ID: <span id="event-id"></span></div>
+                <h1 class="h1">{{eventInfo.event_type}}</h1>
+                <div class="event-info">
+                    <div> {{ formatTime(eventInfo.time) }}, {{ formatDate(eventInfo.date) }}</div>
+                    <div>{{eventInfo.state}}, {{eventInfo.postcode}}</div>
+                </div>
             </div>
+            <h2>List of attending volunteers</h2>
+            <event-members-table></event-members-table>
         </main>
     </div>
     <footer></footer>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                eventId: 0,
+                eventInfo: {},
+            },
+            methods: {
+                fetchEvent() {
+                    const urlParts = window.location.pathname.split('/');
+                    const eventId = urlParts[urlParts.length - 1];
+                    this.eventId = eventId;
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', `/managers/getEventInfo?eventId=${eventId}`, true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = () => {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                this.eventInfo = JSON.parse(xhr.responseText);
+                                // Do something with the eventInfo
+                            } else {
+                                console.error('Error:', xhr.responseText);
+                            }
+                        }
+                    };
+                    xhr.send();
+                },
+                formatTime(timeString) {
+                    // Parse the time string and format it as HH:MM AM/PM
+                    const time = new Date(`1970-01-01T${timeString}`);
+                    return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                },
+                formatDate(dateString) {
+                    // Parse the date string and format it as Month Day, Year
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString([], { year: 'numeric', month: 'long', day: 'numeric' });
+                }
+            },
+            created() {
+                this.fetchEvent();
+            },
+        });
+    </script>
 </body>
 
 </html>

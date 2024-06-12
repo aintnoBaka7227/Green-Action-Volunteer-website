@@ -58,7 +58,6 @@ app.use('/users', usersRouter);
 
 function authorize(role) {
     return function (req, res, next) {
-        console.log(req.session.role);
         if (req.session.role !== role) {
             return res.status(403).send('Forbidden');
         }

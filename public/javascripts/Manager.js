@@ -36,7 +36,6 @@ new Vue({
             eventsXhr.onreadystatechange = () => {
                 if (eventsXhr.readyState === 4 && eventsXhr.status === 200) {
                     this.events = JSON.parse(eventsXhr.responseText);
-                    console.log(this.events);
                 }
             };
             eventsXhr.send();

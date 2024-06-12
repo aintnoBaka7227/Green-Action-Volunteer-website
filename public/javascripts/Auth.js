@@ -14,7 +14,6 @@ function login() {
       if (this.readyState === 4) {
           if (this.status === 200) {
             let response = JSON.parse(this.responseText);
-            console.log(response);
 
             document.getElementById("loginWarning").innerText = "Login successful";
 

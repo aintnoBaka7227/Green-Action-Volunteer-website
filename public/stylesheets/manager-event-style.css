@@ -1,0 +1,14 @@
+.event-info {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    font-size: large;
+}
+
+h2 {
+    color: #8CBE47;
+}
+
+.content {
+    padding-bottom: 40px;
+}
