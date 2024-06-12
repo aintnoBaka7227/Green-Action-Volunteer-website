@@ -2,36 +2,36 @@ var addUpdateModal = Vue.component('add-update-modal', {
     template: `
         <div v-if="showModal" class="modal">
             <div class="modal-content">
-            <span class="close" @click="closeModal">&times;</span>
-            <h2>Post New Update</h2>
-            <hr>
-            <form @submit.prevent="submitNewUpdate">
-                <div>
-                <label for="update-title">Update Title:</label>
-                <input id="update-title" v-model="updateTitle" type="text" required>
-                </div>
-                <div>
-                <label for="branch">Branch:</label>
-                <select id="branch" v-model="branch" required class="styled-select">
-                    <option value="" disabled>Select a state</option>
-                    <option value="1">SA</option>
-                    <option value="2">VIC</option>
-                    <option value="3">NSW</option>
-                </select>
-                </div>
-                <div>
-                <label for="update-content">Content:</label>
-                <textarea id="update-content" v-model="updateContent" rows="8" type="text" required></textarea>
-                </div>
-                <div>
-                    <label>Visibility:</label>
-                    <input type="radio" id="public" value="1" v-model="visibility" name="visibility" required>
-                    <label for="public">Public</label>
-                    <input type="radio" id="private" value="0" v-model="visibility" name="visibility" required>
-                    <label for="private">Private</label>
-                </div>
-                <button type="submit">Post Update</button>
-            </form>
+                <span class="close" @click="closeModal">&times;</span>
+                <h2>Post New Update</h2>
+                <hr>
+                <form @submit.prevent="submitNewUpdate">
+                    <div>
+                    <label for="update-title">Update Title:</label>
+                    <input id="update-title" v-model="updateTitle" type="text" required>
+                    </div>
+                    <div>
+                    <label for="branch">Branch:</label>
+                    <select id="branch" v-model="branch" required class="styled-select">
+                        <option value="" disabled>Select a state</option>
+                        <option value="1">SA</option>
+                        <option value="2">VIC</option>
+                        <option value="3">NSW</option>
+                    </select>
+                    </div>
+                    <div>
+                    <label for="update-content">Content:</label>
+                    <textarea id="update-content" v-model="updateContent" rows="8" type="text" required></textarea>
+                    </div>
+                    <div>
+                        <label>Visibility:</label>
+                        <input type="radio" id="public" value="1" v-model="visibility" name="visibility" required>
+                        <label for="public">Public</label>
+                        <input type="radio" id="private" value="0" v-model="visibility" name="visibility" required>
+                        <label for="private">Private</label>
+                    </div>
+                    <button type="submit">Post Update</button>
+                </form>
             </div>
         </div>
     `,

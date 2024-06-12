@@ -193,3 +193,25 @@ select {
     padding-right: 30px;
     font-family: inherit;
 }
+
+.delete-button {
+    background-color: #ff4c4c;
+    border: none;
+    margin-top: 12px;
+    padding: 0 16px ;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 20px;
+    width: max-content;
+    height: 42px;
+    transition: all 0.1s ease-in-out;
+    margin-right: 10px;
+    font-family: inherit;
+    font-size: medium;
+  }
+
+  .delete-button:hover {
+    background: #ff1c1c;
+    transform: translate(0px, -5px);
+  }

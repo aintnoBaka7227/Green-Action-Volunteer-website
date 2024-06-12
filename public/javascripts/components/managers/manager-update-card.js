@@ -11,6 +11,7 @@ var managerUpdateCard = Vue.component('manager-update-card', {
           <div class="announcement-sub">
             {{ content }}
           </div>
+          <button @click="deleteUpdate(updateId)" class="delete-button">Remove</button>
         </div>
       </div>
     `,
