@@ -5,7 +5,7 @@ function login() {
   let password = document.getElementById("password").value;
 
   if (!email || !password) {
-      document.getElementById("loginWarning").innerText = "Required field is empty.";
+      document.getElementById("warning").innerText = "Required field is empty.";
       return;
   }
 
@@ -15,7 +15,7 @@ function login() {
           if (this.status === 200) {
             let response = JSON.parse(this.responseText);
 
-            document.getElementById("loginWarning").innerText = "Login successful";
+            document.getElementById("warning").innerText = "Login successful";
 
             // Redirect based on user role
             if (response.role === 'volunteer') {
@@ -25,12 +25,12 @@ function login() {
             } else if (response.role === 'manager') {
                 window.location.href = '/managers';
             } else {
-                document.getElementById("loginWarning").innerText = "User not assinged a role";
+                document.getElementById("warning").innerText = "User not assinged a role";
             }
           } else if (this.status === 400) {
-              document.getElementById("loginWarning").innerText = "Wrong email or password";
+              document.getElementById("warning").innerText = "Wrong email or password";
           } else {
-              document.getElementById("loginWarning").innerText = "An error occurred. Please try again later.";
+              document.getElementById("warning").innerText = "An error occurred. Please try again later.";
           }
       }
   };
@@ -82,6 +82,8 @@ function handleCredentialResponse(response) {
   googleLogin(id_token);
 }
 
+
+// this function doesnt call for sign up scenario change
 function googleLogin(idToken) {
   let xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
@@ -89,7 +91,7 @@ function googleLogin(idToken) {
           if (this.status === 200) {
             let response = JSON.parse(this.responseText);
 
-            document.getElementById("loginWarning").innerText = "Login successful";
+            document.getElementById("warning").innerText = "Login successful";
 
             if (response.role === 'volunteer') {
                 window.location.href = '/volunteers';
@@ -98,13 +100,13 @@ function googleLogin(idToken) {
             } else if (response.role === 'manager') {
                 window.location.href = '/managers';
             } else {
-                document.getElementById("loginWarning").innerText = "User not assinged a role";
-                window.location.href = 'profile-settings.html';
+                document.getElementById("warning").innerText = "User not assinged a role";
+                window.location.href = '/volunteers';
             }
           } else if (this.status === 400) {
-              document.getElementById("loginWarning").innerText = this.responseText;
+              document.getElementById("warning").innerText = this.responseText;
           } else {
-              document.getElementById("loginWarning").innerText = "An error occurred. Please try again later.";
+              document.getElementById("warning").innerText = "An error occurred. Please try again later.";
           }
       }
   };

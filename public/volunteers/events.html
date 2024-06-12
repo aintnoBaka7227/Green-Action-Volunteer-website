@@ -131,8 +131,7 @@
                   .then(data => {
                     if (data.success) {
                       alert('RSVP added successfully!');
-                      this.fetchEvents();
-                      this.fetchRSVPEvents();
+                      location.reload();
                     } else {
                       alert('Failed to add RSVP.');
                     }

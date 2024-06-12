@@ -31,7 +31,7 @@
                     </div>
                     <button type="submit" class="login-button">Login</button>
                 </form>
-                <p id="loginWarning" class="warning-message"></p>
+                <p id="warning" class="warning-message"></p>
                 <h1>Or</h1>
                 <div id="g_id_onload"
                     data-client_id="198821023017-acnrsha9l5f807koqqu2g0dp800tn0nf.apps.googleusercontent.com"
@@ -63,6 +63,8 @@
                     handleCredentialResponse(response) {
                         console.log("Google Sign-In response:", response);
                         // Handle the response from Google Sign-In
+                        // const idToken = response.credential;
+                        // googleLogin(idToken);
                     }
                 },
                 mounted() {

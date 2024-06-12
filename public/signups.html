@@ -82,7 +82,11 @@
                         signup();
                     },
                     handleCredentialResponse(response) {
-                        handleCredentialResponse(response);
+                        console.log("Google Sign-In response:", response);
+                        // Handle the response from Google Sign-In
+                        const idToken = response.credential;
+                        googleLogin(idToken);
+
                     }
                 },
                 mounted() {
