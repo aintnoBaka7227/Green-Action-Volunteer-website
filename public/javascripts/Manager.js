@@ -3,6 +3,7 @@ new Vue({
     el: '#app',
     data: {
         events: [],
+        updates: [],
         searchQuery: '',
         sortOption: 'newest',
         filterOption: 'all'
@@ -40,6 +41,16 @@ new Vue({
             };
             eventsXhr.send();
         },
+        fetchUpdates() {
+            const updatesXhr = new XMLHttpRequest();
+            updatesXhr.open('GET', '/managers/getManagerUpdates', true);
+            updatesXhr.onreadystatechange = () => {
+                if (updatesXhr.readyState === 4 && updatesXhr.status === 200) {
+                    this.updates = JSON.parse(updatesXhr.responseText);
+                }
+            };
+            updatesXhr.send();
+        },
         formatDate(dateString) {
             const options = { year: 'numeric', month: 'long', day: 'numeric'};
             return new Date(dateString).toLocaleDateString(undefined, options);
@@ -53,5 +64,6 @@ new Vue({
     },
     created() {
         this.fetchEvents();
+        this.fetchUpdates();
     }
 });
