@@ -2,6 +2,9 @@ body {
     background-color: #F5EFE6;
     font-family: "Quicksand", sans-serif;
     margin: 0;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* Navbar CSS */
@@ -97,6 +100,16 @@ header .logo-image {
     display: block;
 }
 
+main {
+    padding-top: 50px;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+main h1 {
+    color: #8CBE47;
+    font-size: xx-large;
+}
 
 footer {
     top: 100px;
