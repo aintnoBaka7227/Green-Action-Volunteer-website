@@ -350,9 +350,6 @@ router.delete('/deleteEvent/:eventId', (req, res, next) => {
     });
   });
 });
-});
-
-
 
 
 module.exports = router;
