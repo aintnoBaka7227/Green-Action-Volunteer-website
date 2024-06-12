@@ -81,7 +81,10 @@ new Vue({
         },
         deleteEvent(eventId) {
             this.$refs.managerEventCard.deleteEvent(eventId);
-        }
+        },
+        openAddUpdateModal() {
+            this.$refs.addUpdateModal.openModal();
+        },
     },
     created() {
         this.fetchEvents();

@@ -16,6 +16,7 @@
         <script src="../javascripts/components/managers/navbar-manager.js" defer></script>
         <script src="../javascripts/Manager.js" defer></script>
         <script src="../javascripts/components/managers/manager-update-card.js" defer></script>
+        <script src="../javascripts/components/managers/add-update-modal.js" defer></script>
     </head>
     <body>
         <div id="app">
@@ -33,6 +34,7 @@
                       <option value="oldest">Sort by oldest</option>
                   </select>
                   <input type="search" class="announcement-search" placeholder="Search..." v-model="searchQuery" />
+                  <button type="button" class="add-new-updates" @click="openAddUpdateModal">+ New update</button>
                 </div>
                 <div>
                   <manager-update-card
@@ -43,10 +45,11 @@
                     :name="update.eventName"
                     :date="formatDate(update.eventDate)"
                     :location="update.branch_name"
-
                   ></manager-update-card>
                 </div>
               </main>
+              <add-update-modal ref="addUpdateModal" @update-created="fetchUpdates"></add-update-modal>
         </div>
+        <footer></footer>
     </body>
 </html>
