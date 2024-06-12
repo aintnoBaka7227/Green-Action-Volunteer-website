@@ -1,0 +1,36 @@
+// eslint-disable-next-line no-undef
+Vue.component('my-branches-card', {
+    template:
+        `<div class="my-branches-card">
+        <h2>{{ branchName }}</h2>
+        <div>Head Manager: {{ branchManager }}</div>
+        <div>Number of volunteers: {{ volunteerCount }}</div>
+        <a href="'/admins/branches/' + branchId">More details</a>
+    </div>`,
+    props: {
+        branchName: {
+            type: String,
+            required: true
+        },
+        branchManager: {
+            type: String,
+            required: true
+        },
+        volunteerCount: {
+            type: Number,
+            required: true
+        },
+        branchId: {
+            type: Number,
+            required: true
+        },
+    },
+    computed: {
+        buttonText() {
+            return this.isUserIn ? 'Leave' : 'Join';
+        },
+        classButtonText() {
+            return this.isUserIn ? 'red-button' : 'green-button';
+        }
+    },
+});

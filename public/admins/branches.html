@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#8CBE47">
+        <title>Admin users</title>
+        <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/stylesheets/admin-style.css">
+        <link rel="stylesheet" href="/stylesheets/admin-branches-style.css">
+        <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+        <script src="/javascripts/components/admins/navbar-admin.js" defer></script>
+        <script src="/javascripts/components/admins/my-branches-card.js" defer></script>
+    </head>
+    <body>
+        <div id="app">
+            <navbar-admin user-type="admins"></navbar-admin>
+            <main>
+                <div class="content">
+                    <h1 class="h1">Manage all the Branches</h1>
+                    <div class="branches-dashboard">
+                        <my-branches-card v-for="branch in branches" :key="branch.branch_id" :branch-name="branch.branch_name"
+                            :branch-manager="branch.manager_name" :branch-id="branch.branch_id" :volunteer-count="branch.volunteer_count"
+                        ></my-branches-card>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <footer></footer>
+        <script>
+            window.onload = function () {
+                new Vue({
+                    el: '#app',
+                    data: {
+                        branches: [],
+                    },
+                    mounted() {
+                        this.fetchBranches();
+                    },
+                    methods: {
+                        fetchBranches() {
+                            fetch('/admins/available-branches')
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    this.branches = data["branches"];
+                                })
+                                .catch(error => {
+                                    console.error('Error fetching branches:', error);
+                                });
+                        }
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
+

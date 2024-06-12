@@ -1,15 +1,15 @@
 var express = require('express');
 var router = express.Router();
-var {OAuth2Client} = require('google-auth-library');
+var { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client('198821023017-acnrsha9l5f807koqqu2g0dp800tn0nf.apps.googleusercontent.com');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
 
-router.get('/getUsers', function(req, res, next) {
-  req.pool.getConnection(function(err, connection) {
+router.get('/getUsers', function (req, res, next) {
+  req.pool.getConnection(function (err, connection) {
     if (err) {
       return res.sendStatus(500);
     }
@@ -40,11 +40,51 @@ router.get('/getUsers', function(req, res, next) {
     LEFT JOIN Admin a ON u.user_id = a.user_id
     LEFT JOIN Branch b ON v.branch_id = b.branch_id OR m.branch_id = b.branch_id
     `;
-    connection.query(userQuery, function(err, results, fields) {
+    connection.query(userQuery, function (err, results, fields) {
       if (err) {
         return res.sendStatus(500);
       }
       res.json(results);
+    });
+  });
+});
+
+router.get('/available-branches', (req, res) => {
+  req.pool.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error getting connection from pool:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    const query = `
+      SELECT
+        Branch.branch_id,
+        Branch.branch_name,
+        CONCAT(User.first_name, ' ', User.last_name) AS manager_name,
+        COUNT(Volunteer.volunteer_id) AS volunteer_count
+      FROM Branch
+      LEFT JOIN Manager ON Branch.branch_id = Manager.branch_id
+      LEFT JOIN User ON Manager.user_id = User.user_id
+      LEFT JOIN Volunteer ON Branch.branch_id = Volunteer.branch_id
+      GROUP BY Branch.branch_id, Branch.branch_name, User.first_name, User.last_name
+    `;
+
+    connection.query(query, (error, results) => {
+      connection.release();
+
+      if (error) {
+        console.error('Error fetching available branches:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      const branches = results.map(row => ({
+        branch_id: row.branch_id,
+        branch_name: row.branch_name,
+        manager_name: row.manager_name,
+        volunteer_count: row.volunteer_count
+      }));
+
+      res.json({ branches });
     });
   });
 });
