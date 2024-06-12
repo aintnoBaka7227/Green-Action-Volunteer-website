@@ -311,22 +311,7 @@ router.get('/getManagerUpdates', function(req, res, next) {
 
     // Step 1: Retrieve all public event updates
     var queryPublic = `
-      SELECT
-        eu.update_id,
-        eu.update_title,
-        eu.content,
-        eu.is_public,
-        eu.branch_id,
-        b.branch_name,
-        eu.event_id,
-        e.event_type AS eventName,
-        e.date AS eventDate
-      FROM
-        EventUpdate eu
-        JOIN Event e ON eu.event_id = e.event_id
-        JOIN Branch b ON eu.branch_id = b.branch_id
-      WHERE
-        eu.is_public = 1`;
+      SELECT * FROM EventUpdate WHERE is_public = 1`;
 
     connection.query(queryPublic, function(err, publicRows, fields) {
       if (err) {
@@ -372,23 +357,7 @@ router.get('/getManagerUpdates', function(req, res, next) {
 
         // Construct the query to fetch private event updates for branches the user belongs to
         var queryPrivate = `
-          SELECT
-            eu.update_id,
-            eu.update_title,
-            eu.content,
-            eu.is_public,
-            eu.branch_id,
-            b.branch_name,
-            eu.event_id,
-            e.event_type AS eventName,
-            e.date AS eventDate
-          FROM
-            EventUpdate eu
-            JOIN Event e ON eu.event_id = e.event_id
-            JOIN Branch b ON eu.branch_id = b.branch_id
-          WHERE
-            eu.is_public = 0
-            AND eu.branch_id IN (${placeholders})`;
+          SELECT * FROM EventUpdate WHERE is_public = 0 AND branch_id IN (${placeholders})`;
 
         // Execute the query to fetch private event updates
         connection.query(queryPrivate, branchIds, function(err, privateRows, fields) {
@@ -410,4 +379,36 @@ router.get('/getManagerUpdates', function(req, res, next) {
   });
 });
 
+router.post('/postUpdate', (req, res, next) => {
+  req.pool.getConnection((err, connection) => {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    const { update_title, branch_id, content, is_public } = req.body;
+
+    // Perform validation on the event data
+    if (!update_title || !branch_id || !content || !is_public) {
+      connection.release();
+      return res.status(400).json({ error: 'Information is required' });
+    }
+
+    // Insert the new event into the database
+    const query = 'INSERT INTO EventUpdate (update_title, branch_id, content, is_public) VALUES (?, ?, ?, ?)';
+    const values = [update_title, branch_id, content, is_public];
+
+    connection.query(query, values, (err, result) => {
+      if (err) {
+        console.error('Error creating event:', err);
+        connection.release();
+        return res.status(500).json({ error: 'An error occurred while creating the event' });
+      }
+
+      const newUpdateId = result.insertId;
+      connection.release();
+      res.status(200).json({ id: newUpdateId });
+    });
+  });
+});
 module.exports = router;

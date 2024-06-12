@@ -42,14 +42,10 @@
                     :key="update.update_id"
                     :title="update.update_title"
                     :content="update.content"
-                    :name="update.eventName"
-                    :date="formatDate(update.eventDate)"
-                    :location="update.branch_name"
                   ></manager-update-card>
                 </div>
               </main>
-              <add-update-modal ref="addUpdateModal" @update-created="fetchUpdates"></add-update-modal>
+              <add-update-modal ref="addUpdateModal" @update-posted="fetchUpdates"></add-update-modal>
         </div>
-        <footer></footer>
     </body>
 </html>

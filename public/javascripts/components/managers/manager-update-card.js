@@ -6,13 +6,11 @@ var managerUpdateCard = Vue.component('manager-update-card', {
           <a class="announcement-title">
             {{ title }}
           </a>
-          <div class="announcement-event-name">{{ location }}: {{ name }}</div>
         </div>
         <div class="announcement-second-line">
           <div class="announcement-sub">
             {{ content }}
           </div>
-          <div class="announcement-date">{{ date }}</div>
         </div>
       </div>
     `,
@@ -25,17 +23,5 @@ var managerUpdateCard = Vue.component('manager-update-card', {
         type: String,
         required: true
       },
-      name: {
-        type: String,
-        required: true
-      },
-      date: {
-        type: String,
-        required: true
-      },
-      location: {
-        type: String,
-        required: true
-      }
     }
   });

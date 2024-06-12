@@ -5,7 +5,7 @@ var addUpdateModal = Vue.component('add-update-modal', {
             <span class="close" @click="closeModal">&times;</span>
             <h2>Post New Update</h2>
             <hr>
-            <form @submit.prevent="submitNewEvent">
+            <form @submit.prevent="submitNewUpdate">
                 <div>
                 <label for="update-title">Update Title:</label>
                 <input id="update-title" v-model="updateTitle" type="text" required>
@@ -30,7 +30,7 @@ var addUpdateModal = Vue.component('add-update-modal', {
                     <input type="radio" id="private" value="0" v-model="visibility" name="visibility" required>
                     <label for="private">Private</label>
                 </div>
-                <button type="submit">Create Event</button>
+                <button type="submit">Post Update</button>
             </form>
             </div>
         </div>
@@ -41,7 +41,7 @@ var addUpdateModal = Vue.component('add-update-modal', {
             updateTitle: '',
             branch: '',
             updateContent: '',
-            visibility: 1
+            visibility: '1'
         };
     },
     methods: {
@@ -53,7 +53,7 @@ var addUpdateModal = Vue.component('add-update-modal', {
             this.updateTitle = '';
             this.branch = '';
             this.updateContent = '';
-            this.visibility = 1;
+            this.visibility = '1';
         },
         submitNewUpdate() {
             const updateData = {
@@ -63,26 +63,26 @@ var addUpdateModal = Vue.component('add-update-modal', {
                 is_public: this.visibility,
             };
 
-            // const xhttp = new XMLHttpRequest();
-            // xhttp.open('POST', '/managers/createEvent', true);
-            // xhttp.setRequestHeader('Content-Type', 'application/json');
+            const xhttp = new XMLHttpRequest();
+            xhttp.open('POST', '/managers/postUpdate', true);
+            xhttp.setRequestHeader('Content-Type', 'application/json');
 
-            // xhttp.onreadystatechange = () => {
-            //   if (xhttp.readyState === XMLHttpRequest.DONE) {
-            //     if (xhttp.status === 200) {
-            //       this.closeModal();
-            //       this.$emit('event-created');
-            //     } else {
-            //       console.error('Failed to create event');
-            //     }
-            //   }
-            // };
+            xhttp.onreadystatechange = () => {
+              if (xhttp.readyState === XMLHttpRequest.DONE) {
+                if (xhttp.status === 200) {
+                  this.closeModal();
+                  this.$emit('update-posted');
+                } else {
+                  console.error('Failed to post update');
+                }
+              }
+            };
 
-            // xhttp.onerror = () => {
-            //   console.error('An error occurred during the request');
-            // };
+            xhttp.onerror = () => {
+              console.error('An error occurred during the request');
+            };
 
-            // xhttp.send(JSON.stringify(eventData));
+            xhttp.send(JSON.stringify(updateData));
         }
     }
 })
