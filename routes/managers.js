@@ -179,7 +179,8 @@ router.post('/removeBranchMembers', function(req, res, next) {
       connection.query(query, [idsToRemove], function(err, result, fields) {
         connection.release();
         if (err) {
-          res.sendStatus(500);
+          console.log(err);
+          res.status(500).json({error: err});
           return;
         }
         if (result.affectedRows > 0) {
