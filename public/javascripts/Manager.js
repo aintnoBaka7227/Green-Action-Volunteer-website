@@ -46,6 +46,9 @@ new Vue({
         },
         openAddEventModal() {
             this.$refs.addEventModal.openModal();
+        },
+        deleteEvent(eventId) {
+            this.$refs.managerEventCard.deleteEvent(eventId);
         }
     },
     created() {

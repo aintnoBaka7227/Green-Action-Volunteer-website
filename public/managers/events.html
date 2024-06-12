@@ -41,7 +41,8 @@
                     <div class="event-container">
                         <manager-event-card
                             v-for="event in filteredEvents"
-                            :key="event.id"
+                            :key="event.event_id"
+                            :event-id="event.event_id"
                             :event-name="event.event_type"
                             :date="formatDate(event.date)"
                             :address="event.street_address"
@@ -49,6 +50,8 @@
                             :state="event.state"
                             :postcode="event.postcode"
                             :event-content="event.content"
+                            @delete-event="deleteEvent"
+                            @event-deleted="fetchEvents"
                         ></manager-event-card>
                     </div>
                     <hr style="margin-top: 50px;">

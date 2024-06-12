@@ -263,5 +263,43 @@ router.post('/addVolunteer', function(req, res, next) {
   });
 });
 
+router.delete('/deleteEvent/:eventId', (req, res, next) => {
+  const eventId = req.params.eventId;
+
+  req.pool.getConnection((err, connection) => {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    // Check if the event exists
+    const checkQuery = 'SELECT * FROM Event WHERE event_id = ?';
+    connection.query(checkQuery, [eventId], (err, results) => {
+      if (err) {
+        console.error('Error checking event:', err);
+        connection.release();
+        return res.status(500).json({ error: 'An error occurred while checking the event' });
+      }
+
+      if (results.length === 0) {
+        connection.release();
+        return res.status(404).json({ error: 'Event not found' });
+      }
+
+      // Delete the event
+      const deleteQuery = 'DELETE FROM Event WHERE event_id = ?';
+      connection.query(deleteQuery, [eventId], (err, result) => {
+        if (err) {
+          console.error('Error deleting event:', err);
+          connection.release();
+          return res.status(500).json({ error: 'An error occurred while deleting the event' });
+        }
+
+        connection.release();
+        res.status(200).json({ message: 'Event deleted successfully' });
+      });
+    });
+  });
+});
 
 module.exports = router;
