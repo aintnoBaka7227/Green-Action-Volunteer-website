@@ -522,4 +522,43 @@ router.post('/postUpdate', (req, res, next) => {
   });
 });
 
+router.delete('/deleteUpdate/:updateId', (req, res, next) => {
+  const updateId = req.params.updateId;
+
+  req.pool.getConnection((err, connection) => {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    // Check if the event exists
+    const checkQuery = 'SELECT * FROM EventUpdate WHERE update_id = ?';
+    connection.query(checkQuery, [updateId], (err, results) => {
+      if (err) {
+        console.error('Error checking update:', err);
+        connection.release();
+        return res.status(500).json({ error: 'An error occurred while checking the update' });
+      }
+
+      if (results.length === 0) {
+        connection.release();
+        return res.status(404).json({ error: 'Update not found' });
+      }
+
+      // Delete the event
+      const deleteQuery = 'DELETE FROM EventUpdate WHERE update_id = ?';
+      connection.query(deleteQuery, [updateId], (err, result) => {
+        if (err) {
+          console.error('Error deleting update:', err);
+          connection.release();
+          return res.status(500).json({ error: 'An error occurred while deleting the update' });
+        }
+
+        connection.release();
+        res.status(200).json({ message: 'Update deleted successfully' });
+      });
+    });
+  });
+});
+
 module.exports = router;

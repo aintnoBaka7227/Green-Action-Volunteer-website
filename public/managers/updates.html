@@ -40,8 +40,11 @@
                   <manager-update-card
                     v-for="update in filteredUpdates"
                     :key="update.update_id"
+                    :update-id="update.update_id"
                     :title="update.update_title"
                     :content="update.content"
+                    @delete-update="deleteUpdate"
+                    @update-deleted="fetchUpdates"
                   ></manager-update-card>
                 </div>
               </main>

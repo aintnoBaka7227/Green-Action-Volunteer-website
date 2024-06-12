@@ -86,6 +86,9 @@ new Vue({
         openAddUpdateModal() {
             this.$refs.addUpdateModal.openModal();
         },
+        deleteUpdate(updateId) {
+            this.$refs.managerUpdateCard.deleteUpdate(updateId);
+        },
     },
     created() {
         this.fetchEvents();

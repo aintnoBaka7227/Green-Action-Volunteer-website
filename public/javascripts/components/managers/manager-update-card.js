@@ -24,5 +24,31 @@ var managerUpdateCard = Vue.component('manager-update-card', {
         type: String,
         required: true
       },
+      updateId: {
+        type: Number,
+        required: true
+      }
+    },
+    methods: {
+        deleteUpdate(updateId) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('DELETE', `/managers/deleteUpdate/${updateId}`, true);
+
+            xhr.onreadystatechange = () => {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    this.$emit('update-deleted');
+                } else {
+                  console.error('Failed to delete update');
+                }
+              }
+            };
+
+            xhr.onerror = () => {
+              console.error('Error:', xhr.statusText);
+            };
+
+            xhr.send();
+        },
     }
   });
