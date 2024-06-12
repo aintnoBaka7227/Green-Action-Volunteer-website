@@ -8,6 +8,41 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+/* get manager branch name */
+router.get('/getManagerBranch', function(req, res, next) {
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+    const userId = req.session.user_id;
+
+    var queryBranch = `
+        SELECT
+          m.branch_id,
+          b.state
+        FROM
+          Manager m
+          JOIN Branch b ON m.branch_id = b.branch_id
+        WHERE
+          m.user_id = ?`;
+
+    connection.query(queryBranch, [userId], function(err, branches, fields) {
+      connection.release();
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      if (branches.length === 0) {
+        res.status(404).send("Branch not found");
+        return;
+      }
+
+      res.json(branches[0]);
+    });
+  });
+});
+
 router.get('/getManagerEvents', function(req, res, next) {
   req.pool.getConnection(function(err, connection) {
     if (err) {
