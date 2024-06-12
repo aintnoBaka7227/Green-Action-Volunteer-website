@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#8CBE47">
+        <title>Manager members</title>
+        <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/stylesheets/manager-style.css">
+        <link rel="stylesheet" href="/stylesheets/manager-members-style.css">
+        <link rel="stylesheet" href="https://unpkg.com/vue-good-table@2.21.10/dist/vue-good-table.css">
+        <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+        <script src="https://unpkg.com/vue-good-table@2.21.10/dist/vue-good-table.js"></script>
+        <script src="../javascripts/components/navbar-manager.js" defer></script>
+        <script src="../javascripts/components/members-grid.js" defer></script>
+        <script src="../javascripts/components/modal-component.js" defer></script>
+    </head>
+    <body>
+        <div id="app">
+            <navbar-manager user-type="managers"></navbar-manager>
+            <main>
+                <div class="content">
+                    <h1 class="h1">Members List</h1>
+                    <div class="members-modifier">
+                        <button type="button" id="add-new-volunteers">+ Add New Volunteers</button>
+                        <button type="button" id="remove-volunteers">Remove Volunteers</button>
+                    </div>
+                    <div class="members-list">
+                        <members-grid></members-grid>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <script src="../javascripts/Manager.js"></script>
+        <footer></footer>
+    </body>
+</html>
