@@ -1,4 +1,5 @@
 // modal-component.js
+// eslint-disable-next-line no-undef
 Vue.component('modal', {
     template: `
       <div class="modal-mask" @click.self="closeOnMaskClick">
