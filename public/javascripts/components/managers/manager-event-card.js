@@ -1,23 +1,19 @@
 var managerEventCard = Vue.component('manager-event-card', {
     template: `
-        <a :href="'/managers/events/' + eventId" class="event-card">
-            <img src="/assets/event.png" alt="event" class="event-image">
+        <div class="event-card">
+            <img src="../assets/event.png" alt="event" class="event-image">
             <div class="event-content">
                 <h2>{{ eventName }}</h2>
                 <small>{{ date }}, {{ address }}, {{ city }}, {{ state }} {{ postcode }}</small>
                 <p>{{ eventContent }}</p>
                 <div class="button-container">
-                    <a href="#" class="read-more-button">View attendees</a>
+                    <a :href="'/managers/events/' + eventId" class="read-more-button">View details</a>
                     <button @click="deleteEvent(eventId)" class="delete-button">Delete</button>
                 </div>
             </div>
-        </a>
+        </div>
     `,
     props: {
-        eventId: {
-            type: String,
-            required: true
-        },
         eventName: {
             type: String,
             required: true
