@@ -36,12 +36,13 @@ new Vue({
             eventsXhr.onreadystatechange = () => {
                 if (eventsXhr.readyState === 4 && eventsXhr.status === 200) {
                     this.events = JSON.parse(eventsXhr.responseText);
+                    console.log(this.events);
                 }
             };
             eventsXhr.send();
         },
         formatDate(dateString) {
-            const options = { year: 'numeric', month: 'long', day: 'numeric'};
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
             return new Date(dateString).toLocaleDateString(undefined, options);
         },
         openAddEventModal() {
