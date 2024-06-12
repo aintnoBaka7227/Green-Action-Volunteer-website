@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="theme-color" content="#8CBE47">
-        <title>Manager events</title>
+        <title>Manager updates</title>
         <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,7 +36,7 @@
                 </div>
                 <div>
                   <manager-update-card
-                    v-for="update in updates"
+                    v-for="update in filteredUpdates"
                     :key="update.update_id"
                     :title="update.update_title"
                     :content="update.content"
