@@ -35,7 +35,7 @@ CREATE TABLE `Admin` (
   `user_id` int DEFAULT NULL,
   PRIMARY KEY (`admin_id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `Admin_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`)
+  CONSTRAINT `Admin_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -100,7 +100,7 @@ CREATE TABLE `Event` (
   `branch_id` int DEFAULT NULL,
   PRIMARY KEY (`event_id`),
   KEY `branch_id` (`branch_id`),
-  CONSTRAINT `Event_ibfk_1` FOREIGN KEY (`branch_id`) REFERENCES `Branch` (`branch_id`)
+  CONSTRAINT `Event_ibfk_1` FOREIGN KEY (`branch_id`) REFERENCES `Branch` (`branch_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -128,8 +128,8 @@ CREATE TABLE `EventNotification` (
   PRIMARY KEY (`event_notification_id`),
   KEY `notification_id` (`notification_id`),
   KEY `event_id` (`event_id`),
-  CONSTRAINT `EventNotification_ibfk_1` FOREIGN KEY (`notification_id`) REFERENCES `Notification` (`notification_id`),
-  CONSTRAINT `EventNotification_ibfk_2` FOREIGN KEY (`event_id`) REFERENCES `Event` (`event_id`)
+  CONSTRAINT `EventNotification_ibfk_1` FOREIGN KEY (`notification_id`) REFERENCES `Notification` (`notification_id`) ON DELETE CASCADE,
+  CONSTRAINT `EventNotification_ibfk_2` FOREIGN KEY (`event_id`) REFERENCES `Event` (`event_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -157,8 +157,8 @@ CREATE TABLE `EventRSVP` (
   PRIMARY KEY (`rsvp_id`),
   KEY `volunteer_id` (`volunteer_id`),
   KEY `event_id` (`event_id`),
-  CONSTRAINT `EventRSVP_ibfk_1` FOREIGN KEY (`volunteer_id`) REFERENCES `Volunteer` (`volunteer_id`),
-  CONSTRAINT `EventRSVP_ibfk_2` FOREIGN KEY (`event_id`) REFERENCES `Event` (`event_id`)
+  CONSTRAINT `EventRSVP_ibfk_1` FOREIGN KEY (`volunteer_id`) REFERENCES `Volunteer` (`volunteer_id`) ON DELETE CASCADE,
+  CONSTRAINT `EventRSVP_ibfk_2` FOREIGN KEY (`event_id`) REFERENCES `Event` (`event_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -168,7 +168,7 @@ CREATE TABLE `EventRSVP` (
 
 LOCK TABLES `EventRSVP` WRITE;
 /*!40000 ALTER TABLE `EventRSVP` DISABLE KEYS */;
-INSERT INTO `EventRSVP` VALUES (19,4,13),(20,4,14),(21,4,16),(27,8,14),(28,8,15),(29,8,17),(30,9,15),(31,9,18),(32,5,19),(33,5,20),(34,5,22),(35,10,23),(36,10,19),(37,11,20),(38,11,24),(39,12,25),(40,12,26),(41,6,28),(42,6,29),(43,7,30),(44,7,27),(45,13,19),(46,13,24),(47,14,27),(48,14,29);
+INSERT INTO `EventRSVP` VALUES (19,4,13),(20,4,14),(21,4,16),(27,8,14),(28,8,15),(29,8,17),(32,5,19),(33,5,20),(34,5,22),(35,10,23),(36,10,19),(37,11,20),(38,11,24),(39,12,25),(40,12,26),(41,6,28),(42,6,29),(43,7,30),(44,7,27),(45,13,19),(46,13,24),(47,14,27),(48,14,29);
 /*!40000 ALTER TABLE `EventRSVP` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,8 +189,8 @@ CREATE TABLE `EventUpdate` (
   PRIMARY KEY (`update_id`),
   KEY `branch_id` (`branch_id`),
   KEY `event_id` (`event_id`),
-  CONSTRAINT `EventUpdate_ibfk_1` FOREIGN KEY (`branch_id`) REFERENCES `Branch` (`branch_id`),
-  CONSTRAINT `EventUpdate_ibfk_2` FOREIGN KEY (`event_id`) REFERENCES `Event` (`event_id`)
+  CONSTRAINT `EventUpdate_ibfk_1` FOREIGN KEY (`branch_id`) REFERENCES `Branch` (`branch_id`) ON DELETE CASCADE,
+  CONSTRAINT `EventUpdate_ibfk_2` FOREIGN KEY (`event_id`) REFERENCES `Event` (`event_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -218,8 +218,8 @@ CREATE TABLE `Manager` (
   PRIMARY KEY (`manager_id`),
   KEY `branch_id` (`branch_id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `Manager_ibfk_1` FOREIGN KEY (`branch_id`) REFERENCES `Branch` (`branch_id`),
-  CONSTRAINT `Manager_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`)
+  CONSTRAINT `Manager_ibfk_1` FOREIGN KEY (`branch_id`) REFERENCES `Branch` (`branch_id`) ON DELETE CASCADE,
+  CONSTRAINT `Manager_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -247,7 +247,7 @@ CREATE TABLE `Notification` (
   `branch_id` int DEFAULT NULL,
   PRIMARY KEY (`notification_id`),
   KEY `branch_id` (`branch_id`),
-  CONSTRAINT `Notification_ibfk_1` FOREIGN KEY (`branch_id`) REFERENCES `Branch` (`branch_id`)
+  CONSTRAINT `Notification_ibfk_1` FOREIGN KEY (`branch_id`) REFERENCES `Branch` (`branch_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -273,7 +273,7 @@ CREATE TABLE `NotificationSubscription` (
   `subscribed_event` tinyint(1) DEFAULT NULL,
   `subscribed_update` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`subscription_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -282,7 +282,7 @@ CREATE TABLE `NotificationSubscription` (
 
 LOCK TABLES `NotificationSubscription` WRITE;
 /*!40000 ALTER TABLE `NotificationSubscription` DISABLE KEYS */;
-INSERT INTO `NotificationSubscription` VALUES (1,1,1),(2,1,0),(3,0,0),(4,0,1),(5,1,1),(6,1,1),(7,1,0),(8,0,0),(9,0,1),(10,1,1),(11,1,1);
+INSERT INTO `NotificationSubscription` VALUES (1,1,1),(2,1,0),(3,0,0),(4,0,1),(5,1,1),(6,1,1),(7,1,0),(8,0,0),(9,0,1),(10,1,1),(11,1,1),(12,1,1);
 /*!40000 ALTER TABLE `NotificationSubscription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -300,8 +300,8 @@ CREATE TABLE `UpdateNotification` (
   PRIMARY KEY (`update_notification_id`),
   KEY `notification_id` (`notification_id`),
   KEY `update_id` (`update_id`),
-  CONSTRAINT `UpdateNotification_ibfk_1` FOREIGN KEY (`notification_id`) REFERENCES `Notification` (`notification_id`),
-  CONSTRAINT `UpdateNotification_ibfk_2` FOREIGN KEY (`update_id`) REFERENCES `EventUpdate` (`update_id`)
+  CONSTRAINT `UpdateNotification_ibfk_1` FOREIGN KEY (`notification_id`) REFERENCES `Notification` (`notification_id`) ON DELETE CASCADE,
+  CONSTRAINT `UpdateNotification_ibfk_2` FOREIGN KEY (`update_id`) REFERENCES `EventUpdate` (`update_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -365,10 +365,10 @@ CREATE TABLE `Volunteer` (
   KEY `branch_id` (`branch_id`),
   KEY `user_id` (`user_id`),
   KEY `subscription_id` (`subscription_id`),
-  CONSTRAINT `Volunteer_ibfk_1` FOREIGN KEY (`branch_id`) REFERENCES `Branch` (`branch_id`),
-  CONSTRAINT `Volunteer_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`),
-  CONSTRAINT `Volunteer_ibfk_3` FOREIGN KEY (`subscription_id`) REFERENCES `NotificationSubscription` (`subscription_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `Volunteer_ibfk_1` FOREIGN KEY (`branch_id`) REFERENCES `Branch` (`branch_id`) ON DELETE CASCADE,
+  CONSTRAINT `Volunteer_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`) ON DELETE CASCADE,
+  CONSTRAINT `Volunteer_ibfk_3` FOREIGN KEY (`subscription_id`) REFERENCES `NotificationSubscription` (`subscription_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -377,7 +377,7 @@ CREATE TABLE `Volunteer` (
 
 LOCK TABLES `Volunteer` WRITE;
 /*!40000 ALTER TABLE `Volunteer` DISABLE KEYS */;
-INSERT INTO `Volunteer` VALUES (4,1,1,5,1),(5,1,2,6,2),(6,0,3,7,3),(7,1,3,8,4),(8,1,1,9,5),(9,1,1,12,6),(10,1,2,13,7),(11,0,2,14,8),(12,1,3,15,9),(13,1,2,16,10),(14,1,3,16,11);
+INSERT INTO `Volunteer` VALUES (4,1,1,5,1),(5,1,2,6,2),(6,0,3,7,3),(7,1,3,8,4),(8,1,1,9,5),(10,1,2,13,7),(11,0,2,14,8),(12,1,3,15,9),(13,1,2,16,10),(14,1,3,16,11);
 /*!40000 ALTER TABLE `Volunteer` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -390,4 +390,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-08  7:26:18
+-- Dump completed on 2024-06-12  9:23:19
