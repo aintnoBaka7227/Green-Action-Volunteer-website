@@ -25,14 +25,9 @@
         <main>
             <h1>Here's your branches</h1>
             <div class="branches-dashboard">
-                <my-branches-card
-                    v-for="branch in branches"
-                    :key = "branch.id"
-                    :branch-name="branch.branch_name"
-                    :branch-manager="branch.branch_manager"
-                    :id = "branch.id"
-                    :volunteer-id="branch.volunteer-id"
-                ></my-branches-card>
+                <my-branches-card v-for="branch in branches" :key="branch.branch_id" :branch-name="branch.branch_name"
+                    :branch-manager="branch.manager_name" :branch-id="branch.branch_id" :volunteer-count="branch.volunteer_count"
+                    :is-user-in="branch.is_user_in" :user-id="branch.user_id"></my-branches-card>
             </div>
         </main>
     </div>
@@ -59,7 +54,7 @@
                                 return response.json();
                             })
                             .then(data => {
-                                this.branches = data;
+                                this.branches = data["branches"];
                             })
                             .catch(error => {
                                 console.error('Error fetching branches:', error);

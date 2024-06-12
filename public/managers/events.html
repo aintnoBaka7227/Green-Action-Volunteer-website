@@ -1,61 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="theme-color" content="#8CBE47">
-        <title>Manager events</title>
-        <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="/stylesheets/manager-style.css">
-        <link rel="stylesheet" href="/stylesheets/manager-events-style.css">
-        <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-        <script src="../javascripts/components/managers/navbar-manager.js" defer></script>
-        <script src="../javascripts/components/managers/manager-event-card.js" defer></script>
-        <script src="../javascripts/Manager.js" defer></script>
-    </head>
-    <body>
-        <div id="app">
-            <navbar-manager user-type="managers"></navbar-manager>
-            <main>
-                <div class="content">
-                    <h1 class="h1">Events</h1>
-                    <div class="events-modifier">
-                        <select v-model="filterOption">
-                            <option value="all">All updates</option>
-                            <option value="public">Public</option>
-                            <option value="private">Private</option>
-                        </select>
-                        <select v-model="sortOption">
-                            <option value="newest">Sort by newest</option>
-                            <option value="oldest">Sort by oldest</option>
-                        </select>
-                        <input type="search" placeholder="Search..." v-model="searchQuery">
-                        <button type="button" class="add-new-events">+ New event</button>
-                    </div>
-                    <hr>
-                    <div class="event-container">
-                        <manager-event-card
-                            v-for="event in filteredEvents"
-                            :key="event.id"
-                            :event-name="event.event_type"
-                            :date="formatDate(event.date)"
-                            :address="event.street_address"
-                            :city="event.city"
-                            :state="event.state"
-                            :postcode="event.postcode"
-                            :event-content="event.content"
-                        ></manager-event-card>
-                    </div>
-                    <hr style="margin-top: 50px;">
-                    <i class="fa-solid fa-angle-down"></i>
-                    <a href="#" class="load-button">See more</a>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#8CBE47">
+    <title>Manager events</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/manager-style.css">
+    <link rel="stylesheet" href="/stylesheets/manager-events-style.css">
+    <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="../javascripts/components/managers/navbar-manager.js" defer></script>
+    <script src="../javascripts/components/managers/manager-event-card.js" defer></script>
+    <script src="../javascripts/Manager.js" defer></script>
+</head>
+
+<body>
+    <div id="app">
+        <navbar-manager user-type="managers"></navbar-manager>
+        <main>
+            <div class="content">
+                <h1 class="h1">Events</h1>
+                <div class="events-modifier">
+                    <select v-model="filterOption">
+                        <option value="all">All updates</option>
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                    </select>
+                    <select v-model="sortOption">
+                        <option value="newest">Sort by newest</option>
+                        <option value="oldest">Sort by oldest</option>
+                    </select>
+                    <input type="search" placeholder="Search..." v-model="searchQuery">
+                    <button type="button" class="add-new-events">+ New event</button>
                 </div>
-            </main>
-        </div>
-        <footer></footer>
-    </body>
+                <hr>
+                <div class="event-container">
+                    <manager-event-card v-for="event in filteredEvents" :key="event.event_id" :event-id="event.event_id"
+                        :event-name="event.event_type" :date="formatDate(event.date)" :address="event.street_address"
+                        :city="event.city" :state="event.state" :postcode="event.postcode"
+                        :event-content="event.content"></manager-event-card>
+                </div>
+                <hr style="margin-top: 50px;">
+                <i class="fa-solid fa-angle-down"></i>
+                <a href="#" class="load-button">See more</a>
+            </div>
+        </main>
+    </div>
+    <footer></footer>
+</body>
+
 </html>

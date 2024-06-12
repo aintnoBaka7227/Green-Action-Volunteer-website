@@ -1,15 +1,23 @@
 var express = require('express');
 var router = express.Router();
-var {OAuth2Client} = require('google-auth-library');
+const path = require('path');
+var { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client('198821023017-acnrsha9l5f807koqqu2g0dp800tn0nf.apps.googleusercontent.com');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
 
-router.get('/getManagerEvents', function(req, res, next) {
-  req.pool.getConnection(function(err, connection) {
+router.get('/events/:event_id', (req, res) => {
+  const eventId = req.params.event_id;
+  // Path to the HTML file
+  const htmlFilePath = path.join(__dirname, '/public/managers/event.html');
+  res.sendFile(htmlFilePath);
+});
+
+router.get('/getManagerEvents', function (req, res, next) {
+  req.pool.getConnection(function (err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
@@ -19,7 +27,7 @@ router.get('/getManagerEvents', function(req, res, next) {
     var queryPublicEvents = `
       SELECT * FROM Event WHERE is_public = 1`;
 
-    connection.query(queryPublicEvents, function(err, publicEvents, fields) {
+    connection.query(queryPublicEvents, function (err, publicEvents, fields) {
       if (err) {
         connection.release();
         res.sendStatus(500);
@@ -38,7 +46,7 @@ router.get('/getManagerEvents', function(req, res, next) {
         WHERE
           m.user_id = ?`;
 
-      connection.query(queryBranches, [userId], function(err, branches, fields) {
+      connection.query(queryBranches, [userId], function (err, branches, fields) {
         if (err) {
           connection.release();
           res.sendStatus(500);
@@ -59,7 +67,7 @@ router.get('/getManagerEvents', function(req, res, next) {
         var queryPrivateEvents = `
             SELECT * FROM Event WHERE is_public = 0 AND branch_id IN (${placeholders})`;
 
-        connection.query(queryPrivateEvents, branchIds, function(err, privateEvents, fields) {
+        connection.query(queryPrivateEvents, branchIds, function (err, privateEvents, fields) {
           if (err) {
             console.error('Error fetching private events:', err);
             res.sendStatus(500);
@@ -76,7 +84,10 @@ router.get('/getManagerEvents', function(req, res, next) {
       });
     });
   });
-})
+});
+
+
+
 
 module.exports = router;
 

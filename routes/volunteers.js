@@ -1,15 +1,15 @@
 var express = require('express');
 var router = express.Router();
-var {OAuth2Client} = require('google-auth-library');
+var { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client('198821023017-acnrsha9l5f807koqqu2g0dp800tn0nf.apps.googleusercontent.com');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
 
-router.get('/event-updates', function(req, res, next) {
-  req.pool.getConnection(function(err, connection) {
+router.get('/event-updates', function (req, res, next) {
+  req.pool.getConnection(function (err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
@@ -34,7 +34,7 @@ router.get('/event-updates', function(req, res, next) {
       WHERE
         eu.is_public = 1`;
 
-    connection.query(queryPublic, function(err, publicRows, fields) {
+    connection.query(queryPublic, function (err, publicRows, fields) {
       if (err) {
         connection.release();
         res.sendStatus(500);
@@ -55,7 +55,7 @@ router.get('/event-updates', function(req, res, next) {
         WHERE
           v.user_id = ?`;
 
-      connection.query(queryBranches, [userId], function(err, branches, fields) {
+      connection.query(queryBranches, [userId], function (err, branches, fields) {
         if (err) {
           connection.release();
           res.sendStatus(500);
@@ -97,7 +97,7 @@ router.get('/event-updates', function(req, res, next) {
             AND eu.branch_id IN (${placeholders})`;
 
         // Execute the query to fetch private event updates
-        connection.query(queryPrivate, branchIds, function(err, privateRows, fields) {
+        connection.query(queryPrivate, branchIds, function (err, privateRows, fields) {
           if (err) {
             console.error('Error fetching private event updates:', err);
             res.sendStatus(500);
@@ -117,8 +117,8 @@ router.get('/event-updates', function(req, res, next) {
 });
 
 
-router.get('/events', function(req, res, next) {
-  req.pool.getConnection(function(err, connection) {
+router.get('/events', function (req, res, next) {
+  req.pool.getConnection(function (err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
@@ -143,7 +143,7 @@ router.get('/events', function(req, res, next) {
       WHERE
         e.is_public = 1`;
 
-    connection.query(queryPublicEvents, function(err, publicEvents, fields) {
+    connection.query(queryPublicEvents, function (err, publicEvents, fields) {
       if (err) {
         connection.release();
         res.sendStatus(500);
@@ -162,7 +162,7 @@ router.get('/events', function(req, res, next) {
         WHERE
           v.user_id = ?`;
 
-      connection.query(queryBranches, [userId], function(err, branches, fields) {
+      connection.query(queryBranches, [userId], function (err, branches, fields) {
         if (err) {
           connection.release();
           res.sendStatus(500);
@@ -204,7 +204,7 @@ router.get('/events', function(req, res, next) {
             AND e.branch_id IN (${placeholders})`;
 
         // Execute the query to fetch private events
-        connection.query(queryPrivateEvents, branchIds, function(err, privateEvents, fields) {
+        connection.query(queryPrivateEvents, branchIds, function (err, privateEvents, fields) {
           if (err) {
             console.error('Error fetching private events:', err);
             res.sendStatus(500);
@@ -223,8 +223,8 @@ router.get('/events', function(req, res, next) {
   });
 });
 
-router.get('/user-name', function(req, res, next) {
-  req.pool.getConnection(function(err, connection) {
+router.get('/user-name', function (req, res, next) {
+  req.pool.getConnection(function (err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
@@ -235,7 +235,7 @@ router.get('/user-name', function(req, res, next) {
     var queryUserName = `SELECT first_name FROM User WHERE user_id = ?`
 
 
-    connection.query(queryUserName, [userId], function(err, result, fields) {
+    connection.query(queryUserName, [userId], function (err, result, fields) {
       if (err) {
         console.log("got here and broke");
         connection.release();
@@ -311,12 +311,106 @@ router.get('/rsvp-events', (req, res) => {
 });
 
 router.get('/available-branches', (req, res) => {
-  /* ANH PHONG DIEN NOT VAO DAY */
-  /* branches = [{'branchID', 'userIsInBranch', 'branchManager', 'branchTotalNumVolunteers'}] */
+  const userID = req.session.user_id;
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    // Execute SQL query to get branch IDs for the user
+    connection.query('SELECT branch_id FROM Volunteer WHERE user_id = ?', [userID], function (err, rows) {
+      if (err) {
+        connection.release(); // Release the connection in case of an error
+        res.sendStatus(500); // Internal Server Error
+        return;
+      }
+
+      const branchIds = rows.map(row => row.branch_id);
+
+      // Execute SQL query to get all branches
+      connection.query('SELECT * FROM Branch', function (err, branches) {
+        if (err) {
+          connection.release(); // Release the connection in case of an error
+          res.sendStatus(500); // Internal Server Error
+          return;
+        }
+
+        // Add is_user_in key-value pair to each row
+        branches.forEach(row => {
+          row.is_user_in = branchIds.includes(row.branch_id);
+        });
+
+        let count = 0;
+        const totalBranches = branches.length;
+
+        branches.forEach(branch => {
+          // Execute SQL query to get manager details
+          connection.query('SELECT manager_id, user_id FROM Manager WHERE branch_id = ?', [branch.branch_id], (err, managers) => {
+            if (err) {
+              console.error('Error fetching manager_id:', err);
+            } else {
+              branch.manager_id = managers.length > 0 ? managers[0].user_id : null;
+              branch.user_id = userID;
+
+              // Fetch manager's name from User table
+              if (branch.manager_id) {
+                connection.query('SELECT first_name, last_name FROM User WHERE user_id = ?', [branch.manager_id], (err, users) => {
+                  if (err) {
+                    console.error('Error fetching manager details:', err);
+                  } else {
+                    if (users.length > 0) {
+                      branch.manager_name = `${users[0].first_name} ${users[0].last_name}`;
+                    } else {
+                      branch.manager_name = null;
+                    }
+                  }
+
+                  // Fetch volunteer count for the branch
+                  connection.query('SELECT COUNT(*) AS volunteerCount FROM Volunteer WHERE branch_id = ?', [branch.branch_id], (err, volunteerCountResult) => {
+                    if (err) {
+                      console.error('Error fetching volunteer count:', err);
+                    } else {
+                      branch.volunteer_count = volunteerCountResult[0].volunteerCount;
+                    }
+
+                    count++;
+                    if (count === totalBranches) {
+                      connection.release(); // Release the connection
+                      // Send branches in the response
+                      res.json({ branches });
+                    }
+                  });
+                });
+              } else {
+                // If no manager, still fetch volunteer count
+                connection.query('SELECT COUNT(*) AS volunteerCount FROM Volunteer WHERE branch_id = ?', [branch.branch_id], (err, volunteerCountResult) => {
+                  if (err) {
+                    console.error('Error fetching volunteer count:', err);
+                  } else {
+                    branch.volunteer_count = volunteerCountResult[0].volunteerCount;
+                  }
+
+                  count++;
+                  if (count === totalBranches) {
+                    connection.release(); // Release the connection
+                    // Send branches in the response
+                    res.json({ branches });
+                  }
+                });
+              }
+            }
+          });
+        });
+      });
+    });
+  });
 });
 
+
+
 router.get('/available-events', (req, res) => {
-  req.pool.getConnection(function(err, connection) {
+  req.pool.getConnection(function (err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
@@ -325,7 +419,7 @@ router.get('/available-events', (req, res) => {
     const userId = req.session.user_id;
 
     if (!userId) {
-        return res.status(400).json({ error: 'User ID is required' });
+      return res.status(400).json({ error: 'User ID is required' });
     }
 
     // Query to get all volunteer IDs associated with the user ID
@@ -336,87 +430,87 @@ router.get('/available-events', (req, res) => {
     `;
 
     connection.query(volunteerQuery, [userId], (volunteerError, volunteerResults) => {
-        if (volunteerError) {
-            console.error('Error fetching volunteer IDs:', volunteerError);
-            return res.status(500).json({ error: 'Internal server error' });
-        }
+      if (volunteerError) {
+        console.error('Error fetching volunteer IDs:', volunteerError);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
 
-        // Check if volunteer IDs are found
-        if (volunteerResults.length === 0) {
-            return res.status(404).json({ error: 'No volunteer IDs found for the user' });
-        }
+      // Check if volunteer IDs are found
+      if (volunteerResults.length === 0) {
+        return res.status(404).json({ error: 'No volunteer IDs found for the user' });
+      }
 
-        const volunteerIds = volunteerResults.map(row => row.volunteer_id);
+      const volunteerIds = volunteerResults.map(row => row.volunteer_id);
 
-        // Query to get all branch IDs associated with the volunteer IDs
-        const branchQuery = `
+      // Query to get all branch IDs associated with the volunteer IDs
+      const branchQuery = `
             SELECT DISTINCT branch_id
             FROM Volunteer
             WHERE volunteer_id IN (?)
         `;
 
-        connection.query(branchQuery, [volunteerIds], (branchError, branchResults) => {
-            if (branchError) {
-                console.error('Error fetching branch IDs:', branchError);
-                return res.status(500).json({ error: 'Internal server error' });
-            }
+      connection.query(branchQuery, [volunteerIds], (branchError, branchResults) => {
+        if (branchError) {
+          console.error('Error fetching branch IDs:', branchError);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
 
-            // Check if branch IDs are found
-            if (branchResults.length === 0) {
-                return res.status(404).json({ error: 'No branch IDs found for the volunteers' });
-            }
+        // Check if branch IDs are found
+        if (branchResults.length === 0) {
+          return res.status(404).json({ error: 'No branch IDs found for the volunteers' });
+        }
 
-            const branchIds = branchResults.map(row => row.branch_id);
+        const branchIds = branchResults.map(row => row.branch_id);
 
-            // Query to get all events for the branch IDs
-            const eventsQuery = `
+        // Query to get all events for the branch IDs
+        const eventsQuery = `
                 SELECT event_id, event_type, date, content
                 FROM Event
                 WHERE branch_id IN (?)
             `;
 
-            connection.query(eventsQuery, [branchIds], (eventsError, eventsResults) => {
-                if (eventsError) {
-                    console.error('Error fetching events:', eventsError);
-                    return res.status(500).json({ error: 'Internal server error' });
-                }
+        connection.query(eventsQuery, [branchIds], (eventsError, eventsResults) => {
+          if (eventsError) {
+            console.error('Error fetching events:', eventsError);
+            return res.status(500).json({ error: 'Internal server error' });
+          }
 
-                // Check if events are found
-                if (eventsResults.length === 0) {
-                    return res.status(404).json({ error: 'No events found for the branches' });
-                }
+          // Check if events are found
+          if (eventsResults.length === 0) {
+            return res.status(404).json({ error: 'No events found for the branches' });
+          }
 
-                const event_ids = eventsResults.map(row => row.event_id);
+          const event_ids = eventsResults.map(row => row.event_id);
 
-                // Query to get all RSVP events for the volunteer IDs
-                const rsvpQuery = `
+          // Query to get all RSVP events for the volunteer IDs
+          const rsvpQuery = `
                     SELECT event_id
                     FROM EventRSVP
                     WHERE volunteer_id IN (?)
                 `;
 
-                connection.query(rsvpQuery, [volunteerIds], (rsvpError, rsvpResults) => {
-                    if (rsvpError) {
-                        console.error('Error fetching RSVP events:', rsvpError);
-                        return res.status(500).json({ error: 'Internal server error' });
-                    }
+          connection.query(rsvpQuery, [volunteerIds], (rsvpError, rsvpResults) => {
+            if (rsvpError) {
+              console.error('Error fetching RSVP events:', rsvpError);
+              return res.status(500).json({ error: 'Internal server error' });
+            }
 
-                    const rsvpevent_ids = rsvpResults.map(row => row.event_id);
+            const rsvpevent_ids = rsvpResults.map(row => row.event_id);
 
-                    // Filter out the events that the volunteer has RSVPed for
-                    const availableEvents = eventsResults.filter(event => !rsvpevent_ids.includes(event.event_id));
-                    console.log(availableEvents);
-                    res.json(availableEvents);
-                });
-            });
+            // Filter out the events that the volunteer has RSVPed for
+            const availableEvents = eventsResults.filter(event => !rsvpevent_ids.includes(event.event_id));
+            console.log(availableEvents);
+            res.json(availableEvents);
+          });
         });
+      });
     });
   });
 });
 
 // remove rsvp event
 router.post('/resign', (req, res) => {
-  req.pool.getConnection(function(err, connection) {
+  req.pool.getConnection(function (err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
@@ -426,7 +520,7 @@ router.post('/resign', (req, res) => {
     const event_id = eventId;
 
     if (!volunteerId || !event_id) {
-        return res.status(400).json({ error: 'Volunteer ID and Event ID are required' });
+      return res.status(400).json({ error: 'Volunteer ID and Event ID are required' });
     }
 
     const resignQuery = `
@@ -435,14 +529,14 @@ router.post('/resign', (req, res) => {
     `;
 
     connection.query(resignQuery, [volunteerId, event_id], (resignError, results) => {
-        connection.release();
+      connection.release();
 
-        if (resignError) {
-            console.error('Error resigning from event:', resignError);
-            return res.status(500).json({ error: 'Internal server error' });
-        }
+      if (resignError) {
+        console.error('Error resigning from event:', resignError);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
 
-        res.json({ success: true });
+      res.json({ success: true });
     });
   });
 });
@@ -511,6 +605,51 @@ router.post('/add-rsvp', (req, res) => {
 });
 
 
+router.post('/modifyBranch', (req, res) => {
+  const { branchId, userId } = req.body;
 
+  console.log (branchId, " ", userId);
+
+  req.pool.getConnection((err, connection) => {
+    if (err) {
+      res.status(500).send(err);
+      return;
+    }
+
+    // Check if the volunteer already exists
+    const checkVolunteerQuery = 'SELECT volunteer_id FROM Volunteer WHERE branch_id = ? AND user_id = ?';
+    connection.query(checkVolunteerQuery, [branchId, userId], (err, results) => {
+      if (err) {
+        connection.release();
+        res.status(500).send(err);
+        return;
+      }
+
+      if (results.length > 0) {
+        // Volunteer exists, delete the row (leave the branch)
+        const deleteVolunteerQuery = 'DELETE FROM Volunteer WHERE volunteer_id = ?';
+        connection.query(deleteVolunteerQuery, [results[0].volunteer_id], (err) => {
+          connection.release();
+          if (err) {
+            res.status(500).send(err);
+          } else {
+            res.json({ message: 'Left the branch successfully' });
+          }
+        });
+      } else {
+        // Volunteer does not exist, insert the row (join the branch)
+        const insertVolunteerQuery = 'INSERT INTO Volunteer (branch_id, user_id) VALUES (?, ?)';
+        connection.query(insertVolunteerQuery, [branchId, userId], (err) => {
+          connection.release();
+          if (err) {
+            res.status(500).send(err);
+          } else {
+            res.json({ message: 'Joined the branch successfully' });
+          }
+        });
+      }
+    });
+  });
+});
 
 module.exports = router;

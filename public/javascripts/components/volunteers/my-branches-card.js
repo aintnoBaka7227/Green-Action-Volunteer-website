@@ -1,11 +1,11 @@
 // eslint-disable-next-line no-undef
 Vue.component('my-branches-card', {
     template:
-    `<div class="my-branches-card">
+        `<div class="my-branches-card">
         <h2>{{ branchName }}</h2>
         <div>Head Manager: {{ branchManager }}</div>
-        <div>Number of volunteers: {{ branchNumVolunteers }}</div>
-        <button @click="modifyBranch" class="branch-card-button" type="button">{{ modifyBranchButtonText }}</button>
+        <div>Number of volunteers: {{ volunteerCount }}</div>
+        <button @click="modifyBranch(branchId, userId)" :class="'branch-card-button ' + classButtonText" type="button">{{ buttonText }}</button>
     </div>`,
     props: {
         branchName: {
@@ -16,7 +16,7 @@ Vue.component('my-branches-card', {
             type: String,
             required: true
         },
-        branchNumVolunteers: {
+        volunteerCount: {
             type: Number,
             required: true
         },
@@ -24,17 +24,39 @@ Vue.component('my-branches-card', {
             type: Number,
             required: true
         },
-        modifyBranchButtonText: {
-            type: String,
+        isUserIn: {
+            type: Boolean,
             required: true
         },
-        volunteerId: {
+        userId: {
             type: Number,
             required: true
         }
     },
+    computed: {
+        buttonText() {
+            return this.isUserIn ? 'Leave' : 'Join';
+        },
+        classButtonText() {
+            return this.isUserIn ? 'red-button' : 'green-button';
+        }
+    },
     methods: {
-        modifyBranch() {
+        modifyBranch(branchId, userId) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/volunteers/modifyBranch', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log('Success:', JSON.parse(xhr.responseText));
+                        // Update the UI based on the response
+                    } else {
+                        console.error('Error:', xhr.responseText);
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({ branchId: branchId, userId: userId }));
         }
     }
 });
