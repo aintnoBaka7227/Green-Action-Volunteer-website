@@ -4,7 +4,7 @@ Vue.component('navbar-manager', {
     template: `
       <header>
         <a :href="generateLink('index.html')" class="logo">
-            <img src="../images/logo.png" alt="Logo" class="logo-image">
+            <img src="/images/logo.png" alt="Logo" class="logo-image">
         </a>
         <ul>
             <div class="section">
@@ -15,7 +15,7 @@ Vue.component('navbar-manager', {
             </div>
             <div class="section">
                 <div class="dropdown" :class="{ show: isDropdownVisible }">
-                    <button class="dropdown-toggle" @click="toggleDropdown"><img class="profile-pic" src="../images/profile-pic.jpg" alt="profile pic"></button>
+                    <button class="dropdown-toggle" @click="toggleDropdown"><img class="profile-pic" src="/images/profile-pic.jpg" alt="profile pic"></button>
                     <div class="dropdown-content">
                         <a href="../profile-settings.html">Profile Settings</a>
                         <a href="#" @click.prevent="logout">Log Out</a>

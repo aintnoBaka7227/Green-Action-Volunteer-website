@@ -9,6 +9,7 @@ main h1 {
 .branches-dashboard {
     display: flex;
     flex-wrap: wrap;
+    gap: 40px;
 }
 
 .my-branches-card {
@@ -34,4 +35,13 @@ main h1 {
     font-family: inherit;
     font-weight: 700;
     cursor: pointer;
+    border-width: 3px;
+}
+
+.red-button {
+    border-color: red;
+}
+
+.green-button {
+    border-color: green;
 }

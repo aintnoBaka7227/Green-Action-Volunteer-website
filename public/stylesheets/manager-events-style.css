@@ -50,6 +50,7 @@
     max-width: 80vw;
     max-height: 15vw;
     width: 100%;
+    text-decoration: none;
 }
 
 .event-image {
