@@ -2,28 +2,44 @@ document.addEventListener('DOMContentLoaded', function () {
     // eslint-disable-next-line no-undef
     Vue.component('members-grid', {
         template: `
-            <vue-good-table
-                :columns="columns"
-                :rows="members"
-                ref="mytable"
-                :search-options="{
-                  enabled: true
-                }"
-                :select-options="{
-                    enabled: true,
-                    selectOnCheckboxOnly: true,
-                    selectionInfoClass: 'table-selection-info',
-                    selectionText: 'selected'
-                }"
-                @on-selected-rows-change="updateSelectedRows"
-                >
-            </vue-good-table>
+            <div>
+        <vue-good-table
+          :columns="columns"
+          :rows="members"
+          ref="mytable"
+          :search-options="{
+            enabled: true
+          }"
+          :select-options="{
+            enabled: true,
+            selectOnCheckboxOnly: true,
+            selectionInfoClass: 'table-selection-info',
+            selectionText: 'selected'
+          }"
+          @on-selected-rows-change="updateSelectedRows"
+        ></vue-good-table>
+
+        <modal v-if="showModal" @close="showModal = false">
+          <h3 slot="header">Add New Volunteer</h3>
+          <div slot="body">
+            <label for="userId">User ID:</label>
+            <input type="text" id="userId" v-model="newUserId">
+          </div>
+          <div slot="footer">
+            <button @click="addNewMember">Add</button>
+            <button @click="showModal = false">Cancel</button>
+          </div>
+        </modal>
+      </div>
         `,
         data() {
             return {
                 members: [],
                 selectedRows: [],
                 selectedBranch: '',
+                branchID: '',
+                showModal: false,
+                newUserId: '',
                 columns: [
                     { label: 'First Name', field: 'first_name' },
                     { label: 'Last Name', field: 'last_name' },
@@ -48,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (branchXhr.readyState === 4 && branchXhr.status === 200) {
                         const response = JSON.parse(branchXhr.responseText);
                         this.selectedBranch = response.state;
+                        this.branchID = response.branch_id;
                         this.fetchMembers(this.selectedBranch);
                     }
                 };
@@ -103,13 +120,47 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             addNewMember() {
+                const userId = this.newUserId;
+                const branchId = this.branchID;
 
+                if (!userId) {
+                alert("Please enter a User ID");
+                return;
+                }
+
+                const addXhr = new XMLHttpRequest();
+                addXhr.open('POST', '/managers/addVolunteer', true);
+                addXhr.setRequestHeader('Content-Type', 'application/json');
+                addXhr.onreadystatechange = () => {
+                if (addXhr.readyState === 4) {
+                    if (addXhr.status === 200) {
+                        const response = JSON.parse(addXhr.responseText);
+                        if (response.message) {
+                            this.fetchMembers(this.selectedBranch);
+                            this.newUserId = '';
+                            this.showModal = false;
+                            alert(response.message);
+                        }
+
+                        if (response.error) {
+                            alert(response.error);
+                        }
+                    }
+                    else {
+                        const response = JSON.parse(addXhr.responseText);
+                        alert(response.error);
+                    }
+                }
+
+
+                };
+                addXhr.send(JSON.stringify({ user_id: userId, branch_id: branchId }));
             }
 
         },
         mounted() {
             document.getElementById('remove-volunteers').addEventListener('click', this.removeMembers);
-            document.getElementById('add-new-volunteers').addEventListener('click', this.addMember);
+            document.getElementById('add-new-volunteers').addEventListener('click', () => { this.showModal = true; });
         }
     });
 });
