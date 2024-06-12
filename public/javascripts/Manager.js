@@ -3,6 +3,7 @@ new Vue({
     el: '#app',
     data: {
         events: [],
+        updates: [],
         searchQuery: '',
         sortOption: 'newest',
         filterOption: 'all'
@@ -27,6 +28,27 @@ new Vue({
             return this.sortedEvents.filter(event => {
                 return event.event_type.toLowerCase().includes(this.searchQuery.toLowerCase());
             });
+        },
+
+        sortedUpdates() {
+            let filtered = this.updates;
+            if (this.filterOption === 'public') {
+                filtered = filtered.filter(update => update.is_public === 1);
+            }
+            else if (this.filterOption === 'private') {
+                filtered = filtered.filter(update => update.is_public === 0);
+            }
+            if (this.sortOption === 'newest') {
+                return filtered.slice().sort((a, b) => new Date(b.eventDate) - new Date(a.eventDate));
+            }
+            else if (this.sortOption === 'oldest') {
+                return filtered.slice().sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate));
+            }
+        },
+        filteredUpdates() {
+            return this.sortedUpdates.filter(update => {
+                return update.update_title.toLowerCase().includes(this.searchQuery.toLowerCase());
+            });
         }
     },
     methods: {
@@ -49,9 +71,24 @@ new Vue({
         },
         deleteEvent(eventId) {
             this.$refs.managerEventCard.deleteEvent(eventId);
-        }
+        },
+
+        fetchUpdates() {
+            const updatesXhr = new XMLHttpRequest();
+            updatesXhr.open('GET', '/managers/getManagerUpdates', true);
+            updatesXhr.onreadystatechange = () => {
+                if (updatesXhr.readyState === 4 && updatesXhr.status === 200) {
+                    this.updates = JSON.parse(updatesXhr.responseText);
+                }
+            };
+            updatesXhr.send();
+        },
+        openAddUpdateModal() {
+            this.$refs.addUpdateModal.openModal();
+        },
     },
     created() {
         this.fetchEvents();
+        this.fetchUpdates();
     }
 });

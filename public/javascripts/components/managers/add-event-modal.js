@@ -4,6 +4,7 @@ var addEventModal = Vue.component('add-event-modal', {
             <div class="modal-content">
             <span class="close" @click="closeModal">&times;</span>
             <h2>Create New Event</h2>
+            <hr>
             <form @submit.prevent="submitNewEvent">
                 <div>
                 <label for="event-name">Event Name:</label>

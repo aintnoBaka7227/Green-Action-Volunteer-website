@@ -412,6 +412,114 @@ router.get('/getEventAttendees', (req, res, next) => {
   });
 });
 
+router.get('/getManagerUpdates', function(req, res, next) {
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
 
+    // Step 1: Retrieve all public event updates
+    var queryPublic = `
+      SELECT * FROM EventUpdate WHERE is_public = 1`;
+
+    connection.query(queryPublic, function(err, publicRows, fields) {
+      if (err) {
+        connection.release();
+        res.sendStatus(500);
+        return;
+      }
+
+      // Step 2: Get the user id
+      const userId = req.session.user_id;
+
+      // Step 3: Look up the user id in the Volunteer table to find branches the user belongs to
+      var queryBranches = `
+        SELECT
+          m.branch_id,
+          b.branch_name
+        FROM
+          Manager m
+          JOIN Branch b ON m.branch_id = b.branch_id
+        WHERE
+          m.user_id = ?`;
+
+      connection.query(queryBranches, [userId], function(err, branches, fields) {
+        if (err) {
+          connection.release();
+          res.sendStatus(500);
+          return;
+        }
+
+        const branchIds = branches.map(branch => branch.branch_id);
+
+        // Step 4: Retrieve private event updates for branches the user belongs to
+        // Ensure branchIds is not empty or null
+        if (!branchIds || branchIds.length === 0) {
+          // If branchIds is empty, there are no branches for the user, so send only public event updates
+          res.json(publicRows);
+          connection.release();
+          return;
+        }
+
+        // Construct the SQL query with the correct placeholder syntax for the IN clause
+        const placeholders = branchIds.map(() => '?').join(',');
+
+        // Construct the query to fetch private event updates for branches the user belongs to
+        var queryPrivate = `
+          SELECT * FROM EventUpdate WHERE is_public = 0 AND branch_id IN (${placeholders})`;
+
+        // Execute the query to fetch private event updates
+        connection.query(queryPrivate, branchIds, function(err, privateRows, fields) {
+          if (err) {
+            console.error('Error fetching private event updates:', err);
+            res.sendStatus(500);
+            connection.release();
+            return;
+          }
+
+          // Combine public and private event updates and send the results
+          const allEventUpdates = [...publicRows, ...privateRows];
+          // console.log(allEventUpdates);
+          res.json(allEventUpdates);
+          connection.release();
+        });
+      });
+    });
+  });
+});
+
+router.post('/postUpdate', (req, res, next) => {
+  req.pool.getConnection((err, connection) => {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    const { update_title, branch_id, content, is_public } = req.body;
+
+    // Perform validation on the event data
+    if (!update_title || !branch_id || !content || !is_public) {
+      connection.release();
+      return res.status(400).json({ error: 'Information is required' });
+    }
+
+    // Insert the new event into the database
+    const query = 'INSERT INTO EventUpdate (update_title, branch_id, content, is_public) VALUES (?, ?, ?, ?)';
+    const values = [update_title, branch_id, content, is_public];
+
+    connection.query(query, values, (err, result) => {
+      if (err) {
+        console.error('Error creating event:', err);
+        connection.release();
+        return res.status(500).json({ error: 'An error occurred while creating the event' });
+      }
+
+      const newUpdateId = result.insertId;
+      connection.release();
+      res.status(200).json({ id: newUpdateId });
+    });
+  });
+});
 
 module.exports = router;

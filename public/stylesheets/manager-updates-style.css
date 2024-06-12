@@ -1,107 +1,97 @@
-#nav-events {
+#nav-updates {
     font-weight: bold;
 }
 
-.events-modifier {
+main {
+    padding: 40px 80px;
+}
+
+main h1 {
+    color: #8CBE47;
+}
+
+.announcement-first-line {
     display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+    justify-content: space-between;
+    font-weight: 800;
+    font-size: large;
+    padding-top: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    gap: 10vw;
 }
 
-.events-modifier select,
-.events-modifier input,
-.events-modifier .add-new-events {
-    margin-right: 10px;
-    padding: 7px 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: medium;
+.announcement-card {
+    padding: 20px 0px 0px 0px;
 }
 
-.events-modifier select {
-    width: 20%;
-}
-
-.events-modifier input {
-    width: 35%;
-}
-
-.events-modifier .add-new-events {
-    background-color: #3c8e40;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-left: auto;
-}
-
-/* event list */
-.event-container {
+.announcement-second-line {
     display: flex;
-    flex-direction: column;
-    gap: 40px;
+    justify-content: space-between;
+    padding-left: 40px;
+    padding-right: 40px;
+    gap: 10vw;
 }
 
-.event-card {
+.announcement-management {
     display: flex;
-    background-color: rgba(159, 219, 151, 0.6);
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 80vw;
-    max-height: 15vw;
-    width: 100%;
-    text-decoration: none;
+    justify-content: space-between;
+    gap: 5%;
 }
 
-.event-image {
-    width: 20%;
-    object-fit: cover;
-    margin: 2%;
-}
-
-.event-content {
-    padding: 20px;
-    width: 100%;
-    color: #000;
-}
-
-.event-content h2 {
-    margin-top: 0;
-}
-
-.event-content p {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.button-container {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.read-more-button {
-    margin-top: 12px;
+.announcement-filter,
+.announcement-sort {
+    flex: 2;
+    /* Each button takes 2/10 (20%) of the available space */
+    background-color: transparent;
+    border-color: black;
+    border-width: 2px;
     padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
-    text-decoration: none;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    font-size: inherit;
+    font-family: inherit;
     cursor: pointer;
-    border-radius: 20px;
-    width: max-content;
-    transition: all 0.1s ease-in-out;
-    margin-right: 25px;
 }
 
-.read-more-button:hover {
-    transform: translate(0px, -5px);
+.announcement-management input[type="search"] {
+    flex: 6;
+    /* The input takes 6/10 (60%) of the available space */
+    padding: 5px;
+    padding-inline: 20px;
+    /* Optional: Add some padding to the input */
 }
 
-.load-button {
+.announcement-title {
     text-decoration: none;
     color: black;
+}
+
+.announcement-title:hover {
+    text-decoration: underline;
+}
+
+.announcement-search {
+    background-color: transparent;
+    border-color: black;
+    border-width: 2px;
+    padding: 8px 16px;
+    border-radius: 15px;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.add-new-updates {
+    background-color: #3c8e40;
+    color: white;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: 10px;
+    padding: 7px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: medium;
 }
 
 .modal {
@@ -156,12 +146,6 @@ label {
     font-weight: bold;
 }
 
-input[type="date"], select, input[type="time"] {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
 input[type="text"] {
     padding: 10px;
     border: 1px solid #ccc;
@@ -169,7 +153,7 @@ input[type="text"] {
     width: 30%;
 }
 
-textarea#event-content {
+textarea#update-content {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -193,6 +177,13 @@ button[type="submit"]:hover {
     background-color: #45a049;
 }
 
+select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: medium;
+}
+
 .styled-select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -202,24 +193,3 @@ button[type="submit"]:hover {
     padding-right: 30px;
     font-family: inherit;
 }
-
-.delete-button {
-    background-color: #ff4c4c;
-    border: none;
-    margin-top: 12px;
-    padding: 8px 16px;
-    color: white;
-    text-decoration: none;
-    cursor: pointer;
-    border-radius: 20px;
-    width: max-content;
-    transition: all 0.1s ease-in-out;
-    margin-right: 10px;
-    font-family: inherit;
-    font-size: medium;
-  }
-
-  .delete-button:hover {
-    background: #ff1c1c;
-    transform: translate(0px, -5px);
-  }
