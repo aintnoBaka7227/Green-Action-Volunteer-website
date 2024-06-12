@@ -318,4 +318,40 @@ router.post('/logout', (req, res) => {
     });
 });
 
+router.get('/user-name', function (req, res, next) {
+    req.pool.getConnection(function (err, connection) {
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+
+      const userId = req.session.user_id; // Assuming user ID is stored in the session
+
+      var queryUserName = `SELECT first_name FROM User WHERE user_id = ?`
+
+
+      connection.query(queryUserName, [userId], function (err, result, fields) {
+        if (err) {
+          console.log("got here and broke");
+          connection.release();
+          res.sendStatus(500);
+          return;
+        }
+
+        if (result.length === 0) {
+          res.status(404).json({ error: "User not found" });
+          connection.release();
+          return;
+        }
+
+        const userName = result[0].first_name;
+        res.json({ first_name: userName });
+        console.log({ first_name: userName });
+
+        connection.release();
+      });
+    });
+  });
+
+
 module.exports = router;
