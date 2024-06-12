@@ -93,26 +93,45 @@ router.post('/signup', function (req, res, next) {
               return;
           }
 
-          // If the email doesn't exist, proceed with the signup
-          let insertQuery = 'INSERT INTO User (first_name, last_name, email, phone_number, gender, password, DOB) VALUES (?, ?, ?, ?, ?, ?, ?);';
-          let values = [req.body.first_name, req.body.last_name, req.body.email, req.body.phone_number, req.body.gender, req.body.password, req.body.DOB];
-          connection.query(insertQuery, values, function (insertErr, insertResults, insertFields) {
-              connection.release();
+         // If the email doesn't exist, proceed with the signup
+        let insertQuery = 'INSERT INTO User (first_name, last_name, email, phone_number, gender, password, DOB) VALUES (?, ?, ?, ?, ?, ?, ?);';
+        let values = [req.body.first_name, req.body.last_name, req.body.email, req.body.phone_number, req.body.gender, req.body.password, req.body.DOB];
 
-              if (insertErr) {
-                  console.log(insertErr);
-                  res.status(500).send("Internal Server Error");
-                  return;
-              }
-              // Set session variable for the role
-              req.session.role = results[0].role;
-              console.log("User Role:", results[0].role);
+        connection.query(insertQuery, values, function (insertErr, insertResults, insertFields) {
+            if (insertErr) {
+                console.log(insertErr);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
 
-              req.session.user_id = results[0].user_id;
-              console.log("User ID:", results[0].user_id);
+            // Query to get the user_id of the newly inserted user
+            let userIdQuery = 'SELECT user_id FROM User WHERE email = ?';
+            let emailValue = [req.body.email];
 
-              res.sendStatus(200); // Signup successful
-          });
+            connection.query(userIdQuery, emailValue, function (userIdErr, userIdResults, userIdFields) {
+                connection.release();
+
+                if (userIdErr) {
+                    console.log(userIdErr);
+                    res.status(500).send("Internal Server Error");
+                    return;
+                }
+
+                if (userIdResults.length > 0) {
+                    // Set session variable for the role
+                    req.session.role = "volunteer";
+                    console.log("User Role:", req.session.role);
+
+                    req.session.user_id = userIdResults[0].user_id;
+                    console.log("User ID:", userIdResults[0].user_id);
+
+                    res.sendStatus(200); // Signup successful
+                } else {
+                    res.status(500).send("User not found after insertion");
+                }
+            });
+        });
+
       });
   });
 });
@@ -195,20 +214,20 @@ router.post('/glogin', async function (req, res) {
                         }
 
                         // Set the role as 'volunteer' for the new user
-                        let volunteerQuery = 'INSERT INTO Volunteer (user_id) VALUES (?)';
-                        let userId = insertResults.insertId;
-                        connection.query(volunteerQuery, [userId], function (volunteerErr, volunteerResults) {
-                            connection.release(); // Release the connection back to the pool
+                        // let volunteerQuery = 'INSERT INTO Volunteer (user_id) VALUES (?)';
+                        // let userId = insertResults.insertId;
+                        // connection.query(volunteerQuery, [userId], function (volunteerErr, volunteerResults) {
+                        //     connection.release(); // Release the connection back to the pool
 
-                            if (volunteerErr) {
-                                console.log(volunteerErr);
-                                res.status(500).send("Internal Server Error");
-                                return;
-                            }
-                            req.session.role = "Volunteer";
-                            console.log("User Role:", req.session.role);
-                            res.status(200).json({ status: "OK", role: req.session.role });
-                        });
+                        //     if (volunteerErr) {
+                        //         console.log(volunteerErr);
+                        //         res.status(500).send("Internal Server Error");
+                        //         return;
+                        //     }
+                        req.session.role = "Volunteer";
+                        console.log("User Role:", req.session.role);
+                        res.status(200).json({ status: "OK", role: req.session.role });
+                        // });
                     });
                 }
             });

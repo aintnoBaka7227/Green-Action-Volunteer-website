@@ -61,7 +61,9 @@ function signup() {
       if (this.readyState === 4) {
           if (this.status === 200) {
             document.getElementById("warning").innerText = "Signup successful";
-            window.location.href = 'profile-settings.html';
+            // Redirect based on user role
+            window.location.href = '/volunteers';
+
           } else if (this.status === 400) {
               document.getElementById("warning").innerText = this.responseText;
           } else {
