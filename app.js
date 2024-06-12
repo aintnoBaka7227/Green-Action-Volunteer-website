@@ -13,7 +13,7 @@ const adminsRouter = require('./routes/admins');
 
 const dbConnectionPool = mysql.createPool({
     host: '127.0.0.1',
-    database: 'greenAction'
+    database: 'greenAction',
 });
 
 const app = express();
