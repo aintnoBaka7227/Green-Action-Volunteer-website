@@ -111,34 +111,6 @@ router.post('/createEvent', (req, res, next) => {
   });
 });
 
-module.exports = router;
-
-    var queryBranch = `
-        SELECT
-          m.branch_id,
-          b.state
-        FROM
-          Manager m
-          JOIN Branch b ON m.branch_id = b.branch_id
-        WHERE
-          m.user_id = ?`;
-
-    connection.query(queryBranch, [userId], function(err, branches, fields) {
-      connection.release();
-      if (err) {
-        res.sendStatus(500);
-        return;
-      }
-      if (branches.length === 0) {
-        res.status(404).send("Branch not found");
-        return;
-      }
-
-      res.json(branches[0]);
-    });
-  });
-});
-
 /* get branch member */
 router.get('/getBranchMembers', function(req, res, next) {
   const branch = req.query.branch;
