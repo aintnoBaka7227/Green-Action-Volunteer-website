@@ -10,8 +10,8 @@ router.get('/', function (req, res, next) {
 });
 
 /* get manager branch name */
-router.get('/getManagerBranch', function(req, res, next) {
-  req.pool.getConnection(function(err, connection) {
+router.get('/getManagerBranch', function (req, res, next) {
+  req.pool.getConnection(function (err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
@@ -28,7 +28,7 @@ router.get('/getManagerBranch', function(req, res, next) {
         WHERE
           m.user_id = ?`;
 
-    connection.query(queryBranch, [userId], function(err, branches, fields) {
+    connection.query(queryBranch, [userId], function (err, branches, fields) {
       connection.release();
       if (err) {
         res.sendStatus(500);
@@ -46,9 +46,8 @@ router.get('/getManagerBranch', function(req, res, next) {
 
 router.get('/events/:event_id', (req, res) => {
   const eventId = req.params.event_id;
-  // Path to the HTML file
-  const htmlFilePath = path.join(__dirname, '/public/managers/event.html');
-  res.sendFile(htmlFilePath);
+  // Path to the HTML file'
+  res.sendFile('/public/managers/event.html');
 });
 
 router.get('/getManagerEvents', function (req, res, next) {
@@ -69,7 +68,7 @@ router.get('/getManagerEvents', function (req, res, next) {
         WHERE
           m.user_id = ?`;
 
-    connection.query(queryBranch, [userId], function(err, branches, fields) {
+    connection.query(queryBranch, [userId], function (err, branches, fields) {
       connection.release();
       if (err) {
         res.sendStatus(500);
@@ -172,7 +171,7 @@ router.post('/createEvent', (req, res, next) => {
     const { event_type, date, time, street_address, city, state, postcode, content, is_public, branch_id } = req.body;
 
     // Perform validation on the event data
-    if (!event_type || !date || !time || !street_address || !city || !state || !postcode || !content || !is_public ||!branch_id) {
+    if (!event_type || !date || !time || !street_address || !city || !state || !postcode || !content || !is_public || !branch_id) {
       connection.release();
       return res.status(400).json({ error: 'Event name and date are required' });
     }
@@ -196,9 +195,9 @@ router.post('/createEvent', (req, res, next) => {
 });
 
 /* get branch member */
-router.get('/getBranchMembers', function(req, res, next) {
+router.get('/getBranchMembers', function (req, res, next) {
   const branch = req.query.branch;
-  req.pool.getConnection(function(err, connection) {
+  req.pool.getConnection(function (err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
@@ -206,7 +205,7 @@ router.get('/getBranchMembers', function(req, res, next) {
     var query = `SELECT Volunteer.*, User.* FROM Volunteer
     INNER JOIN User ON Volunteer.user_id = User.user_id
     WHERE Volunteer.branch_id = (SELECT branch_id FROM Branch WHERE state = ?)`;
-    connection.query(query, [branch], function(err, rows, fields) {
+    connection.query(query, [branch], function (err, rows, fields) {
       connection.release();
       if (err) {
         res.sendStatus(500);
@@ -217,41 +216,41 @@ router.get('/getBranchMembers', function(req, res, next) {
   });
 });
 
-router.post('/removeBranchMembers', function(req, res, next) {
-    const idsToRemove = req.body.ids;
-    req.pool.getConnection(function(err, connection) {
+router.post('/removeBranchMembers', function (req, res, next) {
+  const idsToRemove = req.body.ids;
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+    var query = `DELETE FROM Volunteer WHERE volunteer_id IN (?)`;
+    connection.query(query, [idsToRemove], function (err, result, fields) {
+      connection.release();
       if (err) {
-        res.sendStatus(500);
+        console.log(err);
+        res.status(500).json({ error: err });
         return;
       }
-      var query = `DELETE FROM Volunteer WHERE volunteer_id IN (?)`;
-      connection.query(query, [idsToRemove], function(err, result, fields) {
-        connection.release();
-        if (err) {
-          console.log(err);
-          res.status(500).json({error: err});
-          return;
-        }
-        if (result.affectedRows > 0) {
-          return res.status(200).json({message: 'Members removed successfully'});
-        }
-      });
+      if (result.affectedRows > 0) {
+        return res.status(200).json({ message: 'Members removed successfully' });
+      }
     });
+  });
 });
 
-router.post('/addVolunteer', function(req, res, next) {
+router.post('/addVolunteer', function (req, res, next) {
   // Extract the user_id and branch_id from the request body
   const { user_id, branch_id } = req.body;
 
   // Establish database connection and execute the user existence check query
-  req.pool.getConnection(function(err, connection) {
+  req.pool.getConnection(function (err, connection) {
     if (err) {
       return res.sendStatus(500);
     }
 
     // Check if the user exists in the User table
     const userCheckQuery = 'SELECT * FROM User WHERE user_id = ?';
-    connection.query(userCheckQuery, [user_id], function(err, userResult) {
+    connection.query(userCheckQuery, [user_id], function (err, userResult) {
       if (err) {
         connection.release();
         return res.sendStatus(500);
@@ -265,13 +264,13 @@ router.post('/addVolunteer', function(req, res, next) {
 
       // Check if the user exists in the Volunteer table
       const volunteerCheckQuery = 'SELECT * FROM Volunteer WHERE user_id = ? and branch_id = ?';
-      connection.query(volunteerCheckQuery, [user_id, branch_id], function(err, volunteerResult) {
+      connection.query(volunteerCheckQuery, [user_id, branch_id], function (err, volunteerResult) {
         if (err) {
           connection.release();
           return res.sendStatus(500);
         }
 
-         // If the user exists in the Volunteer table, return an error message
+        // If the user exists in the Volunteer table, return an error message
         if (volunteerResult.length > 0) {
           connection.release();
           return res.status(409).json({ error: 'The user already exists in the Volunteer table' });
@@ -279,7 +278,7 @@ router.post('/addVolunteer', function(req, res, next) {
 
         // Insert a new row into NotificationSubscription table
         const insertSubscriptionQuery = 'INSERT INTO NotificationSubscription (subscribed_event, subscribed_update) VALUES (?, ?)';
-        connection.query(insertSubscriptionQuery, [1, 1], function(err, subscriptionResult) {
+        connection.query(insertSubscriptionQuery, [1, 1], function (err, subscriptionResult) {
           if (err) {
             connection.release();
             return res.sendStatus(500);
@@ -290,7 +289,7 @@ router.post('/addVolunteer', function(req, res, next) {
 
           // Proceed with creating the new volunteer member
           const insertVolunteerQuery = 'INSERT INTO Volunteer (is_subscribed_notis, branch_id, user_id, subscription_id) VALUES (?, ?, ?, ?)';
-          connection.query(insertVolunteerQuery, [1, branch_id, user_id, subscription_id], function(err, result) {
+          connection.query(insertVolunteerQuery, [1, branch_id, user_id, subscription_id], function (err, result) {
             connection.release(); // Release the connection
 
             if (err) {
