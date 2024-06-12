@@ -51,6 +51,8 @@ Vue.component('my-branches-card', {
                     if (xhr.status === 200) {
                         console.log('Success:', JSON.parse(xhr.responseText));
                         // Update the UI based on the response
+                        // Refresh the page after the request is successful
+                        location.reload();
                     } else {
                         console.error('Error:', xhr.responseText);
                     }
