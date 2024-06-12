@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#8CBE47">
+        <title>Admin users</title>
+        <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/stylesheets/admin-style.css">
+        <link rel="stylesheet" href="/stylesheets/admin-users-style.css">
+        <link rel="stylesheet" href="https://unpkg.com/vue-good-table@2.21.10/dist/vue-good-table.css">
+        <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+        <script src="https://unpkg.com/vue-good-table@2.21.10/dist/vue-good-table.js"></script>
+        <script src="/javascripts/components/admins/navbar-admin.js" defer></script>
+        <script src="/javascripts/components/admins/users-grid.js" defer></script>
+        <script src="/javascripts/components/admins/modal-component.js" defer></script>
+        <script src="/javascripts/Admin.js" defer></script>
+    </head>
+    <body>
+        <div id="app">
+            <navbar-admin user-type="admins"></navbar-admin>
+            <main>
+                <div class="content">
+                    <h1 class="h1">Manage The Users</h1>
+                    <div class="users-modifier">
+                        <button type="button" id="add-new-user">+ Add New Users</button>
+                        <button type="button" id="remove-user">Remove Users</button>
+                    </div>
+                    <div class="users-list">
+                        <admins-grid></admins-grid>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <footer></footer>
+    </body>
+</html>
+
