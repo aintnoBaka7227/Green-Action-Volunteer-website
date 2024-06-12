@@ -310,7 +310,10 @@ router.get('/rsvp-events', (req, res) => {
   });
 });
 
-
+router.get('/available-branches', (req, res) => {
+  /* ANH PHONG DIEN NOT VAO DAY */
+  /* branches = [{'branchID', 'userIsInBranch', 'branchManager', 'branchTotalNumVolunteers'}] */
+});
 
 router.get('/available-events', (req, res) => {
   req.pool.getConnection(function(err, connection) {

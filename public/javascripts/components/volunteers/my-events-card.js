@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 var myEventsCard = Vue.component('my-events-card', {
   template: `
     <div class="event-card">

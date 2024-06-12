@@ -1,0 +1,37 @@
+main {
+    padding: 40px 80px;
+}
+
+main h1 {
+    color: #8CBE47;
+}
+
+.branches-dashboard {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.my-branches-card {
+    background-color: #D4EECC;
+    padding: 20px 40px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(140, 190, 71, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: transform 0.3s ease;
+    /* Smooth transition */
+}
+
+.my-branches-card:hover {
+    transform: translateY(-5%);
+}
+
+.branch-card-button {
+    margin-top: 10px;
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
