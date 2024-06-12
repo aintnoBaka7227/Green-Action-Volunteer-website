@@ -76,7 +76,40 @@ router.get('/getManagerEvents', function(req, res, next) {
       });
     });
   });
-})
+});
+
+router.post('/createEvent', (req, res, next) => {
+  req.pool.getConnection((err, connection) => {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    const { event_type, date, time, street_address, city, state, postcode, content, is_public, branch_id } = req.body;
+
+    // Perform validation on the event data
+    if (!event_type || !date || !time || !street_address || !city || !state || !postcode || !content || !is_public ||!branch_id) {
+      connection.release();
+      return res.status(400).json({ error: 'Event name and date are required' });
+    }
+
+    // Insert the new event into the database
+    const query = 'INSERT INTO Event (event_type, date, time, street_address, city, state, postcode, content, is_public, branch_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const values = [event_type, date, time, street_address, city, state, postcode, content, is_public, branch_id];
+
+    connection.query(query, values, (err, result) => {
+      if (err) {
+        console.error('Error creating event:', err);
+        connection.release();
+        return res.status(500).json({ error: 'An error occurred while creating the event' });
+      }
+
+      const newEventId = result.insertId;
+      connection.release();
+      res.status(200).json({ id: newEventId });
+    });
+  });
+});
 
 module.exports = router;
 
