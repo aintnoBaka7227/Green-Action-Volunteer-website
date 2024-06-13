@@ -23,7 +23,7 @@ router.get('/getBranches', function(req, res, next) {
       res.json(rows);
     });
   });
-})
+});
 
 router.get('/getPublicEvents', function(req, res, next) {
   const branch = req.query.branch;

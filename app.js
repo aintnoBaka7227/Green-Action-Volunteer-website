@@ -24,20 +24,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-// Define a route to test the database connection
-app.get('/test-db-connection', (req, res) => {
-    // Attempt to fetch some data from the database
-    dbConnectionPool.query('SELECT 1 + 1 AS result', (error, results) => {
-        if (error) {
-            // If there's an error, log it and send an error response
-            return res.status(500).send(error);
-        }
-
-        // If successful, send a success response
-        res.send('Database connection test successful. Result: ' + results[0].result);
-    });
-});
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -57,11 +43,11 @@ app.use('/users', usersRouter);
 
 function authorize(role) {
     return function (req, res, next) {
-        if (!req.session.role || req.session.role !== role) {
+        if (req.session.role && req.session.role === role) {
             // Redirect to forbidden.html if role does not match
-            return res.redirect('/forbidden.html');
+            next();
         }
-        next();
+        res.status(403).json({ message: 'Access required' });
     };
 }
 

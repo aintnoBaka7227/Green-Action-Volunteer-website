@@ -14,13 +14,13 @@
     <link rel="stylesheet" href="../stylesheets/volunteer-index-style.css">
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="../javascripts/components/navbar-user.js" defer></script>
-    <script src="../javascripts/components/volunteers/event-card.js" defer></script>
+    <script src="/javascripts/components/volunteers/navbar-volunteer.js" defer></script>
+    <script src="/javascripts/components/volunteers/event-card.js" defer></script>
 </head>
 
 <body>
     <div id="app">
-        <navbar-user user-type="volunteers"></navbar-user>
+        <navbar-volunteer></navbar-volunteer>
         <main>
             <h1>Welcome back {{ userName }}!</h1> <!-- Updated to show dynamic username -->
             <div class="dashboard-list">
@@ -68,59 +68,69 @@
               this.fetchUpdates();
             },
             methods: {
-              fetchEvents() {
-                    fetch('/volunteers/events')
-                    .then(response => {
-                        if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                fetchEvents() {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', '/volunteers/events', true);
+                    xhr.onreadystatechange = () => {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                try {
+                                    const data = JSON.parse(xhr.responseText);
+                                    this.events = data;
+                                } catch (error) {
+                                    console.error('Error parsing JSON response', error);
+                                }
+                            } else {
+                                console.error('Error fetching events. Status:', xhr.status);
+                            }
                         }
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.events = data;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching events:', error);
-                    });
+                    };
+                    xhr.send();
                 },
                 fetchUpdates() {
-                    fetch('/volunteers/event-updates')
-                    .then(response => {
-                        if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', '/volunteers/event-updates', true);
+                    xhr.onreadystatechange = () => {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                try {
+                                    const data = JSON.parse(xhr.responseText);
+                                    this.updates = data;
+                                } catch (error) {
+                                    console.error('Error parsing JSON response', error);
+                                }
+                            } else {
+                                console.error('Error fetching updates. Status:', xhr.status);
+                            }
                         }
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.updates = data;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching updates:', error);
-                    });
+                    };
+                    xhr.send();
                 },
                 formatDate(dateString) {
                     const options = { year: 'numeric', month: 'long', day: 'numeric'};
                     return new Date(dateString).toLocaleDateString(undefined, options);
                 },
-                fetchUserName() { // Method to fetch user's name
-                    fetch('/users/user-name')
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
+                fetchUserName() {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', '/users/user-name', true);
+                    xhr.onreadystatechange = () => {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                try {
+                                    const data = JSON.parse(xhr.responseText);
+                                    this.userName = data.first_name;
+                                } catch (error) {
+                                    console.error('Error parsing JSON response', error);
+                                    this.userName = "Guest";
+                                }
+                            } else {
+                                console.error('Error fetching user name. Status:', xhr.status);
+                                this.userName = "Guest";
+                            }
                         }
-                        console.log(response);
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log(data.first_name);
-                        this.userName = data.first_name; // Set user's name in data
-                    })
-                    .catch(error => {
-                        console.error('Error fetching user name:', error);
-                        this.userName = "Guest"; // Default name in case of error
-                    });
+                    };
+                    xhr.send();
                 }
-
             }
           });
         }

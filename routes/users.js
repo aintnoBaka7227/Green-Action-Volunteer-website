@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var {OAuth2Client} = require('google-auth-library');
+var { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client('198821023017-acnrsha9l5f807koqqu2g0dp800tn0nf.apps.googleusercontent.com');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/', function (req, res, next) {
+    res.send('respond with a resource');
 });
 
 router.post('/login', function (req, res, next) {
@@ -71,69 +71,69 @@ router.post('/login', function (req, res, next) {
 
 
 router.post('/signup', function (req, res, next) {
-  req.pool.getConnection(function (cerr, connection) {
-      if (cerr) {
-          console.log(cerr);
-          res.status(500).send("Internal Server Error");
-          return;
-      }
+    req.pool.getConnection(function (cerr, connection) {
+        if (cerr) {
+            console.log(cerr);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
 
-      // Check if the email already exists in the database
-      let checkQuery = 'SELECT * FROM User WHERE email=?;';
-      connection.query(checkQuery, [req.body.email], function (checkErr, checkResults, checkFields) {
-          if (checkErr) {
-              console.log(checkErr);
-              res.status(500).send("Internal Server Error");
-              return;
-          }
-
-          // If the email already exists, return an error
-          if (checkResults.length > 0) {
-              res.status(400).send("Email already exists!");
-              return;
-          }
-
-         // If the email doesn't exist, proceed with the signup
-        let insertQuery = 'INSERT INTO User (first_name, last_name, email, phone_number, gender, password, DOB) VALUES (?, ?, ?, ?, ?, ?, ?);';
-        let values = [req.body.first_name, req.body.last_name, req.body.email, req.body.phone_number, req.body.gender, req.body.password, req.body.DOB];
-
-        connection.query(insertQuery, values, function (insertErr, insertResults, insertFields) {
-            if (insertErr) {
-                console.log(insertErr);
+        // Check if the email already exists in the database
+        let checkQuery = 'SELECT * FROM User WHERE email=?;';
+        connection.query(checkQuery, [req.body.email], function (checkErr, checkResults, checkFields) {
+            if (checkErr) {
+                console.log(checkErr);
                 res.status(500).send("Internal Server Error");
                 return;
             }
 
-            // Query to get the user_id of the newly inserted user
-            let userIdQuery = 'SELECT user_id FROM User WHERE email = ?';
-            let emailValue = [req.body.email];
+            // If the email already exists, return an error
+            if (checkResults.length > 0) {
+                res.status(400).send("Email already exists!");
+                return;
+            }
 
-            connection.query(userIdQuery, emailValue, function (userIdErr, userIdResults, userIdFields) {
-                connection.release();
+            // If the email doesn't exist, proceed with the signup
+            let insertQuery = 'INSERT INTO User (first_name, last_name, email, phone_number, gender, password, DOB) VALUES (?, ?, ?, ?, ?, ?, ?);';
+            let values = [req.body.first_name, req.body.last_name, req.body.email, req.body.phone_number, req.body.gender, req.body.password, req.body.DOB];
 
-                if (userIdErr) {
-                    console.log(userIdErr);
+            connection.query(insertQuery, values, function (insertErr, insertResults, insertFields) {
+                if (insertErr) {
+                    console.log(insertErr);
                     res.status(500).send("Internal Server Error");
                     return;
                 }
 
-                if (userIdResults.length > 0) {
-                    // Set session variable for the role
-                    req.session.role = "volunteer";
-                    console.log("User Role:", req.session.role);
+                // Query to get the user_id of the newly inserted user
+                let userIdQuery = 'SELECT user_id FROM User WHERE email = ?';
+                let emailValue = [req.body.email];
 
-                    req.session.user_id = userIdResults[0].user_id;
-                    console.log("User ID:", userIdResults[0].user_id);
+                connection.query(userIdQuery, emailValue, function (userIdErr, userIdResults, userIdFields) {
+                    connection.release();
 
-                    res.sendStatus(200); // Signup successful
-                } else {
-                    res.status(500).send("User not found after insertion");
-                }
+                    if (userIdErr) {
+                        console.log(userIdErr);
+                        res.status(500).send("Internal Server Error");
+                        return;
+                    }
+
+                    if (userIdResults.length > 0) {
+                        // Set session variable for the role
+                        req.session.role = "volunteer";
+                        console.log("User Role:", req.session.role);
+
+                        req.session.user_id = userIdResults[0].user_id;
+                        console.log("User ID:", userIdResults[0].user_id);
+
+                        res.sendStatus(200); // Signup successful
+                    } else {
+                        res.status(500).send("User not found after insertion");
+                    }
+                });
             });
-        });
 
-      });
-  });
+        });
+    });
 });
 
 router.post('/glogin', async function (req, res) {
@@ -195,8 +195,8 @@ router.post('/glogin', async function (req, res) {
                         // Set session variable for the role
                         req.session.role = results[0].role;
                         console.log("User Role:", results[0].role);
-                        if(req.session.role=="unknown"){
-                            req.session.role="volunteer";
+                        if (req.session.role == "unknown") {
+                            req.session.role = "volunteer";
                         }
 
                         req.session.user_id = results[0].user_id;
@@ -279,19 +279,19 @@ function isAuthenticated(req, res, next) {
 }
 
 
-router.get('/me', isAuthenticated, function(req, res) {
+router.get('/me', isAuthenticated, function (req, res) {
     const userId = req.session.user_id;
 
     const query = 'SELECT first_name, last_name, email, phone_number, gender, DOB FROM User WHERE user_id = ?';
 
-    req.pool.getConnection(function(cerr, connection) {
+    req.pool.getConnection(function (cerr, connection) {
         if (cerr) {
             console.log(cerr);
             res.status(500).send("Internal Server Error");
             return;
         }
 
-        connection.query(query, [userId], function(err, results) {
+        connection.query(query, [userId], function (err, results) {
             connection.release();
 
             if (err) {
@@ -309,20 +309,20 @@ router.get('/me', isAuthenticated, function(req, res) {
     });
 });
 
-router.post('/edit', isAuthenticated, function(req, res) {
+router.post('/edit', isAuthenticated, function (req, res) {
     const userId = req.session.user_id;
     const { first_name, last_name, phone_number, gender, DOB, password } = req.body;
 
     const query = 'UPDATE User SET first_name = ?, last_name = ?, phone_number = ?, gender = ?, DOB = ?, password = ? WHERE user_id = ?';
 
-    dbConnectionPool.getConnection(function(cerr, connection) {
+    dbConnectionPool.getConnection(function (cerr, connection) {
         if (cerr) {
             console.log(cerr);
             res.status(500).send("Internal Server Error");
             return;
         }
 
-        connection.query(query, [first_name, last_name, phone_number, gender, DOB, password, userId], function(err, results) {
+        connection.query(query, [first_name, last_name, phone_number, gender, DOB, password, userId], function (err, results) {
             connection.release();
 
             if (err) {
@@ -348,38 +348,41 @@ router.post('/logout', (req, res) => {
 
 router.get('/user-name', function (req, res, next) {
     req.pool.getConnection(function (err, connection) {
-      if (err) {
-        res.sendStatus(500);
-        return;
-      }
-
-      const userId = req.session.user_id;
-
-      var queryUserName = `SELECT first_name FROM User WHERE user_id = ?`
-
-
-      connection.query(queryUserName, [userId], function (err, result, fields) {
         if (err) {
-          console.log("got here and broke");
-          connection.release();
-          res.sendStatus(500);
-          return;
+            res.sendStatus(500);
+            return;
         }
 
-        if (result.length === 0) {
-          res.status(404).json({ error: "User not found" });
-          connection.release();
-          return;
-        }
+        const userId = req.session.user_id;
 
-        const userName = result[0].first_name;
-        res.json({ first_name: userName });
-        console.log({ first_name: userName });
+        console.log(userId);
 
-        connection.release();
-      });
+        var queryUserName = `SELECT first_name FROM User WHERE user_id = ?`
+
+
+        connection.query(queryUserName, [userId], function (err, result, fields) {
+            if (err) {
+                console.log("got here and broke");
+                connection.release();
+                res.sendStatus(500);
+                return;
+            }
+
+            if (result.length === 0) {
+                console.log(userId);
+                res.status(404).json({ error: "User not found" });
+                connection.release();
+                return;
+            }
+
+            const userName = result[0].first_name;
+            res.json({ first_name: userName });
+            console.log({ first_name: userName });
+
+            connection.release();
+        });
     });
-  });
+});
 
 
 module.exports = router;

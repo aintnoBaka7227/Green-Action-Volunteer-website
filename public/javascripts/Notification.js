@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-undef
 var myBranchNotis = Vue.component('my-branches-card', {
-  props: ['branch'],
-  template: `
+    props: ['branch'],
+    template: `
       <div class="my-branches-card">
           <h2>{{ branch.branch_name }}</h2>
           <label>
@@ -12,66 +12,79 @@ var myBranchNotis = Vue.component('my-branches-card', {
           </label>
       </div>
   `,
-  methods: {
-      updateSubscription() {
-          fetch('/volunteers/update-subscription', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': localStorage.getItem('token') // Assuming token is stored in localStorage
-              },
-              body: JSON.stringify({
-                  branchId: this.branch.branch_id,
-                  subscribedEvent: this.branch.subscribed_event ? 1 : 0,
-                  subscribedUpdate: this.branch.subscribed_update ? 1 : 0
-              })
-          })
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error('Network response was not ok');
-              }
-              return response.json();
-          })
-          .then(data => {
-              console.log('Subscription updated successfully:', data);
-          })
-          .catch(error => {
-              console.error('Error updating subscription:', error);
-          });
-      }
-  }
+    methods: {
+        updateSubscription() {
+            const xhr = new XMLHttpRequest();
+            const url = '/volunteers/update-subscription';
+            xhr.open('POST', url, true);
+
+            // Set headers
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('Authorization', localStorage.getItem('token')); // Assuming token is stored in localStorage
+
+            // Prepare request body
+            const requestBody = JSON.stringify({
+                branchId: this.branch.branch_id,
+                subscribedEvent: this.branch.subscribed_event ? 1 : 0,
+                subscribedUpdate: this.branch.subscribed_update ? 1 : 0
+            });
+
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        try {
+                            const data = JSON.parse(xhr.responseText);
+                            console.log('Subscription updated successfully:', data);
+                        } catch (error) {
+                            console.error('Error parsing JSON response', error);
+                        }
+                    } else {
+                        console.error('Error updating subscription. Status:', xhr.status);
+                    }
+                }
+            };
+
+            xhr.send(requestBody);
+        }
+    }
 });
 
 window.onload = function () {
-  // eslint-disable-next-line no-undef
-  new Vue({
-      el: '#app',
-      data: {
-          branches: [],
-      },
-      mounted() {
-          this.fetchBranches();
-      },
-      methods: {
-          fetchBranches() {
-              fetch('/volunteers/notification-branches', {
-                  headers: {
-                      'Authorization': localStorage.getItem('token') // Assuming token is stored in localStorage
-                  }
-              })
-              .then(response => {
-                  if (!response.ok) {
-                      throw new Error('Network response was not ok');
-                  }
-                  return response.json();
-              })
-              .then(data => {
-                  this.branches = data.branches;
-              })
-              .catch(error => {
-                  console.error('Error fetching branches:', error);
-              });
-          }
-      }
-  });
+    // eslint-disable-next-line no-undef
+    new Vue({
+        el: '#app',
+        data: {
+            branches: [],
+        },
+        mounted() {
+            this.fetchBranches();
+        },
+        methods: {
+            fetchBranches() {
+                const xhr = new XMLHttpRequest();
+                const url = '/volunteers/notification-branches';
+                xhr.open('GET', url, true);
+
+                // Set headers
+                xhr.setRequestHeader('Authorization', localStorage.getItem('token')); // Assuming token is stored in localStorage
+
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            try {
+                                const data = JSON.parse(xhr.responseText);
+                                this.branches = data.branches;
+                            } catch (error) {
+                                console.error('Error parsing JSON response', error);
+                            }
+                        } else {
+                            console.error('Error fetching branches. Status:', xhr.status);
+                        }
+                    }
+                };
+
+                xhr.send();
+            }
+        }
+    });
 };

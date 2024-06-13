@@ -53,19 +53,23 @@
                         this.$refs.addBranchModal.openModal();
                     },
                     fetchBranches() {
-                        fetch('/admins/available-branches')
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Network response was not ok');
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('GET', '/admins/available-branches', true);
+                        xhr.onreadystatechange = () => {
+                            if (xhr.readyState === 4) {
+                                if (xhr.status === 200) {
+                                    try {
+                                        const data = JSON.parse(xhr.responseText);
+                                        this.branches = data.branches;
+                                    } catch (error) {
+                                        console.error('Error parsing JSON response', error);
+                                    }
+                                } else {
+                                    console.error('Error fetching branches. Status:', xhr.status);
                                 }
-                                return response.json();
-                            })
-                            .then(data => {
-                                this.branches = data["branches"];
-                            })
-                            .catch(error => {
-                                console.error('Error fetching branches:', error);
-                            });
+                            }
+                        };
+                        xhr.send();
                     }
                 }
             });

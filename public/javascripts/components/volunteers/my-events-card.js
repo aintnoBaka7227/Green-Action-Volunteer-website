@@ -42,29 +42,40 @@ var myEventsCard = Vue.component('my-events-card', {
   },
   methods: {
     resign() {
-      fetch('/volunteers/resign', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ volunteerId: this.volunteerId, eventId: this.eventId })
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.success) {
-          location.reload(); // Reload the page on successful resignation
-        } else {
-          alert('Failed to resign from the event.');
-        }
-      })
-      .catch(error => {
-        console.error('Error resigning from event:', error);
+      const xhr = new XMLHttpRequest();
+      const url = '/volunteers/resign';
+      xhr.open('POST', url, true);
+
+      // Set headers
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      // Prepare request body
+      const requestBody = JSON.stringify({
+        volunteerId: this.volunteerId,
+        eventId: this.eventId
       });
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            try {
+              const data = JSON.parse(xhr.responseText);
+              if (data.success) {
+                location.reload(); // Reload the page on successful resignation
+              } else {
+                alert('Failed to resign from the event.');
+              }
+            } catch (error) {
+              console.error('Error parsing JSON response', error);
+            }
+          } else {
+            console.error('Error resigning from event. Status:', xhr.status);
+          }
+        }
+      };
+
+      xhr.send(requestBody);
     }
+
   }
 });

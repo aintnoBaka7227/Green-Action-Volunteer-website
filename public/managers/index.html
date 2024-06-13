@@ -6,61 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#8CBE47">
     <title>Manager homepage</title>
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/stylesheets/manager-style.css">
     <link rel="stylesheet" href="/stylesheets/manager-index-style.css">
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="/javascripts/components/managers/navbar-manager.js" defer></script>
-    <script src="/javascripts/components/circle-chart.js" defer></script>
-    <script src="/javascripts/Manager.js" defer></script>
+    <script src="/javascripts/components/managers/graph-one.js" defer></script>
+    <script src="/javascripts/components/managers/graph-two.js" defer></script>
+    <script src="/javascripts/components/managers/graph-three.js" defer></script>
+    <script src="/javascripts/components/managers/navbar-manager.js"></script>
+    <script src="/javascripts/ManagerIndex.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <div id="app">
-        <navbar-manager user-type="managers"></navbar-manager>
+        <navbar-manager></navbar-manager>
         <main>
-            <div class="page-heading">Welcome back!</div>
-            <div class="grid-container">
-                <div class="grid-item-1">
-                    <div class="graph-item graph-1">
-                        <div>User's type</div>
-                        <div class="graph-1-bar">
-                            <div class="graph-1-bar-1"></div>
-                        </div>
-                        <div class="graph-1-text">
-                            <span style="color: #34623C">Volunteers [73%]</span>
-                            <span style="color: #FCEFC3">Managers [27%]</span>
-                        </div>
-                    </div>
-                    <!--
-                    <div class="graph-item graph-2">
-                        <div>Revenue (all branches)</div>
-                        <div>$ 4,625</div>
-                    </div>
-                    -->
+            <div class="page-heading">Welcome back {{ user_name }},</div>
+            <div class="page-dashboard">
+                <div class="dashboard-column-1">
+                    <graph-one></graph-one>
+                    <graph-three></graph-three>
                 </div>
-                <div class="grid-item">
-                    <div class="graph-item graph-3">
-                        <div>Volunteer Count</div>
-                        <circle-chart :people="2793"></circle-chart>
-                        <div class="graph-3-description">
-                            <div class="graph-3-col">
-                                <div>Male</div>
-                                <div>1896 people</div>
-                            </div>
-                            <div  class="graph-3-col">
-                                <div>Female</div>
-                                <div>997 people</div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="dashboard-column-2">
+                    <graph-two></graph-two>
                 </div>
             </div>
         </main>
+        <footer></footer>
     </div>
 </body>
 

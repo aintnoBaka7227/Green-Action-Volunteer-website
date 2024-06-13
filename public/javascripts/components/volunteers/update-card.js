@@ -1,4 +1,5 @@
 // EventUpdateCard.js
+// eslint-disable-next-line no-undef
 var EventUpdateCard = Vue.component('event-update-card', {
   template: `
     <div class="announcement-card">

@@ -14,8 +14,8 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false, // true for 465, false for other ports
   auth: {
-      user: 'greenaction.organisation@gmail.com',
-      pass: 'pkkk tmch tife knre'
+    user: 'greenaction.organisation@gmail.com',
+    pass: 'pkkk tmch tife knre'
   }
 });
 
@@ -376,59 +376,59 @@ router.get('/getEventAttendees', (req, res, next) => {
   const eventId = parseInt(req.query.eventId, 10);
 
   if (isNaN(eventId)) {
-      res.status(400).send('Invalid event ID');
-      return;
+    res.status(400).send('Invalid event ID');
+    return;
   }
 
   req.pool.getConnection((err, connection) => {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    // Query to get all volunteer_ids for the given event_id
+    connection.query('SELECT volunteer_id FROM EventRSVP WHERE event_id = ?', [eventId], (err, rsvpRows) => {
       if (err) {
-          res.sendStatus(500);
-          return;
+        connection.release();
+        res.sendStatus(500);
+        return;
       }
 
-      // Query to get all volunteer_ids for the given event_id
-      connection.query('SELECT volunteer_id FROM EventRSVP WHERE event_id = ?', [eventId], (err, rsvpRows) => {
+      if (rsvpRows.length === 0) {
+        connection.release();
+        res.json([]);
+        return;
+      }
+
+      const volunteerIds = rsvpRows.map(row => row.volunteer_id);
+
+      // Query to get user_ids for all volunteer_ids
+      connection.query('SELECT user_id FROM Volunteer WHERE volunteer_id IN (?)', [volunteerIds], (err, volunteerRows) => {
+        if (err) {
+          connection.release();
+          res.sendStatus(500);
+          return;
+        }
+
+        const userIds = volunteerRows.map(row => row.user_id);
+
+        // Query to get user info for all user_ids
+        connection.query('SELECT user_id, first_name, last_name, email, phone_number FROM User WHERE user_id IN (?)', [userIds], (err, userRows) => {
+          connection.release();
           if (err) {
-              connection.release();
-              res.sendStatus(500);
-              return;
+            res.sendStatus(500);
+            return;
           }
 
-          if (rsvpRows.length === 0) {
-              connection.release();
-              res.json([]);
-              return;
-          }
-
-          const volunteerIds = rsvpRows.map(row => row.volunteer_id);
-
-          // Query to get user_ids for all volunteer_ids
-          connection.query('SELECT user_id FROM Volunteer WHERE volunteer_id IN (?)', [volunteerIds], (err, volunteerRows) => {
-              if (err) {
-                  connection.release();
-                  res.sendStatus(500);
-                  return;
-              }
-
-              const userIds = volunteerRows.map(row => row.user_id);
-
-              // Query to get user info for all user_ids
-              connection.query('SELECT user_id, first_name, last_name, email, phone_number FROM User WHERE user_id IN (?)', [userIds], (err, userRows) => {
-                  connection.release();
-                  if (err) {
-                      res.sendStatus(500);
-                      return;
-                  }
-
-                  res.json(userRows);
-              });
-          });
+          res.json(userRows);
+        });
       });
+    });
   });
 });
 
-router.get('/getManagerUpdates', function(req, res, next) {
-  req.pool.getConnection(function(err, connection) {
+router.get('/getManagerUpdates', function (req, res, next) {
+  req.pool.getConnection(function (err, connection) {
     if (err) {
       res.sendStatus(500);
       return;
@@ -438,7 +438,7 @@ router.get('/getManagerUpdates', function(req, res, next) {
     var queryPublic = `
       SELECT * FROM EventUpdate WHERE is_public = 1`;
 
-    connection.query(queryPublic, function(err, publicRows, fields) {
+    connection.query(queryPublic, function (err, publicRows, fields) {
       if (err) {
         connection.release();
         res.sendStatus(500);
@@ -459,7 +459,7 @@ router.get('/getManagerUpdates', function(req, res, next) {
         WHERE
           m.user_id = ?`;
 
-      connection.query(queryBranches, [userId], function(err, branches, fields) {
+      connection.query(queryBranches, [userId], function (err, branches, fields) {
         if (err) {
           connection.release();
           res.sendStatus(500);
@@ -485,7 +485,7 @@ router.get('/getManagerUpdates', function(req, res, next) {
           SELECT * FROM EventUpdate WHERE is_public = 0 AND branch_id IN (${placeholders})`;
 
         // Execute the query to fetch private event updates
-        connection.query(queryPrivate, branchIds, function(err, privateRows, fields) {
+        connection.query(queryPrivate, branchIds, function (err, privateRows, fields) {
           if (err) {
             console.error('Error fetching private event updates:', err);
             res.sendStatus(500);
@@ -580,14 +580,14 @@ router.post('/send-event-emails', (req, res) => {
   const { branch_id, content, user_id } = req.body; // Assuming event details and branch_id are in the request body
   console.log(req.body);
   req.pool.getConnection((err, connection) => {
-      if (err) {
-          console.error(err);
-          res.status(500).send('Internal Server Error');
-          return;
-      }
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
 
-      connection.query(
-          `SELECT u.email
+    connection.query(
+      `SELECT u.email
            FROM Volunteer v
            JOIN User u ON v.user_id = u.user_id
            WHERE v.branch_id = ? AND v.subscription_id IN (
@@ -595,45 +595,45 @@ router.post('/send-event-emails', (req, res) => {
               FROM NotificationSubscription
               WHERE subscribed_event = 1
            )`,
-          [branch_id],
-          async (error, results) => {
-              connection.release();
+      [branch_id],
+      async (error, results) => {
+        connection.release();
 
-              if (error) {
-                  console.error(error);
-                  res.status(500).send('Internal Server Error');
-                  return;
-              }
+        if (error) {
+          console.error(error);
+          res.status(500).send('Internal Server Error');
+          return;
+        }
 
-              try {
-                  for (let volunteer of results) {
-                      const mailOptions = {
-                        from: ' "Green Action" <greenaction.organisation@gmail.com>', // sender address
-                        to: volunteer.email, // list of receivers
-                        subject: 'New Event Notification', // Subject line
-                        text: `Dear Volunteer,\n\nWe are excited to announce a new event:\n\n${content}\n\nBest regards,\nGreen Action`, // plain text body
-                      };
+        try {
+          for (let volunteer of results) {
+            const mailOptions = {
+              from: ' "Green Action" <greenaction.organisation@gmail.com>', // sender address
+              to: volunteer.email, // list of receivers
+              subject: 'New Event Notification', // Subject line
+              text: `Dear Volunteer,\n\nWe are excited to announce a new event:\n\n${content}\n\nBest regards,\nGreen Action`, // plain text body
+            };
 
-                      await transporter.sendMail(mailOptions);
-                  }
-
-                  // test send one user
-                  // const mailOptions = {
-                  //   from: ' "Green Action" <greenaction.organisation@gmail.com>', // sender address
-                  //   to: 'khanhahnahk@gmail.com', // list of receivers
-                  //   subject: 'New Event Notification', // Subject line
-                  //   text: `Dear Volunteer,\n\nWe are excited to announce a new event:\n\n${content}\n\nBest regards,\nYour Organization`, // plain text body
-                  // };
-
-                  // await transporter.sendMail(mailOptions);
-
-                  res.status(200).send('Event emails sent successfully');
-              } catch (emailError) {
-                  console.error(emailError);
-                  res.status(500).send('Internal Server Error');
-              }
+            await transporter.sendMail(mailOptions);
           }
-      );
+
+          // test send one user
+          // const mailOptions = {
+          //   from: ' "Green Action" <greenaction.organisation@gmail.com>', // sender address
+          //   to: 'khanhahnahk@gmail.com', // list of receivers
+          //   subject: 'New Event Notification', // Subject line
+          //   text: `Dear Volunteer,\n\nWe are excited to announce a new event:\n\n${content}\n\nBest regards,\nYour Organization`, // plain text body
+          // };
+
+          // await transporter.sendMail(mailOptions);
+
+          res.status(200).send('Event emails sent successfully');
+        } catch (emailError) {
+          console.error(emailError);
+          res.status(500).send('Internal Server Error');
+        }
+      }
+    );
   });
 });
 
@@ -642,14 +642,14 @@ router.post('/send-update-emails', (req, res) => {
   const { branch_id, content, user_id } = req.body; // Assuming event details and branch_id are in the request body
   console.log(req.body);
   req.pool.getConnection((err, connection) => {
-      if (err) {
-          console.error(err);
-          res.status(500).send('Internal Server Error');
-          return;
-      }
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
 
-      connection.query(
-          `SELECT u.email
+    connection.query(
+      `SELECT u.email
            FROM Volunteer v
            JOIN User u ON v.user_id = u.user_id
            WHERE v.branch_id = ? AND v.subscription_id IN (
@@ -657,45 +657,45 @@ router.post('/send-update-emails', (req, res) => {
               FROM NotificationSubscription
               WHERE subscribed_update = 1
            )`,
-          [branch_id],
-          async (error, results) => {
-              connection.release();
+      [branch_id],
+      async (error, results) => {
+        connection.release();
 
-              if (error) {
-                  console.error(error);
-                  res.status(500).send('Internal Server Error');
-                  return;
-              }
+        if (error) {
+          console.error(error);
+          res.status(500).send('Internal Server Error');
+          return;
+        }
 
-              try {
-                  for (let volunteer of results) {
-                      const mailOptions = {
-                        from: ' "Green Action" <greenaction.organisation@gmail.com>', // sender address
-                        to: volunteer.email, // list of receivers
-                        subject: 'New Update Notification', // Subject line
-                        text: `Dear Volunteer,\n\nplease notice that a new update has been released on the platform:\n\n${content}\n\nBest regards,\nYour Green Action`, // plain text body
-                      };
+        try {
+          for (let volunteer of results) {
+            const mailOptions = {
+              from: ' "Green Action" <greenaction.organisation@gmail.com>', // sender address
+              to: volunteer.email, // list of receivers
+              subject: 'New Update Notification', // Subject line
+              text: `Dear Volunteer,\n\nplease notice that a new update has been released on the platform:\n\n${content}\n\nBest regards,\nYour Green Action`, // plain text body
+            };
 
-                      await transporter.sendMail(mailOptions);
-                  }
-
-                  // test send one user
-                  // const mailOptions = {
-                  //   from: ' "Green Action" <greenaction.organisation@gmail.com>', // sender address
-                  //   to: 'khanhahnahk@gmail.com', // list of receivers
-                  //   subject: 'New Event Notification', // Subject line
-                  //   text: `Dear Volunteer,\n\nWe are excited to announce a new event:\n\n${content}\n\nBest regards,\nYour Organization`, // plain text body
-                  // };
-
-                  // await transporter.sendMail(mailOptions);
-
-                  res.status(200).send('Event emails sent successfully');
-              } catch (emailError) {
-                  console.error(emailError);
-                  res.status(500).send('Internal Server Error');
-              }
+            await transporter.sendMail(mailOptions);
           }
-      );
+
+          // test send one user
+          // const mailOptions = {
+          //   from: ' "Green Action" <greenaction.organisation@gmail.com>', // sender address
+          //   to: 'khanhahnahk@gmail.com', // list of receivers
+          //   subject: 'New Event Notification', // Subject line
+          //   text: `Dear Volunteer,\n\nWe are excited to announce a new event:\n\n${content}\n\nBest regards,\nYour Organization`, // plain text body
+          // };
+
+          // await transporter.sendMail(mailOptions);
+
+          res.status(200).send('Event emails sent successfully');
+        } catch (emailError) {
+          console.error(emailError);
+          res.status(500).send('Internal Server Error');
+        }
+      }
+    );
   });
 });
 
@@ -761,6 +761,179 @@ router.put('/updateBranchDetail/:branchId', function (req, res, next) {
       }
 
       res.sendStatus(200);
+    });
+  });
+});
+
+router.get('/getPeopleInfo', function (req, res, next) {
+  // Get a database connection from the pool
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      console.error('Error getting database connection:', err);
+      return res.sendStatus(500);
+    }
+
+    // SQL query to get total number of users, number of males, and number of females
+    const query = `
+      SELECT
+        COUNT(*) AS totalPeople,
+        SUM(CASE WHEN gender = 'male' THEN 1 ELSE 0 END) AS numMale,
+        SUM(CASE WHEN gender = 'female' THEN 1 ELSE 0 END) AS numFemale
+      FROM User
+    `;
+
+    // Execute the query
+    connection.query(query, function (err, results, fields) {
+      // Release the connection back to the pool
+      connection.release();
+
+      if (err) {
+        console.error('Error executing query:', err);
+        return res.sendStatus(500);
+      }
+
+      // Extract results from the query response
+      const { totalPeople, numMale, numFemale } = results[0];
+
+      // Prepare the response object
+      const userStats = {
+        totalPeople: totalPeople || 0,
+        numMale: numMale || 0,
+        numFemale: numFemale || 0
+      };
+
+      // Send the response as JSON
+      res.json(userStats);
+    });
+  });
+});
+
+
+router.get('/getVolManInfo', function (req, res, next) {
+  // Get a database connection from the pool
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      console.error('Error getting database connection:', err);
+      return res.sendStatus(500);
+    }
+
+    // SQL query to get manager count
+    const managerQuery = `
+      SELECT COUNT(*) AS managerCount
+      FROM Manager
+    `;
+
+    // Execute managerQuery
+    connection.query(managerQuery, function (err, managerResults) {
+      if (err) {
+        console.error('Error executing manager query:', err);
+        connection.release();
+        return res.sendStatus(500);
+      }
+
+      // Get managerCount from results
+      const managerCount = managerResults[0].managerCount;
+
+      // SQL query to get volunteer count
+      const volunteerQuery = `
+        SELECT COUNT(*) AS volunteerCount
+        FROM Volunteer
+      `;
+
+      // Execute volunteerQuery
+      connection.query(volunteerQuery, function (err, volunteerResults) {
+        // Release the connection back to the pool
+        connection.release();
+
+        if (err) {
+          console.error('Error executing volunteer query:', err);
+          return res.sendStatus(500);
+        }
+
+        // Get volunteerCount from results
+        const volunteerCount = volunteerResults[0].volunteerCount;
+
+        // Prepare the response object
+        const volManInfo = {
+          managerCount: managerCount || 0,
+          volunteerCount: volunteerCount || 0
+        };
+
+        // Send the response as JSON
+        res.json(volManInfo);
+      });
+    });
+  });
+});
+
+router.get('/getOtherInfo', function (req, res, next) {
+  // Get a database connection from the pool
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      console.error('Error getting database connection:', err);
+      return res.sendStatus(500);
+    }
+
+    // SQL query to get event count
+    const eventQuery = `
+      SELECT COUNT(*) AS eventCount
+      FROM Event
+    `;
+
+    // SQL query to get branch count
+    const branchQuery = `
+      SELECT COUNT(*) AS branchCount
+      FROM Branch
+    `;
+
+    // SQL query to get event update count
+    const updateQuery = `
+      SELECT COUNT(*) AS updateCount
+      FROM EventUpdate
+    `;
+
+    // Object to store counts
+    const otherInfo = {};
+
+    // Execute eventQuery
+    connection.query(eventQuery, function (err, eventResults) {
+      if (err) {
+        console.error('Error executing event query:', err);
+        connection.release();
+        return res.sendStatus(500);
+      }
+
+      // Get eventCount from results
+      otherInfo.eventCount = eventResults[0].eventCount;
+
+      // Execute branchQuery
+      connection.query(branchQuery, function (err, branchResults) {
+        if (err) {
+          console.error('Error executing branch query:', err);
+          connection.release();
+          return res.sendStatus(500);
+        }
+
+        // Get branchCount from results
+        otherInfo.branchCount = branchResults[0].branchCount;
+
+        // Execute updateQuery
+        connection.query(updateQuery, function (err, updateResults) {
+          // Release the connection back to the pool
+          connection.release();
+
+          if (err) {
+            console.error('Error executing update query:', err);
+            return res.sendStatus(500);
+          }
+
+          // Get updateCount from results
+          otherInfo.updateCount = updateResults[0].updateCount;
+
+          // Send the response as JSON
+          res.json(otherInfo);
+        });
+      });
     });
   });
 });

@@ -1,6 +1,11 @@
 // eslint-disable-next-line no-undef
 Vue.component('navbar-manager', {
-    props: ['userType'],
+    props: {
+        userType: {
+            type: String,
+            default: 'managers' // Set the default value to 'admins'
+        }
+    },
     template: `
       <header>
         <a :href="generateLink('index.html')" class="logo">
@@ -18,7 +23,7 @@ Vue.component('navbar-manager', {
                 <div class="dropdown" :class="{ show: isDropdownVisible }">
                     <button class="dropdown-toggle" @click="toggleDropdown"><img class="profile-pic" src="/images/profile-pic.jpg" alt="profile pic"></button>
                     <div class="dropdown-content">
-                        <a href="/managers/profile-settings.html">Profile Settings</a>
+                        <a :href="generateLink('profile-settings.html')">Profile Settings</a>
                         <a href="#" @click.prevent="logout">Log Out</a>
                     </div>
                 </div>
