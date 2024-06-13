@@ -13,7 +13,7 @@ var myEventsCard = Vue.component('my-events-card', {
       </div>
       <div class="event-card-buttons">
           <button type="button" class="event-resign" @click="resign">Resign from this event</button>
-          <a href="/events/example.html" class="event-learn-more">Learn more</a>
+          <a href="#" class="event-learn-more">Learn more</a>
       </div>
       <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">
     </div>

@@ -47,8 +47,6 @@
                     <event-card
                         v-for="update in updates"
                         :key="update.id"
-                        :event-name="update.eventName"
-                        :event-date="formatDate(update.eventDate)"
                         :event-description="update.content"
                     ></event-card>
                 </div>

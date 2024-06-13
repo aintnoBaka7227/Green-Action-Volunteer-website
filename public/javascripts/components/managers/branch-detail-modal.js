@@ -66,7 +66,7 @@ Vue.component('branch-details', {
                 if (xhttp.readyState === XMLHttpRequest.DONE) {
                     if (xhttp.status === 200) {
                         console.log('Branch details updated successfully');
-                        this.notification = 'Update successfully';
+                        this.notification = 'Updated successfully!';
                         setTimeout(() => {
                           this.notification = '';
                         }, 3000);
