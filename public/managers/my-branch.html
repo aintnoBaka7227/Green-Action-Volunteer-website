@@ -16,6 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-good-table@2.21.10/dist/vue-good-table.js"></script>
     <script src="/javascripts/components/managers/navbar-manager.js" defer></script>
+    <script src="/javascripts/components/managers/branch-detail-modal.js" defer></script>
     <script src="../javascripts/Manager.js" defer></script>
 </head>
 
@@ -23,43 +24,7 @@
     <div id="app">
         <navbar-manager user-type="managers"></navbar-manager>
         <main>
-            <div class="content">
-                <h1 class="h1">Here's the branch details</h1>
-                <div class="branch-info-inputs">
-                    <form id="branch-info-form" class="branch-info-form">
-                        <label for="branch-name">Branch Name</label>
-                        <input :value="branch.branch_name" placeholder="Enter branch name here..." type="text"
-                            id="branch-name" name="branch-name" required>
-
-                        <label for="branch-street-address">Branch Address</label>
-                        <input type="text" :value="branch.street_address" id="branch-street-address"
-                            name="branch-street-address" required>
-
-                        <label for="branch-city">Branch City</label>
-                        <input placeholder="Enter city here..." type="text" id="branch-city" name="branch-city"
-                            :value="branch.city" required>
-
-                        <label for="branch-state">Branch State</label>
-                        <input placeholder="Enter state here..." type="text" id="branch-state" name="branch-state"
-                            :value="branch.state" required>
-
-                        <label for="branch-postcode">Branch Postcode</label>
-                        <input placeholder="Enter postcode here..." type="text" id="branch-postcode"
-                            name="branch-postcode" :value="branch.postcode" required>
-
-                        <label for="branch-phone">Branch Phone Number</label>
-                        <input type="tel" :value="branch.phone_number" placeholder="Enter phone number here..."
-                            id="branch-phone" name="branch-phone" required>
-
-                        <div class="branch-form-buttons">
-                            <button type="button" @click="updateBranchDetails(branch.branch_id)"
-                                class="submit-details-button">Save details</button>
-                            <button type="button" @click="deleteBranch(branch.branch_id)"
-                                class="delete-branch-button">Delete branch</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <branch-details></branch-details>
         </main>
     </div>
 </body>
