@@ -25,7 +25,7 @@ const userProfileApp = new Vue({
                 this.user.email = userData.email;
                 this.user.phone_number = userData.phone_number;
                 this.user.gender = userData.gender;
-                this.user.dob = userData.DOB.split('T')[0];
+                this.user.dob = userData.DOB ? userData.DOB.split('T')[0] : '';
             } else {
                 console.error('Error loading user data:', response.statusText);
             }
