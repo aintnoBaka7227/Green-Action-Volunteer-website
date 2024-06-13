@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#8CBE47">
+    <title>Volunteer homepage</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../stylesheets/volunteer-style.css">
+    <link rel="stylesheet" href="../stylesheets/volunteer-branches-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="../javascripts/components/navbar-user.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <navbar-user user-type="volunteers"></navbar-user>
+        <main>
+            <h1>Here's your branches</h1>
+            <div class="branches-dashboard">
+                <my-branches-card v-for="branch in branches" :key="branch.branch_id" :branch="branch"></my-branches-card>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        Vue.component('my-branches-card', {
+            props: ['branch'],
+            template: `
+                <div class="branch-card">
+                    <h2>{{ branch.branch_name }}</h2>
+                    <label>
+                        <input type="checkbox" v-model="branch.subscribed_event" @change="updateSubscription"> Subscribed Event
+                    </label>
+                    <label>
+                        <input type="checkbox" v-model="branch.subscribed_update" @change="updateSubscription"> Subscribed Update
+                    </label>
+                </div>
+            `,
+            methods: {
+                updateSubscription() {
+                    fetch('/volunteers/update-subscription', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': localStorage.getItem('token') // Assuming token is stored in localStorage
+                        },
+                        body: JSON.stringify({
+                            branchId: this.branch.branch_id,
+                            subscribedEvent: this.branch.subscribed_event ? 1 : 0,
+                            subscribedUpdate: this.branch.subscribed_update ? 1 : 0
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Subscription updated successfully:', data);
+                    })
+                    .catch(error => {
+                        console.error('Error updating subscription:', error);
+                    });
+                }
+            }
+        });
+
+        window.onload = function () {
+            new Vue({
+                el: '#app',
+                data: {
+                    branches: [],
+                },
+                mounted() {
+                    this.fetchBranches();
+                },
+                methods: {
+                    fetchBranches() {
+                        fetch('/volunteers/notification-branches', {
+                            headers: {
+                                'Authorization': localStorage.getItem('token') // Assuming token is stored in localStorage
+                            }
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            this.branches = data.branches;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching branches:', error);
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
