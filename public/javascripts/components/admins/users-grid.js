@@ -49,6 +49,8 @@ Vue.component('admins-grid', {
                     <button @click="showModal = false">Cancel</button>
                 </template>
             </modal>
+
+
         </div>
     `,
     data() {
@@ -56,6 +58,8 @@ Vue.component('admins-grid', {
             users: [],
             selectedRows: [],
             showModal: false,
+            newType: '',
+            showChangeUserTypeModal: false,
             newUser: {
                 first_name: '',
                 last_name: '',
@@ -63,7 +67,10 @@ Vue.component('admins-grid', {
                 phone_number: '',
                 gender: '',
                 password: '',
-                DOB: ''
+                DOB: '',
+                volunteer_id: '',
+                manager_id: '',
+                admin_id: '',
             },
             columns: [
                 { label: 'First Name', field: 'first_name' },
@@ -73,7 +80,7 @@ Vue.component('admins-grid', {
                 { label: 'Gender', field: 'gender' },
                 { label: 'User Branch', field: 'state'},
                 { label: 'User Type', field: 'user_type'},
-                { label: 'User ID', field: 'user_id'}
+                { label: 'User ID', field: 'user_id'},
             ],
         };
     },
@@ -95,7 +102,10 @@ Vue.component('admins-grid', {
                             gender: user.gender,
                             state: user.state,
                             user_type: user.user_type,
-                            user_id: user.user_id
+                            user_id: user.user_id,
+                            volunteer_id: user.volunteer_id,
+                            manager_id: user.manager_id,
+                            admin_id: user.admin_id,
                         };
                     });
                 }
@@ -162,9 +172,27 @@ Vue.component('admins-grid', {
            removeXhr.send(JSON.stringify({ ids: idsToRemove }));
         },
 
+        checkSelectedRows() {
+            const tableRef = this.$refs.mytable;
+
+            if (!tableRef || !tableRef.selectedRows || tableRef.selectedRows.length === 0) {
+                alert("No users selected");
+                return;
+            }
+
+            if (tableRef.selectedRows.length > 1) {
+                alert("Please select only one user to change the type");
+                return;
+            }
+        },
+
+        changeUserDetails() {
+
+        }
     },
     mounted() {
         document.getElementById('add-new-user').addEventListener('click', () => { this.showModal = true; });
         document.getElementById('remove-user').addEventListener('click', this.removeUsers);
+        document.getElementById('change-user-type').addEventListener('click', this.checkSelectedRows);
     }
 });
