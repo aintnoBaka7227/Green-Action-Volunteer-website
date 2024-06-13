@@ -4,6 +4,22 @@ const path = require('path');
 var { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client('198821023017-acnrsha9l5f807koqqu2g0dp800tn0nf.apps.googleusercontent.com');
 
+// configure emails
+const nodemailer = require('nodemailer');
+
+
+// Create a transporter object using the default SMTP transport
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // true for 465, false for other ports
+  auth: {
+      user: 'greenaction.organisation@gmail.com',
+      pass: 'pkkk tmch tife knre'
+  }
+});
+
+
 /* GET users listing. */
 router.get('/', function (req, res, next) {
   res.send('respond with a resource');
@@ -557,6 +573,68 @@ router.delete('/deleteUpdate/:updateId', (req, res, next) => {
         res.status(200).json({ message: 'Update deleted successfully' });
       });
     });
+  });
+});
+
+
+router.post('/send-event-emails', (req, res) => {
+  const { branch_id, event_details, user_id } = req.body; // Assuming event details and branch_id are in the request body
+  console.log(req.body);
+  req.pool.getConnection((err, connection) => {
+      if (err) {
+          console.error(err);
+          res.status(500).send('Internal Server Error');
+          return;
+      }
+
+      connection.query(
+          `SELECT u.email
+           FROM Volunteer v
+           JOIN User u ON v.user_id = u.user_id
+           WHERE v.branch_id = ? AND v.subscription_id IN (
+              SELECT subscription_id
+              FROM NotificationSubscription
+              WHERE subscribed_event = 1
+           )`,
+          [branch_id],
+          async (error, results) => {
+              connection.release();
+
+              if (error) {
+                  console.error(error);
+                  res.status(500).send('Internal Server Error');
+                  return;
+              }
+
+              try {
+                  // for (let volunteer of results) {
+                  //     const mailOptions = {
+                  //         from: '"Your Organization" <your-email@example.com>', // sender address
+                  //         to: volunteer.email, // list of receivers
+                  //         subject: 'New Event Notification', // Subject line
+                  //         text: `Dear Volunteer,\n\nWe are excited to announce a new event:\n\n${event_details}\n\nBest regards,\nYour Organization`, // plain text body
+                  //     };
+
+                  //     await transporter.sendMail(mailOptions);
+                  // }
+
+                  // test send one user
+                  const mailOptions = {
+                    from: ' "Green Action" <greenaction.organisation@gmail.com>', // sender address
+                    to: 'khanhahnahk@gmail.com', // list of receivers
+                    subject: 'New Event Notification', // Subject line
+                    text: `Dear Volunteer,\n\nWe are excited to announce a new event:\n\n${event_details}\n\nBest regards,\nYour Organization`, // plain text body
+                  };
+
+                  await transporter.sendMail(mailOptions);
+
+                  res.status(200).send('Event emails sent successfully');
+              } catch (emailError) {
+                  console.error(emailError);
+                  res.status(500).send('Internal Server Error');
+              }
+          }
+      );
   });
 });
 

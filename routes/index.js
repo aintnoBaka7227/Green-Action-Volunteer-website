@@ -120,6 +120,35 @@ router.post('/updateUserData', function(req, res, next) {
   });
 });
 
+// const nodemailer = require('nodemailer');
 
+
+// // Create a transporter object using the default SMTP transport
+// const transporter = nodemailer.createTransport({
+//   host: 'smtp.gmail.com',
+//   port: 587,
+//   secure: false, // true for 465, false for other ports
+//   auth: {
+//       user: 'greenaction.organisation@gmail.com',
+//       pass: 'pkkk tmch tife knre'
+//   }
+// });
+
+// router.post('/upload-event', async (req, res) => {
+//   const mailOptions = {
+//     from: '"Khanh" <greenaction.organisation@gmail.com>', // Sender address
+//     to: 'khanhahnahk@gmail.com', // List of receivers
+//     subject: 'Hello', // Subject line
+//     text: 'Hello world?', // Plain text body
+//     html: '<b>Hello world?</b>' // HTML body
+//   };
+
+//   transporter.sendMail(mailOptions, (error, info) => {
+//       if (error) {
+//           return console.log(error);
+//       }
+//       console.log('Message sent: %s', info.messageId);
+//   });
+// });
 
 module.exports = router;
