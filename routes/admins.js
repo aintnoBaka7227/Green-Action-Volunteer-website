@@ -53,7 +53,6 @@ router.get('/getUsers', function (req, res, next) {
 router.get('/available-branches', (req, res) => {
   req.pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error getting connection from pool:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
 
@@ -74,7 +73,6 @@ router.get('/available-branches', (req, res) => {
       connection.release();
 
       if (error) {
-        console.error('Error fetching available branches:', error);
         return res.status(500).json({ error: 'Internal server error' });
       }
 
@@ -143,7 +141,6 @@ router.get('/getBranchInfo', function (req, res, next) {
       }
 
       // Return the branch information as a JSON response
-      console.log(results[0]);
       res.json(results[0]);
     });
   });
@@ -260,7 +257,6 @@ router.post('/updateBranchDetails', function (req, res, next) {
   // Ensure all required fields are provided
   for (const [key, value] of Object.entries(branchDetails)) {
     if (!value) {
-      console.log(`Missing ${key}`);
       return res.status(400).json({ error: `Missing ${key}` });
     }
   }
@@ -313,46 +309,46 @@ router.post('/updateBranchDetails', function (req, res, next) {
 });
 
 
-router.post('/addNewUser', function(req, res, next) {
+router.post('/addNewUser', function (req, res, next) {
   // Extract user data from the request body
   const { first_name, last_name, email, phone_number, gender, password, DOB } = req.body;
 
   // Validate the incoming data (example validation)
   if (!first_name || !last_name || !email || !phone_number || !gender || !password || !DOB) {
-      return res.status(400).json({ success: false, message: "Please provide all required fields." });
+    return res.status(400).json({ success: false, message: "Please provide all required fields." });
   }
 
   req.pool.getConnection((err, connection) => {
+    if (err) {
+      return res.sendStatus(500);
+    }
+
+    // Check if email or phone_number already exist
+    const checkDuplicateQuery = 'SELECT COUNT(*) AS count FROM User WHERE email = ? OR phone_number = ?';
+    const checkDuplicateValues = [email, phone_number];
+    connection.query(checkDuplicateQuery, checkDuplicateValues, (err, results) => {
       if (err) {
-          return res.sendStatus(500);
+        connection.release();
+        return res.status(500).json({ success: false, message: "Failed to check duplicate user.", error: err.message });
       }
 
-      // Check if email or phone_number already exist
-      const checkDuplicateQuery = 'SELECT COUNT(*) AS count FROM User WHERE email = ? OR phone_number = ?';
-      const checkDuplicateValues = [email, phone_number];
-      connection.query(checkDuplicateQuery, checkDuplicateValues, (err, results) => {
-          if (err) {
-              connection.release();
-              return res.status(500).json({ success: false, message: "Failed to check duplicate user.", error: err.message });
-          }
+      if (results[0].count > 0) {
+        connection.release();
+        return res.status(400).json({ success: false, message: "Email or phone number already exists." });
+      }
 
-          if (results[0].count > 0) {
-              connection.release();
-              return res.status(400).json({ success: false, message: "Email or phone number already exists." });
-          }
+      // If no duplicate, proceed to insert user
+      const userInfo = [first_name, last_name, email, phone_number, gender, password, DOB];
+      const addUserQuery = 'INSERT INTO User (first_name, last_name, email, phone_number, gender, password, DOB) VALUES (?, ?, ?, ?, ?, ?, ?)';
+      connection.query(addUserQuery, userInfo, (err, result) => {
+        connection.release();
+        if (err) {
+          return res.status(500).json({ success: false, message: "Failed to add user.", error: err.message });
+        }
 
-          // If no duplicate, proceed to insert user
-          const userInfo = [first_name, last_name, email, phone_number, gender, password, DOB];
-          const addUserQuery = 'INSERT INTO User (first_name, last_name, email, phone_number, gender, password, DOB) VALUES (?, ?, ?, ?, ?, ?, ?)';
-          connection.query(addUserQuery, userInfo, (err, result) => {
-              connection.release();
-              if (err) {
-                  return res.status(500).json({ success: false, message: "Failed to add user.", error: err.message });
-              }
-
-              res.status(200).json({ success: true, message: "User added successfully.", user: result.insertId });
-          });
+        res.status(200).json({ success: true, message: "User added successfully.", user: result.insertId });
       });
+    });
   });
 });
 
@@ -376,5 +372,64 @@ router.post('/removeUsers', function (req, res, next) {
     });
   });
 });
+
+router.post('/createNewBranch', function(req, res, next) {
+  // Extract branch details from the request body
+  const branchDetails = {
+    branch_name: req.body.branchName,
+    street_address: req.body.branchStreet,
+    city: req.body.branchCity,
+    state: req.body.branchState,
+    postcode: req.body.branchPostcode,
+    phone_number: req.body.branchPhone
+  };
+
+  // Ensure all required fields are provided
+  for (const [key, value] of Object.entries(branchDetails)) {
+    if (!value) {
+      console.log(`Missing ${key}`);
+      return res.status(400).json({ error: `Missing ${key}` });
+    }
+  }
+
+  // Get a database connection from the pool
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      return res.sendStatus(500);
+    }
+
+    // SQL query to insert a new branch
+    const insertQuery = `
+      INSERT INTO Branch (branch_name, phone_number, street_address, city, state, postcode)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
+
+    // Execute the query with the branch details as parameters
+    connection.query(insertQuery, [
+      branchDetails.branch_name,
+      branchDetails.phone_number,
+      branchDetails.street_address,
+      branchDetails.city,
+      branchDetails.state,
+      branchDetails.postcode
+    ], function(err, results, fields) {
+      // Release the connection back to the pool
+      connection.release();
+
+      if (err) {
+        // Handle potential duplicate phone number error
+        if (err.code === 'ER_DUP_ENTRY') {
+          console.log("Dup Phone Number")
+          return res.status(400).json({ error: 'Phone number must be unique' });
+        }
+        return res.sendStatus(500);
+      }
+
+      // Return a success message
+      res.json({ message: 'New branch created successfully', branch_id: results.insertId });
+    });
+  });
+});
+
 
 module.exports = router;

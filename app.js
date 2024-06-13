@@ -30,7 +30,6 @@ app.get('/test-db-connection', (req, res) => {
     dbConnectionPool.query('SELECT 1 + 1 AS result', (error, results) => {
         if (error) {
             // If there's an error, log it and send an error response
-            console.error('Error testing database connection:', error);
             return res.status(500).send(error);
         }
 
@@ -58,9 +57,7 @@ app.use('/users', usersRouter);
 
 function authorize(role) {
     return function (req, res, next) {
-        console.log('Session role:', req.session.role);
         if (!req.session.role || req.session.role !== role) {
-            console.log('Unauthorized access. Redirecting to forbidden.html...');
             // Redirect to forbidden.html if role does not match
             return res.redirect('/forbidden.html');
         }

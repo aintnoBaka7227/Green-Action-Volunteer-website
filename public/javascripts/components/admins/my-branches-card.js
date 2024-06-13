@@ -3,7 +3,7 @@ Vue.component('my-branches-card', {
     template:
         `<a :href="'/admins/branches/' + branchId" class="my-branches-card">
         <h2>{{ branchName }}</h2>
-        <div>Head Manager: {{ branchManager }}</div>
+        <div>Head Manager: {{ displayedBranchManager }}</div>
         <div>Number of volunteers: {{ volunteerCount }}</div>
     </a>`,
     props: {
@@ -30,6 +30,9 @@ Vue.component('my-branches-card', {
         },
         classButtonText() {
             return this.isUserIn ? 'red-button' : 'green-button';
+        },
+        displayedBranchManager() {
+            return this.branchManager ? this.branchManager : 'No Manager';
         }
     },
 });
