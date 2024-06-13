@@ -70,9 +70,44 @@ var addUpdateModal = Vue.component('add-update-modal', {
               }
             };
 
+            xhttp.onreadystatechange = () => {
+                if (xhttp.readyState === XMLHttpRequest.DONE) {
+                    if (xhttp.status === 200) {
+                        // Second request to send notification
+                        const notificationRequest = new XMLHttpRequest();
+                        notificationRequest.open('POST', '/managers/send-update-emails', true);
+                        notificationRequest.setRequestHeader('Content-Type', 'application/json');
+
+                        notificationRequest.onreadystatechange = () => {
+                            if (notificationRequest.readyState === XMLHttpRequest.DONE) {
+                                if (notificationRequest.status === 200) {
+                                    this.closeModal();
+                                    this.$emit('update-created');
+                                } else {
+                                    console.error('Failed to send update emails');
+                                }
+                            }
+                        };
+
+                        notificationRequest.onerror = () => {
+                            console.error('An error occurred during the request');
+                        };
+
+                        notificationRequest.send(JSON.stringify({
+                            branch_id: this.branch,
+                            content: this.updateContent,
+                            user_id: this.$root.user_id // Assuming user_id is stored in the root Vue instance
+                        }));
+                    } else {
+                        console.error('Failed to create update');
+                    }
+                }
+            };
+
             xhttp.onerror = () => {
               console.error('An error occurred during the request');
             };
+
 
             xhttp.send(JSON.stringify(updateData));
         },
