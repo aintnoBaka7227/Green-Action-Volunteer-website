@@ -436,7 +436,8 @@ router.post('/createNewBranch', function(req, res, next) {
 });
 
 router.post('/updateUser', function(req, res, next) {
-  const {userCurrentBranchID: userCurrentBranchID, userNewBranchID: userNewBranchID, userID: userID} = req.body;
+  const {userNewType, userCurrentBranchID, userNewBranchID, userID} = req.body;
+  console.log(userNewType);
   console.log(userCurrentBranchID);
   console.log(userNewBranchID);
   console.log(userID);
