@@ -308,6 +308,7 @@ router.get('/rsvp-events', (req, res) => {
       return;
     }
 
+    console.log(req.body);
     const userId = req.session.user_id;
 
     if (!userId) {
@@ -319,6 +320,7 @@ router.get('/rsvp-events', (req, res) => {
       FROM Volunteer
       WHERE user_id = ?
     `;
+
 
     connection.query(volunteerQuery, [userId], (volunteerError, volunteerResults) => {
       if (volunteerError) {
