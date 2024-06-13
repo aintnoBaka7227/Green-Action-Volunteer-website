@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const path = require('path');
 var { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client('198821023017-acnrsha9l5f807koqqu2g0dp800tn0nf.apps.googleusercontent.com');
 
@@ -89,5 +90,11 @@ router.get('/available-branches', (req, res) => {
   });
 });
 
+router.get('/branches/:branch_id', (req, res) => {
+  const branchId = req.params.branch_id;
+  // Path to the HTML file
+  const filePath = path.join(__dirname, '..', 'public', 'admins', 'branch.html');
+  res.sendFile(filePath);
+});
 
 module.exports = router;
