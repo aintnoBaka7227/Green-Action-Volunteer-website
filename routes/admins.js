@@ -23,6 +23,9 @@ router.get('/getUsers', function (req, res, next) {
     u.email,
     u.phone_number,
     u.gender,
+    v.volunteer_id,
+    m.manager_id,
+    a.admin_id,
     CASE
         WHEN v.volunteer_id IS NOT NULL THEN 'Volunteer'
         WHEN m.manager_id IS NOT NULL THEN 'Manager'
