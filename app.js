@@ -47,7 +47,9 @@ function authorize(role) {
             // Redirect to forbidden.html if role does not match
             next();
         }
-        res.status(403).json({ message: 'Access required' });
+        else {
+            res.status(403).json({ message: 'Access required' });
+        }
     };
 }
 

@@ -22,7 +22,7 @@ var navbarUser = Vue.component('navbar-volunteer', {
                 <div class="dropdown" :class="{ show: isDropdownVisible }">
                     <button class="dropdown-toggle" @click="toggleDropdown"><img class="profile-pic" src="../images/profile-pic.jpg" alt="profile pic"></button>
                     <div class="dropdown-content">
-                        <a href=:href="generateLink('profile-settings.html')">Profile Settings</a>
+                        <a :href="generateLink('profile-settings.html')">Profile Settings</a>
                         <a href="#" @click.prevent="logout">Log Out</a>
                     </div>
                 </div>

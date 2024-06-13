@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="../stylesheets/volunteer-index-style.css">
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="/javascripts/components/volunteers/navbar-volunteer.js" defer></script>
-    <script src="/javascripts/components/volunteers/event-card.js" defer></script>
+    <script src="/javascripts/components/volunteers/navbar-volunteer.js"></script>
+    <script src="/javascripts/components/volunteers/event-card.js"></script>
 </head>
 
 <body>
@@ -30,13 +30,8 @@
                         <a href="/volunteers/events.html">View All →</a>
                     </div>
                     <div class="innerdiv">
-                        <event-card
-                            v-for="event in events"
-                            :key="event.id"
-                            :event-name="event.event_type"
-                            :event-date="formatDate(event.date)"
-                            :event-description="event.content"
-                        ></event-card>
+                        <event-card v-for="event in events" :key="event.id" :event-name="event.event_type"
+                            :event-date="formatDate(event.date)" :event-description="event.content"></event-card>
                     </div>
                 </div>
                 <div class="updates-dashboard">
@@ -44,28 +39,24 @@
                         <h2>New Updates</h2>
                         <a href="/volunteers/updates.html">View All →</a>
                     </div>
-                    <event-card
-                        v-for="update in updates"
-                        :key="update.id"
-                        :event-description="update.content"
-                    ></event-card>
+                    <event-card v-for="update in updates" :key="update.id"
+                        :event-description="update.content"></event-card>
                 </div>
             </div>
         </main>
     </div>
     <script>
-        window.onload = function () {
-          new Vue({
+        new Vue({
             el: '#app',
             data: {
-              userName: '', // To store user's name
-              events: [],
-              updates: []
+                userName: '', // To store user's name
+                events: [],
+                updates: []
             },
             mounted() {
-              this.fetchUserName(); // Fetch user's name on component mount
-              this.fetchEvents();
-              this.fetchUpdates();
+                this.fetchUserName(); // Fetch user's name on component mount
+                this.fetchEvents();
+                this.fetchUpdates();
             },
             methods: {
                 fetchEvents() {
@@ -75,8 +66,7 @@
                         if (xhr.readyState === 4) {
                             if (xhr.status === 200) {
                                 try {
-                                    const data = JSON.parse(xhr.responseText);
-                                    this.events = data;
+                                    this.events = JSON.parse(xhr.responseText);
                                 } catch (error) {
                                     console.error('Error parsing JSON response', error);
                                 }
@@ -94,8 +84,7 @@
                         if (xhr.readyState === 4) {
                             if (xhr.status === 200) {
                                 try {
-                                    const data = JSON.parse(xhr.responseText);
-                                    this.updates = data;
+                                    this.updates = JSON.parse(xhr.responseText);
                                 } catch (error) {
                                     console.error('Error parsing JSON response', error);
                                 }
@@ -107,7 +96,7 @@
                     xhr.send();
                 },
                 formatDate(dateString) {
-                    const options = { year: 'numeric', month: 'long', day: 'numeric'};
+                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
                     return new Date(dateString).toLocaleDateString(undefined, options);
                 },
                 fetchUserName() {
@@ -132,9 +121,8 @@
                     xhr.send();
                 }
             }
-          });
-        }
-      </script>
+        });
+    </script>
 </body>
 
 </html>

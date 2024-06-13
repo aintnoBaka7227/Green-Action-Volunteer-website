@@ -120,8 +120,8 @@ router.get('/', function (req, res, next) {
 router.get('/event-updates', function (req, res, next) {
   req.pool.getConnection(function (err, connection) {
     if (err) {
-      res.sendStatus(500);
-      return;
+      console.error('Error connecting to database:', err);
+      return res.sendStatus(500);
     }
 
     // Step 1: Retrieve all public event updates
@@ -131,8 +131,8 @@ router.get('/event-updates', function (req, res, next) {
     connection.query(queryPublic, function (err, publicRows, fields) {
       if (err) {
         connection.release();
-        res.sendStatus(500);
-        return;
+        console.error('Error querying public event updates:', err);
+        return res.sendStatus(500);
       }
 
       // Step 2: Get the user id
@@ -152,8 +152,8 @@ router.get('/event-updates', function (req, res, next) {
       connection.query(queryBranches, [userId], function (err, branches, fields) {
         if (err) {
           connection.release();
-          res.sendStatus(500);
-          return;
+          console.error('Error querying user branches:', err);
+          return res.sendStatus(500);
         }
 
         const branchIds = branches.map(branch => branch.branch_id);
@@ -162,9 +162,8 @@ router.get('/event-updates', function (req, res, next) {
         // Ensure branchIds is not empty or null
         if (!branchIds || branchIds.length === 0) {
           // If branchIds is empty, there are no branches for the user, so send only public event updates
-          res.json(publicRows);
           connection.release();
-          return;
+          return res.json(publicRows);
         }
 
         // Construct the SQL query with the correct placeholder syntax for the IN clause
@@ -177,22 +176,21 @@ router.get('/event-updates', function (req, res, next) {
         // Execute the query to fetch private event updates
         connection.query(queryPrivate, branchIds, function (err, privateRows, fields) {
           if (err) {
-            console.error('Error fetching private event updates:', err);
-            res.sendStatus(500);
             connection.release();
-            return;
+            console.error('Error querying private event updates:', err);
+            return res.sendStatus(500);
           }
 
           // Combine public and private event updates and send the results
           const allEventUpdates = [...publicRows, ...privateRows];
-          // console.log(allEventUpdates);
-          res.json(allEventUpdates);
           connection.release();
+          res.json(allEventUpdates);
         });
       });
     });
   });
 });
+
 
 router.get('/events', function (req, res, next) {
   req.pool.getConnection(function (err, connection) {
