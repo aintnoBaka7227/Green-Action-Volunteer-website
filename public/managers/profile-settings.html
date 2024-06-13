@@ -8,15 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <title>Edit User Profile</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script src="../javascripts/components/navbar-user.js" defer></script>
+    <script src="/javascripts/components/managers/navbar-manager.js" defer></script>
     <script src="../javascripts/Profile.js" defer></script>
     <link rel="stylesheet" href="../stylesheets/profile-settings.css">
-    <link rel="stylesheet" href="../stylesheets/volunteer-style.css">
-    <link rel="stylesheet" href="../stylesheets/volunteer-index-style.css">
+    <link rel="stylesheet" href="/stylesheets/manager-style.css">
+    <link rel="stylesheet" href="/stylesheets/manager-index-style.css">
 </head>
 <body>
     <div id="app">
-        <navbar-user user-type="volunteers"></navbar-user>
+        <navbar-manager user-type="managers"></navbar-manager>
+        <!-- <button class="go-back" @click="goBack">Go Back</button> -->
         <div class="container">
             <h1>Profile Settings</h1>
             <form @submit.prevent="handleFormSubmit">
@@ -42,19 +43,11 @@
                 </div>
                 <div class="form-group">
                     <label for="dob">Date of Birth:</label>
-                    <input type="date" id="dob" v-model="user.dob" required>
+                    <input type="date" id="dob" v-model="user.dob">
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password" id="password" v-model="user.password" placeholder="Enter your password" required>
-                </div>
-                <div class="form-group">
-                    <label for="subscribed_event">Subscribe to Event Notifications:</label>
-                    <input type="checkbox" id="subscribed_event" v-model="subscription.subscribed_event">
-                </div>
-                <div class="form-group">
-                    <label for="subscribed_update">Subscribe to Update Notifications:</label>
-                    <input type="checkbox" id="subscribed_update" v-model="subscription.subscribed_update">
+                    <input type="password" id="password" v-model="user.password" placeholder="Enter your password">
                 </div>
                 <div class="center">
                     <button type="submit">Save</button>
