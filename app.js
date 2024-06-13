@@ -58,18 +58,18 @@ app.use('/users', usersRouter);
 
 function authorize(role) {
     return function (req, res, next) {
-        if (req.session.role !== role) {
-            return res.status(403).send('Forbidden');
+        console.log('Session role:', req.session.role);
+        if (!req.session.role || req.session.role !== role) {
+            console.log('Unauthorized access. Redirecting to forbidden.html...');
+            // Redirect to forbidden.html if role does not match
+            return res.redirect('/forbidden.html');
         }
         next();
     };
 }
 
-
 app.use('/admins', authorize('admin'), adminsRouter); // Protected routes for admins
 app.use('/managers', authorize('manager'), managersRouter); // Protected routes for managers
 app.use('/volunteers', authorize('volunteer'), volunteersRouter); // Protected routes for volunteers
-
-
 
 module.exports = app;
