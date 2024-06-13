@@ -118,14 +118,37 @@ var addEventModal = Vue.component('add-event-modal', {
             xhttp.setRequestHeader('Content-Type', 'application/json');
 
             xhttp.onreadystatechange = () => {
-              if (xhttp.readyState === XMLHttpRequest.DONE) {
-                if (xhttp.status === 200) {
-                  this.closeModal();
-                  this.$emit('event-created');
-                } else {
-                  console.error('Failed to create event');
+                if (xhttp.readyState === XMLHttpRequest.DONE) {
+                    if (xhttp.status === 200) {
+                        // Second request to send notification
+                        const notificationRequest = new XMLHttpRequest();
+                        notificationRequest.open('POST', '/managers/send-event-emails', true);
+                        notificationRequest.setRequestHeader('Content-Type', 'application/json');
+
+                        notificationRequest.onreadystatechange = () => {
+                            if (notificationRequest.readyState === XMLHttpRequest.DONE) {
+                                if (notificationRequest.status === 200) {
+                                    this.closeModal();
+                                    this.$emit('event-created');
+                                } else {
+                                    console.error('Failed to send event emails');
+                                }
+                            }
+                        };
+
+                        notificationRequest.onerror = () => {
+                            console.error('An error occurred during the request');
+                        };
+
+                        notificationRequest.send(JSON.stringify({
+                            branch_id: this.branch_id,
+                            content: this.eventContent,
+                            user_id: this.$root.user_id // Assuming user_id is stored in the root Vue instance
+                        }));
+                    } else {
+                        console.error('Failed to create event');
+                    }
                 }
-              }
             };
 
             xhttp.onerror = () => {
