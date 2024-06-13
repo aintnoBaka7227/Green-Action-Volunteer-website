@@ -21,9 +21,9 @@
         <a href="/guests/index.html" class="logo"><img src="../images/logo.png" alt="Logo" class="logo-image"></a>
         <ul>
           <div class="section">
-            <li><a href="/guests/about.html">About Us</a></li>
-            <li><a href="/guests/updates.html">Updates</a></li>
-            <li><a href="/guests/events.html">Events</a></li>
+            <li><a id="nav-about" href="/guests/about.html">About Us</a></li>
+            <li><a id="nav-updates" href="/guests/updates.html">Updates</a></li>
+            <li><a id="nav-events" href="/guests/events.html">Events</a></li>
           </div>
           <div class="section">
             <li><a href="../logins.html">Log In</a></li>
@@ -31,14 +31,12 @@
             <div class="dropdown" :class="{ show: isDropdownVisible }">
               <button type="button" class="dropdown-toggle" @click="toggleDropdown">{{ selectedBranch }}<i class="fas fa-chevron-down"></i></button>
               <div class="dropdown-content">
-                <a href="#" @click.prevent="selectBranch('SA')">SA</a>
-                <a href="#" @click.prevent="selectBranch('VIC')">VIC</a>
-                <a href="#" @click.prevent="selectBranch('NSW')">NSW</a>
+                <a href="#" v-for="branch in branches" :key="branch.branch_id" @click.prevent="selectBranch(branch)">{{ branch.state }}</a>
               </div>
             </div>
           </div>
         </ul>
-    </header>
+      </header>
       <main>
           <h1>Who we are</h1>
           <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </h2>
