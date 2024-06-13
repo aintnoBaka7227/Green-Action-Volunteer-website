@@ -245,6 +245,7 @@ Vue.component('admins-grid', {
             const userInfo = tableRef.selectedRows[0];
             const userCurrentType = userInfo.user_type;
             const userNewType = this.newUserType;
+            console.log(userNewType);
 
             // current branch id, user id, new branch id
             const userCurrentBranchID = userInfo.branch_id;
@@ -280,7 +281,7 @@ Vue.component('admins-grid', {
                 }
             };
 
-            updateXhr.send(JSON.stringify({ userNewTypeType: userNewType,userCurrentBranchID: userCurrentBranchID, userNewBranchID: userNewBranchID, userID: userID}));
+            updateXhr.send(JSON.stringify({ userNewType: userNewType,userCurrentBranchID: userCurrentBranchID, userNewBranchID: userNewBranchID, userID: userID}));
         }
     },
     mounted() {
