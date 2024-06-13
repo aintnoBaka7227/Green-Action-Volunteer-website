@@ -14,12 +14,25 @@
     <script src="/javascripts/Auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
-    <script src="./javascripts/components/guests/navbar-guest.js" defer></script>
+    <!-- <script src="./javascripts/components/guests/navbar-guest.js" defer></script> -->
     <title>Login Page</title>
 </head>
 <body>
     <div id="app">
-        <navbar-guest></navbar-guest>
+        <header>
+        <a href="/guests/index.html" class="logo"><img src="../images/logo.png" alt="Logo" class="logo-image"></a>
+        <ul>
+            <div class="section">
+            <li><a id="nav-about" href="/guests/about.html">About Us</a></li>
+            <li><a id="nav-updates" href="/guests/updates.html">Updates</a></li>
+            <li><a id="nav-events" href="/guests/events.html">Events</a></li>
+            </div>
+            <div class="section">
+            <li><a href="../logins.html">Log In</a></li>
+            <li class="sign-up"><a href="../signups.html">Sign Up</a></li>
+            </div>
+        </ul>
+        </header>
         <main>
             <div class="login-section">
                 <h1>Login</h1>
