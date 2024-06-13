@@ -280,7 +280,7 @@ Vue.component('admins-grid', {
                 }
             };
 
-            updateXhr.send(JSON.stringify({userCurrentBranchID: userCurrentBranchID, userNewBranchID: userNewBranchID, userID: userID}));
+            updateXhr.send(JSON.stringify({ userNewTypeType: userNewType,userCurrentBranchID: userCurrentBranchID, userNewBranchID: userNewBranchID, userID: userID}));
         }
     },
     mounted() {
