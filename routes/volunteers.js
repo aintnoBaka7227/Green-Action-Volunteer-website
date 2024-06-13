@@ -691,4 +691,111 @@ router.post('/modifyBranch', (req, res) => {
   });
 });
 
+// Route to fetch branches and their subscription statuses for the user
+router.get('/notification-branches', function (req, res) {
+  const userId = req.session.user_id;
+
+  req.pool.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error getting database connection:', err);
+      return res.status(500).send('Internal Server Error');
+    }
+
+    const query = `
+      SELECT b.branch_id, b.branch_name, v.volunteer_id, ns.subscription_id,
+             ns.subscribed_event, ns.subscribed_update
+      FROM Branch b
+      LEFT JOIN Volunteer v ON v.branch_id = b.branch_id AND v.user_id = ?
+      LEFT JOIN NotificationSubscription ns ON ns.subscription_id = v.subscription_id
+      WHERE v.user_id = ?;
+    `;
+
+    connection.query(query, [userId, userId], (error, results) => {
+      connection.release();
+
+      if (error) {
+        console.error('Error executing query:', error);
+        return res.status(500).send('Internal Server Error');
+      }
+      console.log(res);
+      res.json({ branches: results });
+    });
+  });
+});
+
+router.post('/update-subscription', function (req, res) {
+  const userId = req.session.user_id;
+  const { branchId, subscribedEvent, subscribedUpdate } = req.body;
+
+  req.pool.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error getting database connection:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    const volunteerQuery = `SELECT volunteer_id, subscription_id FROM Volunteer WHERE user_id = ? AND branch_id = ?`;
+
+    connection.query(volunteerQuery, [userId, branchId], (error, results) => {
+      if (error) {
+        connection.release();
+        console.error('Error executing query:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      const volunteer = results[0];
+      if (!volunteer) {
+        connection.release();
+        return res.status(404).json({ error: 'Volunteer record not found' });
+      }
+
+      let subscriptionId = volunteer.subscription_id;
+      if (!subscriptionId) {
+        // Create a new subscription if it doesn't exist
+        const insertSubscriptionQuery = `INSERT INTO NotificationSubscription (subscribed_event, subscribed_update) VALUES (?, ?)`;
+
+        connection.query(insertSubscriptionQuery, [subscribedEvent, subscribedUpdate], (error, result) => {
+          if (error) {
+            connection.release();
+            console.error('Error inserting subscription:', error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+          }
+
+          subscriptionId = result.insertId;
+
+          // Update the volunteer record with the new subscription_id
+          const updateVolunteerQuery = `UPDATE Volunteer SET subscription_id = ? WHERE volunteer_id = ?`;
+
+          connection.query(updateVolunteerQuery, [subscriptionId, volunteer.volunteer_id], (error) => {
+            connection.release();
+
+            if (error) {
+              console.error('Error updating volunteer:', error);
+              return res.status(500).json({ error: 'Internal Server Error' });
+            }
+
+            res.status(200).json({ message: 'Subscription updated successfully' });
+          });
+        });
+      } else {
+        // Update the existing subscription
+        const updateSubscriptionQuery = `UPDATE NotificationSubscription SET subscribed_event = ?, subscribed_update = ? WHERE subscription_id = ?`;
+
+        connection.query(updateSubscriptionQuery, [subscribedEvent, subscribedUpdate, subscriptionId], (error) => {
+          connection.release();
+
+          if (error) {
+            console.error('Error updating subscription:', error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+          }
+
+          res.status(200).json({ message: 'Subscription updated successfully' });
+        });
+      }
+    });
+  });
+});
+
+
+
+
 module.exports = router;

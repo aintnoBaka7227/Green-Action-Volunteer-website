@@ -11,6 +11,7 @@ var navbarUser = Vue.component('navbar-user', {
                 <li><a class="nav-title" :href="generateLink('updates.html')">Updates</a></li>
                 <li><a class="nav-title" :href="generateLink('events.html')">Events</a></li>
                 <li><a class="nav-title" :href="generateLink('branches.html')">Branches</a></li>
+                <li><a class="nav-title" :href="generateLink('notifications.html')">Notifications</a></li>
             </div>
             <div class="section">
                 <div class="dropdown" :class="{ show: isDropdownVisible }">
