@@ -58,7 +58,7 @@ Vue.component('admins-grid', {
                     <label for="new_user_type">New User Type:</label>
                     <select id="new_user_type" v-model="newUserType" required>
                         <option value="" disabled>Select new user type</option>
-                        <option value="Non roles">Non roles</option>
+                        <option value="Role unassigned">Role unassigned</option>
                         <option value="Volunteer">Volunteer</option>
                         <option value="Manager">Manager</option>
                         <option value="Admin">Admin</option>
@@ -67,7 +67,7 @@ Vue.component('admins-grid', {
                     <label for="new_branch">New Branch:</label>
                     <select id="new_branch" v-model="newBranch" required>
                         <option value="" disabled>Select new branch</option>
-                        <option value="Non branches">Non branches</option>
+                        <option value="Branch unassigned">Branch unassigned</option>
                         <option v-for="branch in branches" :key="branch.branch_id" :value="branch.branch_id">{{ branch.state }}</option>
                     </select>
                 </template>
@@ -112,6 +112,7 @@ Vue.component('admins-grid', {
                 { label: 'Volunteer ID', field: 'volunteer_id'},
                 { label: 'Manager ID', field: 'manager_id'},
                 { label: 'Admin ID', field: 'admin_id'},
+                { label: 'Branch ID', field: 'branch_id'},
             ],
         };
     },
@@ -156,6 +157,7 @@ Vue.component('admins-grid', {
                             volunteer_id: user.volunteer_id,
                             manager_id: user.manager_id,
                             admin_id: user.admin_id,
+                            branch_id: user.branch_id,
                         };
                     });
                 }
@@ -239,7 +241,46 @@ Vue.component('admins-grid', {
         },
 
         updateUserDetails() {
+            const tableRef = this.$refs.mytable;
+            const userInfo = tableRef.selectedRows[0];
+            const userCurrentType = userInfo.user_type;
+            const userNewType = this.newUserType;
 
+            // current branch id, user id, new branch id
+            const userCurrentBranchID = userInfo.branch_id;
+            const userNewBranchID = this.newBranch;
+            const userID = userInfo.user_id;
+
+            if (userCurrentType === userNewType && userCurrentBranchID === userNewBranchID) {
+                alert("no changes was made");
+                return;
+            }
+
+            if ((userNewType === 'Role unassigned' || userNewType === 'Admin') && userNewBranchID != 'Branch unassigned') {
+                alert('unassigned role users or admins can\'t be in a branch');
+                return;
+            }
+
+            if ((userNewType === 'Volunteer' || userNewType === 'Manager') && userNewBranchID === 'Branch unassigned') {
+                alert('You need to choose a branch');
+                return;
+            }
+
+
+
+            const updateXhr = new XMLHttpRequest();
+            updateXhr.open('POST', '/admins/updateUser', true);
+            updateXhr.setRequestHeader('Content-Type', 'application/json');
+            updateXhr.onreadystatechange = () => {
+                if (updateXhr.readyState === 4 && updateXhr.status === 200) {
+                    const response = JSON.parse(updateXhr.responseText);
+                    alert(response.message);
+                    this.fetchUsers();
+                    this.selectedRows = [];
+                }
+            };
+
+            updateXhr.send(JSON.stringify({userCurrentBranchID: userCurrentBranchID, userNewBranchID: userNewBranchID, userID: userID}));
         }
     },
     mounted() {
