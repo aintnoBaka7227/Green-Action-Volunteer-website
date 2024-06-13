@@ -195,6 +195,9 @@ router.post('/glogin', async function (req, res) {
                         // Set session variable for the role
                         req.session.role = results[0].role;
                         console.log("User Role:", results[0].role);
+                        if(req.session.role=="unknown"){
+                            req.session.role="volunteer";
+                        }
 
                         req.session.user_id = results[0].user_id;
                         console.log("User ID:", results[0].user_id);
@@ -224,9 +227,34 @@ router.post('/glogin', async function (req, res) {
                         //         res.status(500).send("Internal Server Error");
                         //         return;
                         //     }
-                        req.session.role = "Volunteer";
+                        // Query to get the user_id of the newly inserted user
+
+                        req.session.role = "volunteer";
                         console.log("User Role:", req.session.role);
-                        res.status(200).json({ status: "OK", role: req.session.role });
+
+
+                        let userIdQuery = 'SELECT user_id FROM User WHERE email = ?';
+                        let emailValue = [req.body.email];
+
+                        connection.query(userIdQuery, emailValue, function (userIdErr, userIdResults, userIdFields) {
+                            connection.release();
+
+                            if (userIdErr) {
+                                console.log(userIdErr);
+                                res.status(500).send("Internal Server Error");
+                                return;
+                            }
+
+                            if (userIdResults.length > 0) {
+                                // Set session variable for the role
+                                req.session.user_id = userIdResults[0].user_id;
+                                console.log("User ID:", userIdResults[0].user_id);
+
+                                res.status(200).json({ status: "OK", role: req.session.role });
+                            } else {
+                                res.status(500).send("User not found after insertion");
+                            }
+                        });
                         // });
                     });
                 }
