@@ -576,7 +576,6 @@ router.delete('/deleteUpdate/:updateId', (req, res, next) => {
   });
 });
 
-
 router.post('/send-event-emails', (req, res) => {
   const { branch_id, event_details, user_id } = req.body; // Assuming event details and branch_id are in the request body
   console.log(req.body);

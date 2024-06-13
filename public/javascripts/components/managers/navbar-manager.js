@@ -12,6 +12,7 @@ Vue.component('navbar-manager', {
                 <li><a class="nav-title" id="nav-members" :href="generateLink('members.html')">Members</a></li>
                 <li><a class="nav-title" id="nav-events" :href="generateLink('events.html')">Events</a></li>
                 <li><a class="nav-title" id="nav-updates":href="generateLink('updates.html')">Updates</a></li>
+                <li><a class="nav-title" id="nav-branch":href="generateLink('my-branch.html')">My Branch</a></li>
             </div>
             <div class="section">
                 <div class="dropdown" :class="{ show: isDropdownVisible }">
