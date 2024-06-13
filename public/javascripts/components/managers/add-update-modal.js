@@ -11,15 +11,6 @@ var addUpdateModal = Vue.component('add-update-modal', {
                     <input id="update-title" v-model="updateTitle" type="text" required>
                     </div>
                     <div>
-                    <label for="branch">Branch:</label>
-                    <select id="branch" v-model="branch" required class="styled-select">
-                        <option value="" disabled>Select a state</option>
-                        <option value="1">SA</option>
-                        <option value="2">VIC</option>
-                        <option value="3">NSW</option>
-                    </select>
-                    </div>
-                    <div>
                     <label for="update-content">Content:</label>
                     <textarea id="update-content" v-model="updateContent" rows="8" type="text" required></textarea>
                     </div>
@@ -39,7 +30,7 @@ var addUpdateModal = Vue.component('add-update-modal', {
         return {
             showModal: false,
             updateTitle: '',
-            branch: '',
+            branchId: '',
             updateContent: '',
             visibility: '1'
         };
@@ -47,18 +38,19 @@ var addUpdateModal = Vue.component('add-update-modal', {
     methods: {
         openModal() {
             this.showModal = true;
+            this.fetchManagerBranch();
         },
         closeModal() {
             this.showModal = false;
             this.updateTitle = '';
-            this.branch = '';
+            this.branchId = '';
             this.updateContent = '';
             this.visibility = '1';
         },
         submitNewUpdate() {
             const updateData = {
                 update_title: this.updateTitle,
-                branch_id: this.branch,
+                branch_id: this.branchId,
                 content: this.updateContent,
                 is_public: this.visibility,
             };
@@ -83,6 +75,24 @@ var addUpdateModal = Vue.component('add-update-modal', {
             };
 
             xhttp.send(JSON.stringify(updateData));
+        },
+        fetchManagerBranch() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open('GET', `/managers/getManagerBranch`, true);
+            xhttp.onreadystatechange = () => {
+              if (xhttp.readyState === XMLHttpRequest.DONE) {
+                if (xhttp.status === 200) {
+                  const response = JSON.parse(xhttp.responseText);
+                  this.branchId = response.branch_id;
+                } else {
+                  console.error('Failed to fetch user branch');
+                }
+              }
+            };
+            xhttp.onerror = () => {
+              console.error('An error occurred during the request');
+            };
+            xhttp.send();
         }
     }
 })

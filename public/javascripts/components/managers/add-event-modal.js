@@ -27,15 +27,6 @@ var addEventModal = Vue.component('add-event-modal', {
                 <input id="city" v-model="city" type="text" required>
                 </div>
                 <div>
-                <label for="state">State:</label>
-                <select id="state" v-model="state" required class="styled-select">
-                    <option value="" disabled>Select a state</option>
-                    <option value="SA">SA</option>
-                    <option value="VIC">VIC</option>
-                    <option value="NSW">NSW</option>
-                </select>
-                </div>
-                <div>
                 <label for="postcode">Postcode:</label>
                 <input id="postcode" v-model="postcode" type="text" required>
                 </div>
@@ -66,26 +57,14 @@ var addEventModal = Vue.component('add-event-modal', {
             state: '',
             postcode: '',
             eventContent: '',
-            visibility: '1'
+            visibility: '1',
+            branch_id: '',
         };
-    },
-    computed: {
-        branch_id() {
-            switch (this.state) {
-                case 'SA':
-                    return 1;
-                case 'VIC':
-                    return 2;
-                case 'NSW':
-                    return 3;
-                default:
-                    return null;
-            }
-        }
     },
     methods: {
         openModal() {
             this.showModal = true;
+            this.fetchManagerBranch();
         },
         closeModal() {
             this.showModal = false;
@@ -98,6 +77,7 @@ var addEventModal = Vue.component('add-event-modal', {
             this.postcode = '';
             this.eventContent = '';
             this.visibility = '1';
+            this.branch_id = '';
         },
         submitNewEvent() {
             const eventData = {
@@ -133,6 +113,25 @@ var addEventModal = Vue.component('add-event-modal', {
             };
 
             xhttp.send(JSON.stringify(eventData));
+        },
+        fetchManagerBranch() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open('GET', `/managers/getManagerBranch`, true);
+            xhttp.onreadystatechange = () => {
+              if (xhttp.readyState === XMLHttpRequest.DONE) {
+                if (xhttp.status === 200) {
+                  const response = JSON.parse(xhttp.responseText);
+                  this.branch_id = response.branch_id;
+                  this.state = response.state;
+                } else {
+                  console.error('Failed to fetch user branch');
+                }
+              }
+            };
+            xhttp.onerror = () => {
+              console.error('An error occurred during the request');
+            };
+            xhttp.send();
         }
     }
 })

@@ -356,7 +356,6 @@ router.get('/getEventInfo', (req, res, next) => {
   });
 });
 
-
 router.get('/getEventAttendees', (req, res, next) => {
   const eventId = parseInt(req.query.eventId, 10);
 
