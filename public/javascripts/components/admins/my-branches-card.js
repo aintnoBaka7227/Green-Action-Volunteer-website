@@ -1,12 +1,11 @@
 // eslint-disable-next-line no-undef
 Vue.component('my-branches-card', {
     template:
-        `<div class="my-branches-card">
+        `<a :href="'/admins/branches/' + branchId" class="my-branches-card">
         <h2>{{ branchName }}</h2>
         <div>Head Manager: {{ branchManager }}</div>
         <div>Number of volunteers: {{ volunteerCount }}</div>
-        <a href="'/admins/branches/' + branchId">More details</a>
-    </div>`,
+    </a>`,
     props: {
         branchName: {
             type: String,
