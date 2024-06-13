@@ -49,13 +49,45 @@ Vue.component('admins-grid', {
                     <button @click="showModal = false">Cancel</button>
                 </template>
             </modal>
+
+            <modal v-if="showChangeUserDetailsModal" @close="showChangeUserDetailsModal = false">
+                <template v-slot:header>
+                    <h3>Change User Details</h3>
+                </template>
+                <template v-slot:body>
+                    <label for="new_user_type">New User Type:</label>
+                    <select id="new_user_type" v-model="newUserType" required>
+                        <option value="" disabled>Select new user type</option>
+                        <option value="Non roles">Non roles</option>
+                        <option value="Volunteer">Volunteer</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+
+                    <label for="new_branch">New Branch:</label>
+                    <select id="new_branch" v-model="newBranch" required>
+                        <option value="" disabled>Select new branch</option>
+                        <option value="Non branches">Non branches</option>
+                        <option v-for="branch in branches" :key="branch.branch_id" :value="branch.branch_id">{{ branch.state }}</option>
+                    </select>
+                </template>
+                <template v-slot:footer>
+                    <button @click="updateUserDetails">Change</button>
+                    <button @click="showChangeUserDetailsModal = false" class="cancel-button">Cancel</button>
+                </template>
+            </modal>
+
         </div>
     `,
     data() {
         return {
+            branches: [],
             users: [],
             selectedRows: [],
             showModal: false,
+            showChangeUserDetailsModal: false,
+            newUserType: '',
+            newBranch: '',
             newUser: {
                 first_name: '',
                 last_name: '',
@@ -63,7 +95,10 @@ Vue.component('admins-grid', {
                 phone_number: '',
                 gender: '',
                 password: '',
-                DOB: ''
+                DOB: '',
+                volunteer_id: '',
+                manager_id: '',
+                admin_id: '',
             },
             columns: [
                 { label: 'First Name', field: 'first_name' },
@@ -73,14 +108,36 @@ Vue.component('admins-grid', {
                 { label: 'Gender', field: 'gender' },
                 { label: 'User Branch', field: 'state'},
                 { label: 'User Type', field: 'user_type'},
-                { label: 'User ID', field: 'user_id'}
+                { label: 'User ID', field: 'user_id'},
+                { label: 'Volunteer ID', field: 'volunteer_id'},
+                { label: 'Manager ID', field: 'manager_id'},
+                { label: 'Admin ID', field: 'admin_id'},
             ],
         };
     },
     created() {
         this.fetchUsers();
+        this.fetchBranches();
     },
     methods: {
+        fetchBranches() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open('GET', '/getBranches', true);
+            xhttp.onreadystatechange = () => {
+              if (xhttp.readyState === 4 && xhttp.status === 200) {
+                try {
+                  const data = JSON.parse(xhttp.responseText);
+                  this.branches = data;
+                } catch (error) {
+                  console.error('Error parsing response:', error);
+                }
+              } else if (xhttp.readyState === 4) {
+                console.error('Error fetching branches:', xhttp.statusText);
+              }
+            };
+            xhttp.send();
+        },
+
         fetchUsers() {
             const membersXhr = new XMLHttpRequest();
             membersXhr.open('GET', `/admins/getUsers`, true);
@@ -95,7 +152,10 @@ Vue.component('admins-grid', {
                             gender: user.gender,
                             state: user.state,
                             user_type: user.user_type,
-                            user_id: user.user_id
+                            user_id: user.user_id,
+                            volunteer_id: user.volunteer_id,
+                            manager_id: user.manager_id,
+                            admin_id: user.admin_id,
                         };
                     });
                 }
@@ -162,9 +222,29 @@ Vue.component('admins-grid', {
            removeXhr.send(JSON.stringify({ ids: idsToRemove }));
         },
 
+        checkSelectedRows() {
+            const tableRef = this.$refs.mytable;
+
+            if (!tableRef || !tableRef.selectedRows || tableRef.selectedRows.length === 0) {
+                alert("No users selected");
+                return;
+            }
+
+            if (tableRef.selectedRows.length > 1) {
+                alert("Please select only one user to change the type");
+                return;
+            }
+
+            this.showChangeUserDetailsModal = true;
+        },
+
+        updateUserDetails() {
+
+        }
     },
     mounted() {
         document.getElementById('add-new-user').addEventListener('click', () => { this.showModal = true; });
         document.getElementById('remove-user').addEventListener('click', this.removeUsers);
+        document.getElementById('change-user-details').addEventListener('click', this.checkSelectedRows);
     }
 });
