@@ -36,12 +36,9 @@
       <div>
         <event-update-card
           v-for="update in filteredUpdates"
+          :key="update.update_id"
           :title="update.update_title"
           :content="update.content"
-          :name="update.eventName"
-          :date="formatDate(update.eventDate)"
-          :location="update.branch_name"
-
         ></event-update-card>
       </div>
     </main>
