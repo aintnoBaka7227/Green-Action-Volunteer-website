@@ -13,36 +13,13 @@ var navbarGuest = Vue.component('navbar-guest', {
             <li><a href="../logins.html">Log In</a></li>
             <li class="sign-up"><a href="../signups.html">Sign Up</a></li>
             <div class="dropdown" :class="{ show: isDropdownVisible }">
-              <button type="button" class="dropdown-toggle" @click="toggleDropdown">SA<i class="fas fa-chevron-down"></i></button>
+              <button type="button" class="dropdown-toggle" @click="toggleDropdown">{{ selectedBranch }}<i class="fas fa-chevron-down"></i></button>
               <div class="dropdown-content">
-                <a href="#">SA</a>
-                <a href="#">TAS</a>
-                <a href="#">VIC</a>
+                <a href="#" v-for="branch in branches" :key="branch_id" @click.prevent="selectBranch(branch)">{{ branch.state }}</a>
               </div>
             </div>
           </div>
         </ul>
       </header>
     `,
-    data: function () {
-        return {
-            isDropdownVisible: false
-        };
-    },
-    methods: {
-        toggleDropdown() {
-            this.isDropdownVisible = !this.isDropdownVisible;
-        },
-        closeDropdowns(event) {
-            if (!event.target.closest(".dropdown")) {
-                this.isDropdownVisible = false;
-            }
-        }
-    },
-    mounted() {
-        document.addEventListener("click", this.closeDropdowns);
-    },
-    beforeDestroy() {
-        document.removeEventListener("click", this.closeDropdowns);
-    }
 });

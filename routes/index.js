@@ -7,6 +7,24 @@ router.get('/', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../public/guests/index.html'));
 });
 
+router.get('/getBranches', function(req, res, next) {
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+    var query = 'SELECT * FROM Branch';
+    connection.query(query, function(err, rows, fields) {
+      connection.release();
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows);
+    });
+  });
+})
+
 router.get('/getPublicEvents', function(req, res, next) {
   const branch = req.query.branch;
   req.pool.getConnection(function(err, connection) {
