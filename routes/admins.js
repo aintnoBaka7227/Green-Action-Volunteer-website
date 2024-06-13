@@ -422,7 +422,7 @@ router.post('/createNewBranch', function(req, res, next) {
       if (err) {
         // Handle potential duplicate phone number error
         if (err.code === 'ER_DUP_ENTRY') {
-          console.log("Dup Phone Number")
+          console.log("Dup Phone Number");
           return res.status(400).json({ error: 'Phone number must be unique' });
         }
         return res.sendStatus(500);
