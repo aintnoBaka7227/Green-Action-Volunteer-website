@@ -17,11 +17,11 @@ var eventCard = Vue.component('event-card', {
   props: {
     eventName: {
       type: String,
-      required: true
+      required: false
     },
     eventDate: {
       type: String,
-      required: true
+      required: false
     },
     eventDescription: {
       type: String,
