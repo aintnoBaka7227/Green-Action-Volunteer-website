@@ -109,6 +109,9 @@ Vue.component('admins-grid', {
                 { label: 'User Branch', field: 'state'},
                 { label: 'User Type', field: 'user_type'},
                 { label: 'User ID', field: 'user_id'},
+                { label: 'Volunteer ID', field: 'volunteer_id'},
+                { label: 'Manager ID', field: 'manager_id'},
+                { label: 'Admin ID', field: 'admin_id'},
             ],
         };
     },
