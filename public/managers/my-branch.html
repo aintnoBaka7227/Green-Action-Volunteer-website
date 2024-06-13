@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Branch</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/manager-style.css">
+    <link rel="stylesheet" href="/stylesheets/manager-branch-style.css">
+    <link rel="stylesheet" href="https://unpkg.com/vue-good-table@2.21.10/dist/vue-good-table.css">
+    <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-good-table@2.21.10/dist/vue-good-table.js"></script>
+    <script src="/javascripts/components/managers/navbar-manager.js" defer></script>
+    <script src="/javascripts/components/managers/branch-detail-modal.js" defer></script>
+    <script src="../javascripts/Manager.js" defer></script>
+</head>
+
+<body>
+    <div id="app">
+        <navbar-manager user-type="managers"></navbar-manager>
+        <main>
+            <branch-details></branch-details>
+        </main>
+    </div>
+</body>
+</html>

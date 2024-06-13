@@ -576,7 +576,6 @@ router.delete('/deleteUpdate/:updateId', (req, res, next) => {
   });
 });
 
-
 router.post('/send-event-emails', (req, res) => {
   const { branch_id, content, user_id } = req.body; // Assuming event details and branch_id are in the request body
   console.log(req.body);
@@ -697,6 +696,72 @@ router.post('/send-update-emails', (req, res) => {
               }
           }
       );
+  });
+});
+
+router.get('/getBranchDetail', function (req, res, next) {
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+    const userId = req.session.user_id;
+
+    var queryBranch = `
+        SELECT
+          m.branch_id,
+          b.branch_name,
+          b.phone_number,
+          b.street_address,
+          b.city,
+          b.state,
+          b.postcode
+        FROM
+          Manager m
+          JOIN Branch b ON m.branch_id = b.branch_id
+        WHERE
+          m.user_id = ?`;
+
+    connection.query(queryBranch, [userId], function (err, branches, fields) {
+      connection.release();
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      if (branches.length === 0) {
+        res.status(404).send("Branch not found");
+        return;
+      }
+
+      res.json(branches[0]);
+    });
+  });
+});
+
+router.put('/updateBranchDetail/:branchId', function (req, res, next) {
+  const branchId = req.params.branchId;
+  const { phone_number, street_address, city, postcode } = req.body;
+
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    var updateQuery = `
+        UPDATE Branch
+        SET phone_number = ?, street_address = ?, city = ?, postcode = ?
+        WHERE branch_id = ?`;
+
+    connection.query(updateQuery, [phone_number, street_address, city, postcode, branchId], function (err, result) {
+      connection.release();
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+
+      res.sendStatus(200);
+    });
   });
 });
 
