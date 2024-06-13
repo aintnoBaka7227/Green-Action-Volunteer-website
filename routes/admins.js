@@ -26,6 +26,7 @@ router.get('/getUsers', function (req, res, next) {
     v.volunteer_id,
     m.manager_id,
     a.admin_id,
+    b.branch_id,
     CASE
         WHEN v.volunteer_id IS NOT NULL THEN 'Volunteer'
         WHEN m.manager_id IS NOT NULL THEN 'Manager'
@@ -422,7 +423,7 @@ router.post('/createNewBranch', function(req, res, next) {
       if (err) {
         // Handle potential duplicate phone number error
         if (err.code === 'ER_DUP_ENTRY') {
-          console.log("Dup Phone Number")
+          console.log("Dup Phone Number");
           return res.status(400).json({ error: 'Phone number must be unique' });
         }
         return res.sendStatus(500);
@@ -434,5 +435,16 @@ router.post('/createNewBranch', function(req, res, next) {
   });
 });
 
+router.post('/updateUser', function(req, res, next) {
+  const {userCurrentBranchID: userCurrentBranchID, userNewBranchID: userNewBranchID, userID: userID} = req.body;
+  console.log(userCurrentBranchID);
+  console.log(userNewBranchID);
+  console.log(userID);
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      return res.sendStatus(500);
+    }
+  });
+});
 
 module.exports = router;
