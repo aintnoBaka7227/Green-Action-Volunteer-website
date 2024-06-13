@@ -89,5 +89,68 @@ router.get('/available-branches', (req, res) => {
   });
 });
 
+router.post('/addNewUser', function(req, res, next) {
+  // Extract user data from the request body
+  const { first_name, last_name, email, phone_number, gender, password, DOB } = req.body;
+
+  // Validate the incoming data (example validation)
+  if (!first_name || !last_name || !email || !phone_number || !gender || !password || !DOB) {
+      return res.status(400).json({ success: false, message: "Please provide all required fields." });
+  }
+
+  req.pool.getConnection((err, connection) => {
+      if (err) {
+          return res.sendStatus(500);
+      }
+
+      // Check if email or phone_number already exist
+      const checkDuplicateQuery = 'SELECT COUNT(*) AS count FROM User WHERE email = ? OR phone_number = ?';
+      const checkDuplicateValues = [email, phone_number];
+      connection.query(checkDuplicateQuery, checkDuplicateValues, (err, results) => {
+          if (err) {
+              connection.release();
+              return res.status(500).json({ success: false, message: "Failed to check duplicate user.", error: err.message });
+          }
+
+          if (results[0].count > 0) {
+              connection.release();
+              return res.status(400).json({ success: false, message: "Email or phone number already exists." });
+          }
+
+          // If no duplicate, proceed to insert user
+          const userInfo = [first_name, last_name, email, phone_number, gender, password, DOB];
+          const addUserQuery = 'INSERT INTO User (first_name, last_name, email, phone_number, gender, password, DOB) VALUES (?, ?, ?, ?, ?, ?, ?)';
+          connection.query(addUserQuery, userInfo, (err, result) => {
+              connection.release();
+              if (err) {
+                  return res.status(500).json({ success: false, message: "Failed to add user.", error: err.message });
+              }
+
+              res.status(200).json({ success: true, message: "User added successfully.", user: result.insertId });
+          });
+      });
+  });
+});
+
+router.post('/removeUsers', function (req, res, next) {
+  const idsToRemove = req.body.ids;
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+    var query = `DELETE FROM User WHERE user_id IN (?)`;
+    connection.query(query, [idsToRemove], function (err, result, fields) {
+      connection.release();
+      if (err) {
+        res.status(500).json({ error: err });
+        return;
+      }
+      if (result.affectedRows > 0) {
+        return res.status(200).json({ message: 'Users removed successfully' });
+      }
+    });
+  });
+});
 
 module.exports = router;
