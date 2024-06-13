@@ -325,7 +325,7 @@ router.get('/user-name', function (req, res, next) {
         return;
       }
 
-      const userId = req.session.user_id; // Assuming user ID is stored in the session
+      const userId = req.session.user_id;
 
       var queryUserName = `SELECT first_name FROM User WHERE user_id = ?`
 
