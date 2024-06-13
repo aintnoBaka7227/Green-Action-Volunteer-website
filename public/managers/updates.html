@@ -29,10 +29,6 @@
                       <option value="public">Public</option>
                       <option value="private">Private</option>
                   </select>
-                  <select v-model="sortOption" class="announcement-sort">
-                      <option value="newest">Sort by newest</option>
-                      <option value="oldest">Sort by oldest</option>
-                  </select>
                   <input type="search" class="announcement-search" placeholder="Search..." v-model="searchQuery" />
                   <button type="button" class="add-new-updates" @click="openAddUpdateModal">+ New update</button>
                 </div>

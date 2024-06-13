@@ -3,6 +3,7 @@
 }
 
 .events-modifier {
+    font-family: "Quicksand", sans-serif;
     display: flex;
     align-items: center;
     margin-bottom: 20px;
@@ -11,6 +12,7 @@
 .events-modifier select,
 .events-modifier input,
 .events-modifier .add-new-events {
+    font-family: inherit;
     margin-right: 10px;
     padding: 7px 15px;
     border: 1px solid #ccc;
