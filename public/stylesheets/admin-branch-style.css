@@ -1,0 +1,47 @@
+.branch-info-inputs {
+    font-family: inherit;
+    font-size: inherit;
+    padding-top: 20px;
+}
+
+.branch-info-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.branch-info-form label {
+    font-size: large;
+}
+
+.branch-info-form input {
+    padding: 14px 16px;
+    margin: 14px 20px;
+    border-radius: 8px;
+}
+
+.branch-form-buttons {
+    display: flex;
+    padding-top: 40px;
+    justify-content: center;
+    gap: 40px;
+}
+
+.branch-form-buttons button {
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: inherit;
+    font-family: inherit;
+    border-radius: 8px;
+    border-width: 4px;
+    font-weight: 600;
+}
+
+.submit-details-button {
+    border-color: green;
+    color: green;
+}
+
+.delete-branch-button {
+    border-color: red;
+    color: red;
+}

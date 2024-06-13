@@ -97,4 +97,219 @@ router.get('/branches/:branch_id', (req, res) => {
   res.sendFile(filePath);
 });
 
+router.get('/getBranchInfo', function (req, res, next) {
+  // Extract branch_id from query parameters
+  const branch_id = parseInt(req.query.branch_id, 10);
+
+  // Validate branch_id
+  if (isNaN(branch_id)) {
+    return res.status(400).json({ error: 'Invalid branch_id' });
+  }
+
+  // Get a database connection from the pool
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      return res.sendStatus(500);
+    }
+
+    // SQL query to get branch information
+    const branchQuery = `
+    SELECT
+      branch_id,
+      branch_name,
+      phone_number,
+      street_address,
+      city,
+      state,
+      postcode
+    FROM
+      Branch
+    WHERE
+      branch_id = ?
+    `;
+
+    // Execute the query with the branch_id as a parameter
+    connection.query(branchQuery, [branch_id], function (err, results, fields) {
+      // Release the connection back to the pool
+      connection.release();
+
+      if (err) {
+        return res.sendStatus(500);
+      }
+
+      // If no results, return a 404 error
+      if (results.length === 0) {
+        return res.status(404).json({ error: 'Branch not found' });
+      }
+
+      // Return the branch information as a JSON response
+      console.log(results[0]);
+      res.json(results[0]);
+    });
+  });
+});
+
+router.post('/deleteBranch', function (req, res, next) {
+  // Extract branch_id from the request body
+  const branch_id = parseInt(req.query.branch_id, 10);
+
+  // Validate branch_id
+  if (isNaN(branch_id)) {
+    return res.status(400).json({ error: 'Invalid branch_id' });
+  }
+
+  // Get a database connection from the pool
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      return res.sendStatus(500);
+    }
+
+    // Begin transaction to ensure atomicity
+    connection.beginTransaction(function (err) {
+      if (err) {
+        connection.release();
+        return res.sendStatus(500);
+      }
+
+      // SQL query to delete the branch
+      const deleteBranchQuery = `
+        DELETE FROM Branch
+        WHERE branch_id = ?
+      `;
+
+      // SQL query to delete manages entries
+      const deleteManagersQuery = `
+        DELETE FROM Manager
+        WHERE branch_id = ?
+      `;
+
+      // SQL query to delete volunteer entries
+      const deleteVolunteersQuery = `
+        DELETE FROM Volunteer
+        WHERE branch_id = ?
+      `;
+
+      // Execute delete operations in a transaction
+      connection.query(deleteManagersQuery, [branch_id], function (err) {
+        if (err) {
+          connection.rollback(function () {
+            connection.release();
+            return res.sendStatus(500);
+          });
+        }
+
+        connection.query(deleteVolunteersQuery, [branch_id], function (err) {
+          if (err) {
+            connection.rollback(function () {
+              connection.release();
+              return res.sendStatus(500);
+            });
+          }
+
+          connection.query(deleteBranchQuery, [branch_id], function (err, results) {
+            if (err) {
+              connection.rollback(function () {
+                connection.release();
+                return res.sendStatus(500);
+              });
+            }
+
+            // Commit the transaction
+            connection.commit(function (err) {
+              if (err) {
+                connection.rollback(function () {
+                  connection.release();
+                  return res.sendStatus(500);
+                });
+              }
+
+              // Check if any rows were affected (i.e., if the branch was deleted)
+              if (results.affectedRows === 0) {
+                return res.status(404).json({ error: 'Branch not found' });
+              }
+
+              // Return a success message
+              res.json({ message: 'Branch and associated records deleted successfully' });
+              connection.release();
+            });
+          });
+        });
+      });
+    });
+  });
+});
+
+
+router.post('/updateBranchDetails', function (req, res, next) {
+  // Extract branch details from the request body
+  const branch_id = parseInt(req.query.branch_id, 10);
+  const branchDetails = {
+    branch_name: req.body.branch_name,
+    street_address: req.body.street_address,
+    city: req.body.city,
+    state: req.body.state,
+    postcode: req.body.postcode,
+    phone_number: req.body.phone_number
+  };
+
+  // Validate branch_id and other required fields
+  if (isNaN(branch_id)) {
+    return res.status(400).json({ error: 'Invalid branch_id' });
+  }
+
+  // Ensure all required fields are provided
+  for (const [key, value] of Object.entries(branchDetails)) {
+    if (!value) {
+      console.log(`Missing ${key}`);
+      return res.status(400).json({ error: `Missing ${key}` });
+    }
+  }
+
+  // Get a database connection from the pool
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      return res.sendStatus(500);
+    }
+
+    // SQL query to update the branch details
+    const updateQuery = `
+    UPDATE Branch SET
+      branch_name = ?,
+      street_address = ?,
+      city = ?,
+      state = ?,
+      postcode = ?,
+      phone_number = ?
+    WHERE
+      branch_id = ?
+    `;
+
+    // Execute the query with the branch details as parameters
+    connection.query(updateQuery, [
+      branchDetails.branch_name,
+      branchDetails.street_address,
+      branchDetails.city,
+      branchDetails.state,
+      branchDetails.postcode,
+      branchDetails.phone_number,
+      branch_id
+    ], function (err, results, fields) {
+      // Release the connection back to the pool
+      connection.release();
+
+      if (err) {
+        return res.sendStatus(500);
+      }
+
+      // Check if any rows were affected (i.e., if the branch was updated)
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ error: 'Branch not found' });
+      }
+
+      // Return a success message
+      res.json({ message: 'Branch details updated successfully' });
+    });
+  });
+});
+
 module.exports = router;

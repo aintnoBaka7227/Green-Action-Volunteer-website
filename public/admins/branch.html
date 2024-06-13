@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>branch Details</title>
+    <title>Branch Details</title>
     <link rel="stylesheet" href="/stylesheets/admin-style.css">
     <link rel="stylesheet" href="/stylesheets/admin-branch-style.css">
     <link rel="stylesheet" href="https://unpkg.com/vue-good-table@2.21.10/dist/vue-good-table.css">
@@ -19,10 +19,40 @@
         <navbar-admin user-type="admins"></navbar-admin>
         <main>
             <div class="content">
-                <h1 class="h1">Branch ID: Hello</h1>
-                <div class="branch-info">
-                    <div> hljads,</div>
-                    <div>asdfdsaf</div>
+                <h1 class="h1">Here's the branch details</h1>
+                <div class="branch-info-inputs">
+                    <form id="branch-info-form" class="branch-info-form">
+                        <label for="branch-name">Branch Name</label>
+                        <input :value="branch.branch_name" placeholder="Enter branch name here..." type="text"
+                            id="branch-name" name="branch-name" required>
+
+                        <label for="branch-street-address">Branch Address</label>
+                        <input type="text" :value="branch.street_address" id="branch-street-address"
+                            name="branch-street-address" required>
+
+                        <label for="branch-city">Branch City</label>
+                        <input placeholder="Enter city here..." type="text" id="branch-city" name="branch-city"
+                            :value="branch.city" required>
+
+                        <label for="branch-state">Branch State</label>
+                        <input placeholder="Enter state here..." type="text" id="branch-state" name="branch-state"
+                            :value="branch.state" required>
+
+                        <label for="branch-postcode">Branch Postcode</label>
+                        <input placeholder="Enter postcode here..." type="text" id="branch-postcode"
+                            name="branch-postcode" :value="branch.postcode" required>
+
+                        <label for="branch-phone">Branch Phone Number</label>
+                        <input type="tel" :value="branch.phone_number" placeholder="Enter phone number here..."
+                            id="branch-phone" name="branch-phone" required>
+
+                        <div class="branch-form-buttons">
+                            <button type="button" @click="updateBranchDetails(branch.branch_id)"
+                                class="submit-details-button">Save details</button>
+                            <button type="button" @click="deleteBranch(branch.branch_id)"
+                                class="delete-branch-button">Delete branch</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </main>
@@ -35,12 +65,78 @@
                 branch: {}
             },
             methods: {
-                getBranchInfo() {
-                    
+                getBranchInfo(branch_id) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', '/admins/getBranchInfo?branch_id=' + branch_id, true);
+                    xhr.onload = () => {
+                        if (xhr.status === 200) {
+                            this.branch = JSON.parse(xhr.responseText);
+                        } else {
+                            console.error('Error fetching branch info');
+                        }
+                    };
+                    xhr.onerror = () => {
+                        console.error('Request failed');
+                    };
+                    xhr.send();
+                },
+                deleteBranch(branch_id) {
+                    if (confirm('Are you sure you want to delete this branch?')) {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', '/admins/deleteBranch?branch_id=' + branch_id, true);
+                        xhr.onload = () => {
+                            if (xhr.status === 200) {
+                                alert('Branch deleted successfully');
+                                window.location.href = '/admins/branches.html';
+                            } else {
+                                console.error('Error deleting branch');
+                            }
+                        };
+                        xhr.onerror = () => {
+                            console.error('Request failed');
+                        };
+                        xhr.send();
+                    }
+                },
+                updateBranchDetails(branch_id) {
+                    const branchInfo = {
+                        branch_name: document.getElementById('branch-name').value,
+                        street_address: document.getElementById('branch-street-address').value,
+                        city: document.getElementById('branch-city').value,
+                        state: document.getElementById('branch-state').value,
+                        postcode: document.getElementById('branch-postcode').value,
+                        phone_number: document.getElementById('branch-phone').value
+                    };
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/admins/updateBranchDetails?branch_id=' + branch_id, true);
+                    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                    xhr.onload = () => {
+                        if (xhr.status === 200) {
+                            alert('Branch details updated successfully');
+                        } else {
+                            try {
+                                const response = JSON.parse(xhr.responseText);
+                                if (response.error) {
+                                    console.error(response.error);
+                                } else {
+                                    console.error('Unknown error occurred');
+                                }
+                            } catch (error) {
+                                console.error('Error parsing JSON response');
+                            }
+                        }
+                    };
+                    xhr.onerror = () => {
+                        console.error('Request failed');
+                    };
+                    xhr.send(JSON.stringify(branchInfo));
                 }
             },
             created() {
-                getBranchInfo();
+                const urlSegments = window.location.pathname.split('/');
+                const branch_id = parseInt(urlSegments[urlSegments.length - 1], 10);
+                this.getBranchInfo(branch_id);
             }
         });
     </script>
