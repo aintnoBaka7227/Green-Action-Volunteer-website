@@ -9,55 +9,62 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/stylesheets/style.css">
-    <link rel="stylesheet" href="/stylesheets/style-admin.css">
+    <link rel="stylesheet" href="/stylesheets/admin-style.css">
+    <link rel="stylesheet" href="/stylesheets/admin-index-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="/javascripts/components/admins/graph-one.js" defer></script>
+    <script src="/javascripts/components/admins/graph-two.js" defer></script>
+    <script src="/javascripts/components/admins/graph-three.js" defer></script>
+    <script src="/javascripts/components/admins/navbar-admin.js"></script>
+    <script src="/javascripts/Admin.js" defer></script>
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <header>
-        <a href="homepage.html" class="logo">
-            <img src="/assets/logo.png" alt="Logo" class="logo-image">
-        </a>
-        <ul>
-            <li><a class="nav-title" href="index.html" style="font-weight: bold;">Dashboard</a></li>
-            <li><a class="nav-title" href="users.html">Users</a></li>
-            <li><a class="nav-title" href="branches.html">Branches</a></li>
-            <li style="float: right; margin-right: 30px; margin-top: -15px;">
-                <a href="/admins/homepage.html">
-                    <img src="/assets/profile-pic.jpg" alt="profile pic" style="width: 50px; height: 50px; border-radius: 50%;">
-                </a>
-            </li>
-        </ul>
-    </header>
-    <main>
-        <div class="page-heading">Welcome back Khanh,</div>
-        <div class="grid-container">
-            <div class="grid-item">
-                <div class="graph-item graph-1">
-                    <div>User's type</div>
-                    <div class="graph-1-bar">
-                        <div class="graph-1-bar-1"></div>
-                    </div>
-                    <div>
-                        <span style="color: #34623C">Volunteers [73%]</span>
-                        <span style="color: #000000">Managers [27%]</span>
-                    </div>
+    <div id="app">
+        <navbar-admin></navbar-admin>
+        <main>
+            <div class="page-heading">Welcome back {{ user_name }},</div>
+            <div class="page-dashboard">
+                <div class="dashboard-column-1">
+                    <graph-one></graph-one>
+                    <graph-three></graph-three>
                 </div>
-                <div class="graph-2">
-                    <img alt="graph-2" style="width: 100%;" src="/assets/graph-2.png" />
+                <div class="dashboard-column-2">
+                    <graph-two></graph-two>
                 </div>
             </div>
-            <div class="grid-item">
-                <div class="graph-item graph-3">
-                    <div>Volunteer Count</div>
-                    <div class="pie-chart-container">
-                        <object type="image/svg+xml" data="/assets/pie-chart.svg" class="pie-chart"></object>
+            <!--
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <div class="graph-item graph-1">
+                            <div>User's type</div>
+                            <div class="graph-1-bar">
+                                <div class="graph-1-bar-1"></div>
+                            </div>
+                            <div>
+                                <span style="color: #34623C">Volunteers [73%]</span>
+                                <span style="color: #000000">Managers [27%]</span>
+                            </div>
+                        </div>
+                        <div class="graph-2">
+                            <img alt="graph-2" style="width: 100%;" src="/assets/graph-2.png" />
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="graph-item graph-3">
+                            <div>Volunteer Count</div>
+                            <div class="pie-chart-container">
+                                <object type="image/svg+xml" data="/assets/pie-chart.svg" class="pie-chart"></object>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </main>
+            -->
+        </main>
+        <footer></footer>
+    </div>
 </body>
 
 </html>

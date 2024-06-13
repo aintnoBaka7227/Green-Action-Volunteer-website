@@ -1,5 +1,10 @@
-var navbarUser = Vue.component('navbar-user', {
-    props: ['userType'],
+var navbarUser = Vue.component('navbar-volunteer', {
+    props: {
+        userType: {
+            type: String,
+            default: 'volunteers' // Set the default value to 'admins'
+        }
+    },
     template: `
       <header>
         <a :href="generateLink('index.html')" class="logo">
@@ -17,7 +22,7 @@ var navbarUser = Vue.component('navbar-user', {
                 <div class="dropdown" :class="{ show: isDropdownVisible }">
                     <button class="dropdown-toggle" @click="toggleDropdown"><img class="profile-pic" src="../images/profile-pic.jpg" alt="profile pic"></button>
                     <div class="dropdown-content">
-                        <a href="/volunteers/profile-settings.html">Profile Settings</a>
+                        <a href=:href="generateLink('profile-settings.html')">Profile Settings</a>
                         <a href="#" @click.prevent="logout">Log Out</a>
                     </div>
                 </div>

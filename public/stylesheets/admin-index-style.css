@@ -1,7 +1,5 @@
 main {
-    padding-top: 150px;
-    padding-left: 10%;
-    padding-right: 10%;
+    padding: 40px 80px;
 }
 
 .page-heading {
@@ -10,6 +8,7 @@ main {
     color: #8CBE47;
 }
 
+/*
 .events-dashboard {
     width: 480px;
     height: 600px;
@@ -38,12 +37,10 @@ main {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 3vw;
-    /* Increase gap to prevent overlaying */
 }
 
 .grid-item {
     margin: 0;
-    /* Remove padding and set margin to 0 */
 }
 
 .graph-item {
@@ -63,9 +60,7 @@ main {
     justify-content: space-between;
     height: 20vh;
     padding: 20px;
-    /* Add padding to create space inside the graph */
     box-sizing: border-box;
-    /* Include padding in the element's total width and height */
 }
 
 .graph-1-bar {
@@ -99,7 +94,6 @@ main {
 
 
 .pie-chart-container {
-    /* Center the container horizontally */
     width: 100%;
     display: flex;
     justify-content: center;
@@ -109,4 +103,194 @@ main {
     display: flex;
     justify-content: center;
     width: 80%;
+}
+*/
+
+
+.page-dashboard {
+    padding-top: 40px;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+}
+
+.dashboard-column-1 {
+    flex: 7;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.dashboard-column-2 {
+    flex: 3;
+}
+
+.graph-1 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 40px;
+    border-radius: 12px;
+    background-color: #82C86C;
+    box-shadow: 0 8px 16px rgba(0, 128, 0, 0.6);
+}
+
+.graph-1 h2 {
+    margin: 10px 0px;
+}
+
+.graph-1-bar {
+    position: relative;
+    height: 40px;
+    background-color: #FCEFC3;
+    border-radius: 4px;
+}
+
+.graph-1-inner-bar {
+    position: absolute;
+    height: 100%;
+    width: calc(var(--volunteer-percentage) * 1%);
+    background-color: #34623C;
+    border-radius: 4px;
+}
+
+.graph-1-legend {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    font-size: large;
+    font-weight: 600;
+}
+
+.legend-volunteers {
+    color: #34623C;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legend-managers {
+    color: #FCEFC3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legend-dot {
+    font-size: 8px;
+}
+
+.graph-2 {
+    display: flex;
+    flex-direction: column;
+    background-color: #E4FF97;
+    border-radius: 12px;
+    gap: 20px;
+    padding: 20px 40px;
+    box-shadow: 0 8px 16px rgba(179, 236, 23, 0.8);
+}
+
+.graph-2 h2 {
+    margin: 10px 0px;
+}
+
+.chart-container {
+    display: flex;
+    padding: 20px 0px;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(#14A166 0% calc(var(--percentage) * 100%), #F82B2B calc(var(--percentage) * 100%) 100%);
+}
+
+.chart::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background-color: #E4FF97;
+}
+
+.chart::after {
+    content: attr(data-people) ' people';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: x-large;
+    font-family: inherit;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+}
+
+.chart-title {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1em;
+    color: #333;
+}
+
+.graph-2-legend {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    font-size: large;
+    font-weight: 600;
+}
+
+.legend-male {
+    color: #14A166;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legend-female {
+    color: #F82B2B;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.graph-3 {
+    display: flex;
+    flex-direction: column;
+    background-color: #FCEFC3;
+    border-radius: 12px;
+    gap: 20px;
+    padding: 20px 40px;
+    box-shadow: 0 8px 16px rgba(233, 212, 149, 0.8);
+}
+
+.graph-3 h2 {
+    margin: 10px 0px;
+}
+
+.other-info {
+    display: flex;
+    margin: 0px;
+    justify-content: space-around;
+}
+
+.other-info h3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.other-info h3 span {
+    font-size: x-large;
+    color: #14A166;
 }

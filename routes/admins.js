@@ -447,5 +447,177 @@ router.post('/updateUser', function(req, res, next) {
     }
   });
 });
+router.get('/getPeopleInfo', function (req, res, next) {
+  // Get a database connection from the pool
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      console.error('Error getting database connection:', err);
+      return res.sendStatus(500);
+    }
+
+    // SQL query to get total number of users, number of males, and number of females
+    const query = `
+      SELECT
+        COUNT(*) AS totalPeople,
+        SUM(CASE WHEN gender = 'male' THEN 1 ELSE 0 END) AS numMale,
+        SUM(CASE WHEN gender = 'female' THEN 1 ELSE 0 END) AS numFemale
+      FROM User
+    `;
+
+    // Execute the query
+    connection.query(query, function(err, results, fields) {
+      // Release the connection back to the pool
+      connection.release();
+
+      if (err) {
+        console.error('Error executing query:', err);
+        return res.sendStatus(500);
+      }
+
+      // Extract results from the query response
+      const { totalPeople, numMale, numFemale } = results[0];
+
+      // Prepare the response object
+      const userStats = {
+        totalPeople: totalPeople || 0,
+        numMale: numMale || 0,
+        numFemale: numFemale || 0
+      };
+
+      // Send the response as JSON
+      res.json(userStats);
+    });
+  });
+});
+
+
+router.get('/getVolManInfo', function (req, res, next) {
+  // Get a database connection from the pool
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      console.error('Error getting database connection:', err);
+      return res.sendStatus(500);
+    }
+
+    // SQL query to get manager count
+    const managerQuery = `
+      SELECT COUNT(*) AS managerCount
+      FROM Manager
+    `;
+
+    // Execute managerQuery
+    connection.query(managerQuery, function(err, managerResults) {
+      if (err) {
+        console.error('Error executing manager query:', err);
+        connection.release();
+        return res.sendStatus(500);
+      }
+
+      // Get managerCount from results
+      const managerCount = managerResults[0].managerCount;
+
+      // SQL query to get volunteer count
+      const volunteerQuery = `
+        SELECT COUNT(*) AS volunteerCount
+        FROM Volunteer
+      `;
+
+      // Execute volunteerQuery
+      connection.query(volunteerQuery, function(err, volunteerResults) {
+        // Release the connection back to the pool
+        connection.release();
+
+        if (err) {
+          console.error('Error executing volunteer query:', err);
+          return res.sendStatus(500);
+        }
+
+        // Get volunteerCount from results
+        const volunteerCount = volunteerResults[0].volunteerCount;
+
+        // Prepare the response object
+        const volManInfo = {
+          managerCount: managerCount || 0,
+          volunteerCount: volunteerCount || 0
+        };
+
+        // Send the response as JSON
+        res.json(volManInfo);
+      });
+    });
+  });
+});
+
+router.get('/getOtherInfo', function(req, res, next) {
+  // Get a database connection from the pool
+  req.pool.getConnection(function(err, connection) {
+    if (err) {
+      console.error('Error getting database connection:', err);
+      return res.sendStatus(500);
+    }
+
+    // SQL query to get event count
+    const eventQuery = `
+      SELECT COUNT(*) AS eventCount
+      FROM Event
+    `;
+
+    // SQL query to get branch count
+    const branchQuery = `
+      SELECT COUNT(*) AS branchCount
+      FROM Branch
+    `;
+
+    // SQL query to get event update count
+    const updateQuery = `
+      SELECT COUNT(*) AS updateCount
+      FROM EventUpdate
+    `;
+
+    // Object to store counts
+    const otherInfo = {};
+
+    // Execute eventQuery
+    connection.query(eventQuery, function(err, eventResults) {
+      if (err) {
+        console.error('Error executing event query:', err);
+        connection.release();
+        return res.sendStatus(500);
+      }
+
+      // Get eventCount from results
+      otherInfo.eventCount = eventResults[0].eventCount;
+
+      // Execute branchQuery
+      connection.query(branchQuery, function(err, branchResults) {
+        if (err) {
+          console.error('Error executing branch query:', err);
+          connection.release();
+          return res.sendStatus(500);
+        }
+
+        // Get branchCount from results
+        otherInfo.branchCount = branchResults[0].branchCount;
+
+        // Execute updateQuery
+        connection.query(updateQuery, function(err, updateResults) {
+          // Release the connection back to the pool
+          connection.release();
+
+          if (err) {
+            console.error('Error executing update query:', err);
+            return res.sendStatus(500);
+          }
+
+          // Get updateCount from results
+          otherInfo.updateCount = updateResults[0].updateCount;
+
+          // Send the response as JSON
+          res.json(otherInfo);
+        });
+      });
+    });
+  });
+});
 
 module.exports = router;

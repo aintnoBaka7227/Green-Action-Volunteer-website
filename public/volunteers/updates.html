@@ -13,12 +13,12 @@
   <link rel="stylesheet" href="/stylesheets/volunteer-updates-style.css">
   <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-  <script src="../javascripts/components/navbar-user.js"></script>
+  <script src="/javascripts/components/volunteers/navbar-volunteer.js" defer></script>
   <script src="../javascripts/components/volunteers/update-card.js"></script>
 </head>
 <body>
   <div id="app">
-    <navbar-user user-type="volunteers"></navbar-user>
+    <navbar-volunteer></navbar-volunteer>
     <main>
       <h1>Here's your latest updates</h1>
       <div class="announcement-management">
@@ -71,21 +71,27 @@
             }
         },
         methods: {
-            fetchUpdates() {
-            fetch('/volunteers/event-updates')
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Response JSON:', data)
-                    this.updates = data;
-                })
-                .catch(error => {
-                console.error('Error fetching updates:', error);
-                });
-            },
-            formatDate(dateString) {
-              const options = { year: 'numeric', month: 'long', day: 'numeric'};
-              return new Date(dateString).toLocaleDateString(undefined, options);
-            }
+          fetchEventUpdates() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/volunteers/event-updates', true);
+
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        try {
+                            const data = JSON.parse(xhr.responseText);
+                            console.log('Response JSON:', data);
+                            this.updates = data;
+                        } catch (error) {
+                            console.error('Error parsing JSON response', error);
+                        }
+                    } else {
+                        console.error('Error fetching updates. Status:', xhr.status);
+                    }
+                }
+            };
+
+            xhr.send();
         },
         created() {
             this.fetchUpdates();
