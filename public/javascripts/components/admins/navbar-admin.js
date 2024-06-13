@@ -2,7 +2,7 @@
 Vue.component('navbar-admin', {
     props: ['userType'],
     template: `
-      <header>
+    <header>
         <a :href="generateLink('index.html')" class="logo">
             <img src="/images/logo.png" alt="Logo" class="logo-image">
         </a>

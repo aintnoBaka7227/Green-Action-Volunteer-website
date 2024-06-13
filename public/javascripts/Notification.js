@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 var myBranchNotis = Vue.component('my-branches-card', {
   props: ['branch'],
   template: `
@@ -42,6 +43,7 @@ var myBranchNotis = Vue.component('my-branches-card', {
 });
 
 window.onload = function () {
+  // eslint-disable-next-line no-undef
   new Vue({
       el: '#app',
       data: {
@@ -72,4 +74,4 @@ window.onload = function () {
           }
       }
   });
-}
+};
