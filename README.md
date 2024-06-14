@@ -17,5 +17,7 @@ To get started with this template repository, follow these steps:
 
 1. Install dependencies by running: `npm install`
 2. Start the development server with: `npm start`
+3. Activate mysql by: `service mysql start`
+4. If you want to use the dummy database, type: `source dummyDB.sql` in mysql terminal
 
 This will launch your development environment and prepare you to work on your projects as per the requirements of COMP SCI 2207/7207 Web & Database Computing.
