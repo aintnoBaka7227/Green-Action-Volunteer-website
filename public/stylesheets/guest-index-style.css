@@ -18,16 +18,20 @@ main h1 {
   width: 100%;
   position: relative;
   background-image: url('../images/plant-background.png');
-  background-size: cover; /* Ensure the image covers the container */
-  background-position: center; /* Center the image */
+  background-size: cover;
+  /* Ensure the image covers the container */
+  background-position: center;
+  /* Center the image */
 }
 
 .text-overlay {
   position: absolute;
   top: 40%;
   left: 50%;
-  transform: translate(-50%, -50%); /* Center the text */
-  text-align: center; /* Center-align the text */
+  transform: translate(-50%, -50%);
+  /* Center the text */
+  text-align: center;
+  /* Center-align the text */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -35,7 +39,8 @@ main h1 {
 }
 
 .text-overlay p {
-  color: white; /* Set text color */
+  color: white;
+  /* Set text color */
   font-style: normal;
   font-weight: 300;
   font-size: 28px;
@@ -69,6 +74,7 @@ main h1 {
 .latest-events-list {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 32px;
   padding: 0 40px;
   box-sizing: border-box;
@@ -90,7 +96,7 @@ main h1 {
   border: none;
   font-size: inherit;
   font-family: inherit;
-  color:#121808;
+  color: #121808;
   background-color: #E8DFCA;
   border-radius: 20px;
   cursor: pointer;
@@ -101,5 +107,3 @@ main h1 {
 .green-trans-button:hover {
   background-color: #ffdb81;
 }
-
-
