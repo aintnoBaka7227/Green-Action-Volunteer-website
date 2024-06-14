@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,12 +11,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <title>Edit User Profile</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script src="../javascripts/Profile.js" defer></script>
     <link rel="stylesheet" href="../stylesheets/profile-settings.css">
-    <link rel="stylesheet" href="/stylesheets/style.css">
-    <link rel="stylesheet" href="/stylesheets/style-admin.css">
+    <link rel="stylesheet" href="/stylesheets/admin-style.css">
     <script src="/javascripts/components/admins/navbar-admin.js" defer></script>
+    <script src="../javascripts/Profile.js" defer></script>
 </head>
+
 <body>
     <div id="app">
         <navbar-admin user-type="admins"></navbar-admin>
@@ -25,19 +26,23 @@
             <form @submit.prevent="handleFormSubmit">
                 <div class="form-group">
                     <label for="first_name">First Name:</label>
-                    <input type="text" id="first_name" v-model="user.first_name" placeholder="Enter your first name" required>
+                    <input type="text" id="first_name" v-model="user.first_name" placeholder="Enter your first name"
+                        required>
                 </div>
                 <div class="form-group">
                     <label for="last_name">Last Name:</label>
-                    <input type="text" id="last_name" v-model="user.last_name" placeholder="Enter your last name" required>
+                    <input type="text" id="last_name" v-model="user.last_name" placeholder="Enter your last name"
+                        required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" v-model="user.email" placeholder="Enter your email" required disabled>
+                    <input type="email" id="email" v-model="user.email" placeholder="Enter your email" required
+                        disabled>
                 </div>
                 <div class="form-group">
                     <label for="phone_number">Phone Number:</label>
-                    <input type="tel" id="phone_number" v-model="user.phone_number" placeholder="Enter your phone number" required>
+                    <input type="tel" id="phone_number" v-model="user.phone_number"
+                        placeholder="Enter your phone number" required>
                 </div>
                 <div class="form-group">
                     <label for="gender">Gender:</label>
@@ -58,4 +63,5 @@
         </div>
     </div>
 </body>
+
 </html>
