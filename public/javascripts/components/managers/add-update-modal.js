@@ -94,7 +94,7 @@ var addUpdateModal = Vue.component('add-update-modal', {
                         };
 
                         notificationRequest.send(JSON.stringify({
-                            branch_id: this.branch,
+                            branch_id: this.branchId,
                             content: this.updateContent,
                             user_id: this.$root.user_id // Assuming user_id is stored in the root Vue instance
                         }));
