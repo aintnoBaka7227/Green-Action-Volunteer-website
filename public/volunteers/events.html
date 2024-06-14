@@ -1,172 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#8CBE47">
-    <title>Volunteer homepage</title>
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../stylesheets/volunteer-style.css">
-    <link rel="stylesheet" href="../stylesheets/volunteer-events-style.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="/javascripts/components/volunteers/navbar-volunteer.js" defer></script>
-    <script src="../javascripts/components/volunteers/my-events-card.js" defer></script>
-    <script src="../javascripts/components/volunteers/rsvp-card.js" defer></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#8CBE47">
+  <title>Volunteer homepage</title>
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../stylesheets/volunteer-style.css">
+  <link rel="stylesheet" href="../stylesheets/volunteer-events-style.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="/javascripts/components/volunteers/navbar-volunteer.js" defer></script>
+  <script src="../javascripts/components/volunteers/my-events-card.js" defer></script>
+  <script src="../javascripts/components/volunteers/rsvp-card.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
-    <div id="app">
-        <navbar-volunteer></navbar-volunteer>
-        <main>
-            <h1>Here's your events</h1>
-            <div class="dashboard-list">
-                <div class="events-dashboard">
-                    <div class="upcoming-events-title">
-                        <h2>Confirmed events</h2>
-                        <a href="/volunteers/events.html">View All →</a>
-                    </div>
-                    <div class="innerdiv">
-                        <my-events-card
-                            v-for="event in rsvpEvents"
-                            :key="event.event_id"
-                            :event-id="event.event_id"
-                            :volunteer-id="event.volunteer_id"
-                            :event-name="event.event_type"
-                            :event-date="formatDate(event.date)"
-                            :event-description="event.content"
-                            @event-resigned="handleEventResigned"
-                        ></my-events-card>
-                    </div>
-                </div>
-                <div class="updates-dashboard">
-                    <div class="upcoming-events-title">
-                        <h2>RSVP Upcoming Events</h2>
-                        <a href="/volunteers/updates.html">View All →</a>
-                    </div>
-                    <div class="innerdiv">
-                        <rsvp-card
-                            v-for="event in events"
-                            :key="event.event_id"
-                            :event-id="event.event_id"
-                            :event-name="event.event_type"
-                            :event-date="formatDate(event.date)"
-                            :event-description="event.content"
-                            @rsvp="handleRsvp"
-                        ></rsvp-card>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
+  <div id="app">
+    <navbar-volunteer></navbar-volunteer>
+    <main>
+      <h1>Here's your events</h1>
+      <div class="dashboard-list">
+        <div class="events-dashboard">
+          <div class="upcoming-events-title">
+            <h2>Confirmed events</h2>
+          </div>
+          <div class="innerdiv">
+            <my-events-card v-for="event in rsvpEvents" :key="event.event_id" :event-id="event.event_id"
+              :volunteer-id="event.volunteer_id" :event-name="event.event_type" :event-date="formatDate(event.date)"
+              :event-description="event.content" @event-resigned="handleEventResigned"></my-events-card>
+          </div>
+        </div>
+        <div class="updates-dashboard">
+          <div class="upcoming-events-title">
+            <h2>RSVP Upcoming Events</h2>
+          </div>
+          <div class="innerdiv">
+            <rsvp-card v-for="event in events" :key="event.event_id" :event-id="event.event_id"
+              :event-name="event.event_type" :event-date="formatDate(event.date)" :event-description="event.content"
+              @rsvp="handleRsvp"></rsvp-card>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 
-    <script>
-        window.onload = function () {
-          new Vue({
-            el: '#app',
-            data: {
-              userName: '',
-              userVolunteerId: null,
-              events: [],
-              rsvpEvents: [],
-              updates: []
-            },
-            mounted() {
-              this.fetchEvents();
-              this.fetchRSVPEvents();
-            },
-            methods: {
-              fetchEvents() {
-                  const xhr = new XMLHttpRequest();
-                  xhr.open('GET', '/volunteers/available-events', true);
+  <script>
+    window.onload = function () {
+      new Vue({
+        el: '#app',
+        data: {
+          userName: '',
+          userVolunteerId: null,
+          events: [],
+          rsvpEvents: [],
+          updates: []
+        },
+        mounted() {
+          this.fetchEvents();
+          this.fetchRSVPEvents();
+        },
+        methods: {
+          fetchEvents() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/volunteers/available-events', true);
 
-                  xhr.onreadystatechange = () => {
-                      if (xhr.readyState === 4) {
-                          if (xhr.status === 200) {
-                              try {
-                                  const data = JSON.parse(xhr.responseText);
-                                  this.events = data;
-                              } catch (error) {
-                                  console.error('Error parsing JSON response', error);
-                              }
-                          } else {
-                              console.error('Error fetching events. Status:', xhr.status);
-                          }
-                      }
-                  };
-
-                  xhr.send();
-              },
-              fetchRSVPEvents() {
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/volunteers/rsvp-events', true);
-
-                xhr.onreadystatechange = () => {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            try {
-                                const data = JSON.parse(xhr.responseText);
-                                this.rsvpEvents = data;
-                            } catch (error) {
-                                console.error('Error parsing JSON response', error);
-                            }
-                        } else {
-                            console.error('Error fetching RSVP events. Status:', xhr.status);
-                        }
-                    }
-                };
-
-                xhr.send();
-              },
-              formatDate(dateString) {
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                return new Date(dateString).toLocaleDateString(undefined, options);
-              },
-              handleEventResigned(eventId) {
-                const index = this.rsvpEvents.findIndex(event => event.event_id === eventId);
-                if (index !== -1) {
-                  const event = this.rsvpEvents.splice(index, 1)[0];
-                  this.events.push(event);
+            xhr.onreadystatechange = () => {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                  try {
+                    const data = JSON.parse(xhr.responseText);
+                    this.events = data;
+                  } catch (error) {
+                    console.error('Error parsing JSON response', error);
+                  }
+                } else {
+                  console.error('Error fetching events. Status:', xhr.status);
                 }
-              },
-              handleRsvp(eventId) {
-                const xhr = new XMLHttpRequest();
-                const url = '/volunteers/add-rsvp';
-                xhr.open('POST', url, true);
-
-                // Set headers
-                xhr.setRequestHeader('Content-Type', 'application/json');
-
-                // Prepare request body
-                const requestBody = JSON.stringify({ eventId });
-
-                xhr.onreadystatechange = () => {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            try {
-                                const data = JSON.parse(xhr.responseText);
-                                if (data.success) {
-                                    alert('RSVP added successfully!');
-                                    location.reload();
-                                } else {
-                                    alert('Failed to add RSVP.');
-                                }
-                            } catch (error) {
-                                console.error('Error parsing JSON response', error);
-                            }
-                        } else {
-                            console.error('Error adding RSVP. Status:', xhr.status);
-                        }
-                    }
-                };
-
-                xhr.send(requestBody);
               }
+            };
+
+            xhr.send();
+          },
+          fetchRSVPEvents() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/volunteers/rsvp-events', true);
+
+            xhr.onreadystatechange = () => {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                  try {
+                    const data = JSON.parse(xhr.responseText);
+                    this.rsvpEvents = data;
+                  } catch (error) {
+                    console.error('Error parsing JSON response', error);
+                  }
+                } else {
+                  console.error('Error fetching RSVP events. Status:', xhr.status);
+                }
+              }
+            };
+
+            xhr.send();
+          },
+          formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+          },
+          handleEventResigned(eventId) {
+            const index = this.rsvpEvents.findIndex(event => event.event_id === eventId);
+            if (index !== -1) {
+              const event = this.rsvpEvents.splice(index, 1)[0];
+              this.events.push(event);
             }
-          });
+          },
+          handleRsvp(eventId) {
+            const xhr = new XMLHttpRequest();
+            const url = '/volunteers/add-rsvp';
+            xhr.open('POST', url, true);
+
+            // Set headers
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            // Prepare request body
+            const requestBody = JSON.stringify({ eventId });
+
+            xhr.onreadystatechange = () => {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                  try {
+                    const data = JSON.parse(xhr.responseText);
+                    if (data.success) {
+                      alert('RSVP added successfully!');
+                      location.reload();
+                    } else {
+                      alert('Failed to add RSVP.');
+                    }
+                  } catch (error) {
+                    console.error('Error parsing JSON response', error);
+                  }
+                } else {
+                  console.error('Error adding RSVP. Status:', xhr.status);
+                }
+              }
+            };
+
+            xhr.send(requestBody);
+          }
         }
-      </script>
+      });
+    }
+  </script>
 </body>
+
 </html>
