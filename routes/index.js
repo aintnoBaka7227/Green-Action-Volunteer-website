@@ -64,59 +64,59 @@ router.get('/getPublicUpdates', function(req, res, next) {
 });
 
 
-/* GET user data for editing. */
-router.get('/getUserData', function(req, res, next) {
-  if (!req.session.user_id) {
-    return res.status(401).send('Unauthorized');
-  }
+// /* GET user data for editing. */
+// router.get('/getUserData', function(req, res, next) {
+//   if (!req.session.user_id) {
+//     return res.status(401).send('Unauthorized');
+//   }
 
-  req.pool.getConnection(function(err, connection) {
-    if (err) {
-      res.sendStatus(500);
-      return;
-    }
+//   req.pool.getConnection(function(err, connection) {
+//     if (err) {
+//       res.sendStatus(500);
+//       return;
+//     }
 
-    var query = 'SELECT first_name, last_name, email, phone_number, gender, DOB FROM User WHERE user_id = ?';
-    connection.query(query, [req.session.user_id], function(err, rows, fields) {
-      connection.release();
-      if (err) {
-        res.sendStatus(500);
-        return;
-      }
-      if (rows.length > 0) {
-        res.json(rows[0]);
-      } else {
-        res.status(404).send('User not found');
-      }
-    });
-  });
-});
+//     var query = 'SELECT first_name, last_name, email, phone_number, gender, DOB FROM User WHERE user_id = ?';
+//     connection.query(query, [req.session.user_id], function(err, rows, fields) {
+//       connection.release();
+//       if (err) {
+//         res.sendStatus(500);
+//         return;
+//       }
+//       if (rows.length > 0) {
+//         res.json(rows[0]);
+//       } else {
+//         res.status(404).send('User not found');
+//       }
+//     });
+//   });
+// });
 
-/* POST user data for updating. */
-router.post('/updateUserData', function(req, res, next) {
-  if (!req.session.user_id) {
-    return res.status(401).send('Unauthorized');
-  }
+// /* POST user data for updating. */
+// router.post('/updateUserData', function(req, res, next) {
+//   if (!req.session.user_id) {
+//     return res.status(401).send('Unauthorized');
+//   }
 
-  const { first_name, last_name, phone_number, gender, DOB, password } = req.body;
+//   const { first_name, last_name, phone_number, gender, DOB, password } = req.body;
 
-  req.pool.getConnection(function(err, connection) {
-    if (err) {
-      res.sendStatus(500);
-      return;
-    }
+//   req.pool.getConnection(function(err, connection) {
+//     if (err) {
+//       res.sendStatus(500);
+//       return;
+//     }
 
-    var query = 'UPDATE User SET first_name = ?, last_name = ?, phone_number = ?, gender = ?, DOB = ?, password = ? WHERE user_id = ?';
-    connection.query(query, [first_name, last_name, phone_number, gender, DOB, password, req.session.user_id], function(err, results) {
-      connection.release();
-      if (err) {
-        res.sendStatus(500);
-        return;
-      }
-      res.sendStatus(200);
-    });
-  });
-});
+//     var query = 'UPDATE User SET first_name = ?, last_name = ?, phone_number = ?, gender = ?, DOB = ?, password = ? WHERE user_id = ?';
+//     connection.query(query, [first_name, last_name, phone_number, gender, DOB, password, req.session.user_id], function(err, results) {
+//       connection.release();
+//       if (err) {
+//         res.sendStatus(500);
+//         return;
+//       }
+//       res.sendStatus(200);
+//     });
+//   });
+// });
 
 // const nodemailer = require('nodemailer');
 

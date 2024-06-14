@@ -17,7 +17,7 @@ const userProfileApp = new Vue({
   methods: {
     async loadUserData() {
         try {
-            const response = await fetch('/getUserData');
+            const response = await fetch('/users/me');
             if (response.ok) {
                 const userData = await response.json();
                 this.user.first_name = userData.first_name;
@@ -35,7 +35,7 @@ const userProfileApp = new Vue({
     },
     async handleFormSubmit() {
         try {
-            const response = await fetch('/updateUserData', {
+            const response = await fetch('/users/edit', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

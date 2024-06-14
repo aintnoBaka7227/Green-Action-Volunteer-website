@@ -36,7 +36,7 @@ CREATE TABLE `Admin` (
   PRIMARY KEY (`admin_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `Admin_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +45,7 @@ CREATE TABLE `Admin` (
 
 LOCK TABLES `Admin` WRITE;
 /*!40000 ALTER TABLE `Admin` DISABLE KEYS */;
-INSERT INTO `Admin` VALUES (1,4);
+INSERT INTO `Admin` VALUES (3,33);
 /*!40000 ALTER TABLE `Admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,7 +220,7 @@ CREATE TABLE `Manager` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `Manager_ibfk_1` FOREIGN KEY (`branch_id`) REFERENCES `Branch` (`branch_id`) ON DELETE CASCADE,
   CONSTRAINT `Manager_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,7 +229,7 @@ CREATE TABLE `Manager` (
 
 LOCK TABLES `Manager` WRITE;
 /*!40000 ALTER TABLE `Manager` DISABLE KEYS */;
-INSERT INTO `Manager` VALUES (1,1,1),(2,2,3),(3,3,2);
+INSERT INTO `Manager` VALUES (4,1,30),(5,2,32),(6,3,34);
 /*!40000 ALTER TABLE `Manager` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -335,7 +335,7 @@ CREATE TABLE `User` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `phone_number` (`phone_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -344,7 +344,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'Phong','Tran','phong@gmail.com','0123456789','Male','phong123','token1','2004-12-09'),(2,'Nguyen','Mai','nguyen@gmail.com','0987654321','Male','nguyen123','token2','2005-01-01'),(3,'Khanh','Nguyen','khanh@gmail.com','0135792468','Male','khanh123','token3','2005-01-01'),(4,'Bach','Tran','bach@gmail.com','0246813579','Gay','bach123','token4','2005-01-01'),(5,'Alice','Johnson','alice.johnson@example.com','234-567-8901','Female','password789','token789','1985-03-03'),(6,'Bob','Williams','bob.williams@example.com','345-678-9012','Male','password101','token101','1978-04-04'),(7,'Charlie','Brown','charlie.brown@example.com','456-789-0123','Male','password112','token112','1992-05-05'),(8,'Diana','Miller','diana.miller@example.com','567-890-1234','Female','password1234','token1234','1988-06-06'),(9,'John','Doe','john.doe@example.com','1234567890','Male','hashedpassword','someaccesstoken','1980-01-01'),(12,'Bob','Brown','bob.brown@example.com','2223334444','Male','hashedpassword3','accesstoken3','1975-07-10'),(13,'Charlie','Davis','charlie.davis@example.com','3334445555','Non-binary','hashedpassword4','accesstoken4','2000-12-25'),(14,'Emily','Wilson','emily.wilson@example.com','4445556666','Female','hashedpassword5','accesstoken5','1995-05-05'),(15,'David','Martin','david.martin@example.com','5556667777','Male','hashedpassword6','accesstoken6','1982-11-30'),(16,'Duc','Kieu','duc@gmail.com','0696969696','Male','Duc123','token69','2005-09-06');
+INSERT INTO `User` VALUES (5,'Alice','Johnson','alice.johnson@example.com','234-567-8901','Female','password789','token789','1985-03-03'),(6,'Bob','Williams','bob.williams@example.com','345-678-9012','Male','password101','token101','1978-04-04'),(7,'Charlie','Brown','charlie.brown@example.com','456-789-0123','Male','password112','token112','1992-05-05'),(8,'Diana','Miller','diana.miller@example.com','567-890-1234','Female','password1234','token1234','1988-06-06'),(9,'John','Doe','john.doe@example.com','1234567890','Male','hashedpassword','someaccesstoken','1980-01-01'),(12,'Bob','Brown','bob.brown@example.com','2223334444','Male','hashedpassword3','accesstoken3','1975-07-10'),(13,'Charlie','Davis','charlie.davis@example.com','3334445555','Non-binary','hashedpassword4','accesstoken4','2000-12-25'),(14,'Emily','Wilson','emily.wilson@example.com','4445556666','Female','hashedpassword5','accesstoken5','1995-05-05'),(15,'David','Martin','david.martin@example.com','5556667777','Male','hashedpassword6','accesstoken6','1982-11-30'),(16,'Duc','Kieu','duc@gmail.com','0696969696','Male','Duc123','token69','2005-09-06'),(29,'Phong','Tran','phongtran7227@gmail.com','0123987456','Male','$2b$10$b4FXSktCLZhzNEgnJseLkuxPSWjOry0HOGv0D9ec9JB2UsxGOc3Le',NULL,'2024-06-05'),(30,'Nguyen','Khoi','nguyen2005@gmail.com','0384787238','male','$2b$10$rXDpzuw5YV2tG3/Em7Za8.AxQmqgAt7//rsnpvaojEKrcGdzJKOLC',NULL,'2024-07-03'),(32,'Bach','Nguyen','bach1358@gmail.com','0764726734','Male','$2b$10$HvM7prr92Y4fObo0s/mcnOuG09W6lmSHm4a4Yit1oyPK5QB34SXlG',NULL,'2024-06-17'),(33,'Mike','Tyson','miketyson99@gmail.com','0398489234','Male','$2b$10$VVcfZCv47Salcp2KZ1KuNeOXmF2jKuU48uPOGXOWznN38oNudPdy.',NULL,'2024-06-18'),(34,'Khanh','Nguyen','khanhnguyen007@gmail.com','0387482378','Male','$2b$10$RgCQOfUc0gG7UQ/XyPslA.5bLuKqFvzYY.C/.FuWyLdAHrLd5x76G',NULL,'2024-06-19');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -368,7 +368,7 @@ CREATE TABLE `Volunteer` (
   CONSTRAINT `Volunteer_ibfk_1` FOREIGN KEY (`branch_id`) REFERENCES `Branch` (`branch_id`) ON DELETE CASCADE,
   CONSTRAINT `Volunteer_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`) ON DELETE CASCADE,
   CONSTRAINT `Volunteer_ibfk_3` FOREIGN KEY (`subscription_id`) REFERENCES `NotificationSubscription` (`subscription_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -377,7 +377,7 @@ CREATE TABLE `Volunteer` (
 
 LOCK TABLES `Volunteer` WRITE;
 /*!40000 ALTER TABLE `Volunteer` DISABLE KEYS */;
-INSERT INTO `Volunteer` VALUES (4,1,1,5,1),(5,1,2,6,2),(6,0,3,7,3),(7,1,3,8,4),(8,1,1,9,5),(10,1,2,13,7),(11,0,2,14,8),(12,1,3,15,9),(13,1,2,16,10),(14,1,3,16,11);
+INSERT INTO `Volunteer` VALUES (4,1,1,5,1),(5,1,2,6,2),(6,0,3,7,3),(7,1,3,8,4),(8,1,1,9,5),(10,1,2,13,7),(11,0,2,14,8),(12,1,3,15,9),(13,1,2,16,10),(14,1,3,16,11),(18,NULL,1,29,NULL);
 /*!40000 ALTER TABLE `Volunteer` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -390,4 +390,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-12  9:23:19
+-- Dump completed on 2024-06-14  7:15:48

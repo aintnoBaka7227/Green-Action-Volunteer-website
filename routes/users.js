@@ -116,7 +116,7 @@ router.post('/signup', async function (req, res, next) {
                 const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
 
                 let insertQuery = 'INSERT INTO User (first_name, last_name, email, phone_number, gender, password, DOB) VALUES (?, ?, ?, ?, ?, ?, ?);';
-                let values = [req.body.first_name, req.body.last_name, req.body.email, req.body.phone_number, req.body.gender, hashedPassword, req.body.DOB];
+                let values = [req.body.firstName, req.body.lastName, req.body.email, req.body.phoneNumber, req.body.gender, hashedPassword, req.body.DOB];
 
                 connection.query(insertQuery, values, function (insertErr, insertResults, insertFields) {
                     if (insertErr) {
@@ -306,20 +306,23 @@ router.get('/me', isAuthenticated, function (req, res) {
     });
 });
 
-router.post('/edit', isAuthenticated, function (req, res) {
+router.post('/edit', isAuthenticated, async function (req, res) {
     const userId = req.session.user_id;
     const { first_name, last_name, phone_number, gender, DOB, password } = req.body;
 
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    console.log(hashedPassword);
     const query = 'UPDATE User SET first_name = ?, last_name = ?, phone_number = ?, gender = ?, DOB = ?, password = ? WHERE user_id = ?';
 
-    dbConnectionPool.getConnection(function (cerr, connection) {
+    req.pool.getConnection(function (cerr, connection) {
         if (cerr) {
             console.log(cerr);
             res.status(500).send("Internal Server Error");
             return;
         }
 
-        connection.query(query, [first_name, last_name, phone_number, gender, DOB, password, userId], function (err, results) {
+        connection.query(query, [first_name, last_name, phone_number, gender, DOB, hashedPassword, userId], function (err, results) {
             connection.release();
 
             if (err) {
