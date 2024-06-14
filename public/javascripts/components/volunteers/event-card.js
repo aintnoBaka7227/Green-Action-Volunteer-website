@@ -21,7 +21,8 @@ var eventCard = Vue.component('event-card', {
     },
     eventDate: {
       type: String,
-      required: false
+      required: false,
+      default: ""
     },
     eventDescription: {
       type: String,

@@ -39,7 +39,7 @@
                         <h2>New Updates</h2>
                         <a href="/volunteers/updates.html">View All →</a>
                     </div>
-                    <event-card v-for="update in updates" :key="update.id"
+                    <event-card v-for="update in updates" :key="update.id" :event-name="update.update_title"
                         :event-description="update.content"></event-card>
                 </div>
             </div>

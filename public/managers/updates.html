@@ -1,50 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="theme-color" content="#8CBE47">
-        <title>Manager updates</title>
-        <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="/stylesheets/manager-style.css">
-        <link rel="stylesheet" href="/stylesheets/manager-updates-style.css">
-        <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-        <script src="../javascripts/components/managers/navbar-manager.js" defer></script>
-        <script src="../javascripts/Manager.js" defer></script>
-        <script src="../javascripts/components/managers/manager-update-card.js" defer></script>
-        <script src="../javascripts/components/managers/add-update-modal.js" defer></script>
-    </head>
-    <body>
-        <div id="app">
-            <navbar-manager user-type="managers"></navbar-manager>
-            <main>
-                <h1>Here's your latest updates</h1>
-                <div class="announcement-management">
-                  <select v-model="filterOption" class="announcement-filter">
-                      <option value="all">All updates</option>
-                      <option value="public">Public</option>
-                      <option value="private">Private</option>
-                  </select>
-                  <input type="search" class="announcement-search" placeholder="Search..." v-model="searchQuery" />
-                  <button type="button" class="add-new-updates" @click="openAddUpdateModal">+ New update</button>
-                </div>
-                <div>
-                  <manager-update-card
-                    v-for="update in filteredUpdates"
-                    :key="update.update_id"
-                    :update-id="update.update_id"
-                    :title="update.update_title"
-                    :content="update.content"
-                    @delete-update="deleteUpdate"
-                    @update-deleted="fetchUpdates"
-                  ></manager-update-card>
-                </div>
-              </main>
-              <add-update-modal ref="addUpdateModal" @update-posted="fetchUpdates"></add-update-modal>
-        </div>
-    </body>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#8CBE47">
+  <title>Manager updates</title>
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/stylesheets/manager-style.css">
+  <link rel="stylesheet" href="/stylesheets/manager-updates-style.css">
+  <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script src="../javascripts/components/managers/navbar-manager.js" defer></script>
+  <script src="../javascripts/components/managers/manager-update-card.js" defer></script>
+  <script src="../javascripts/components/managers/add-update-modal.js" defer></script>
+  <script src="../javascripts/Manager.js" defer></script>
+</head>
+
+<body>
+  <div id="app">
+    <navbar-manager user-type="managers"></navbar-manager>
+    <main>
+      <h1>Here's your latest updates</h1>
+      <div class="announcement-management">
+        <select v-model="filterOption" class="announcement-filter">
+          <option value="all">All updates</option>
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+        </select>
+        <input type="search" class="announcement-search" placeholder="Search..." v-model="searchQuery" />
+        <button type="button" class="add-new-updates" @click="openAddUpdateModal">+ New update</button>
+      </div>
+      <div>
+        <manager-update-card v-for="update in filteredUpdates" :key="update.update_id" :update-id="update.update_id"
+          :title="update.update_title" :content="update.content" @delete-update="deleteUpdate"
+          @update-deleted="fetchUpdates"></manager-update-card>
+      </div>
+    </main>
+    <add-update-modal ref="addUpdateModal" @update-posted="fetchUpdates"></add-update-modal>
+  </div>
+</body>
+
 </html>
