@@ -25,6 +25,7 @@ function login() {
             } else if (response.role === 'manager') {
                 window.location.href = '/managers';
             } else {
+                window.location.href = '/volunteers';
                 document.getElementById("warning").innerText = "User not assigned a role";
             }
           } else if (this.status === 400) {

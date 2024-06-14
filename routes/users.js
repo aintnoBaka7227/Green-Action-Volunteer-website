@@ -67,6 +67,10 @@ router.post('/login', function (req, res, next) {
                 req.session.role = user.role;
                 console.log("User Role:", user.role);
 
+                if (req.session.role == "unknown") {
+                    req.session.role = "volunteer";
+                }
+
                 req.session.user_id = user.user_id;
                 console.log("User ID:", user.user_id);
 
