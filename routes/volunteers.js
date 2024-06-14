@@ -124,9 +124,14 @@ router.get('/event-updates', function (req, res, next) {
       return res.sendStatus(500);
     }
 
+    const maxUpdates = parseInt(req.query.max_updates, 10);
+
     // Step 1: Retrieve all public event updates
     var queryPublic = `
       SELECT * FROM EventUpdate WHERE is_public = 1`;
+    if (!isNaN(maxUpdates)) {
+      queryPublic += ` LIMIT ${maxUpdates}`;
+    }
 
     connection.query(queryPublic, function (err, publicRows, fields) {
       if (err) {
@@ -172,6 +177,9 @@ router.get('/event-updates', function (req, res, next) {
         // Construct the query to fetch private event updates for branches the user belongs to
         var queryPrivate = `
           SELECT * FROM EventUpdate WHERE is_public = 0 AND branch_id IN (${placeholders})`;
+        if (!isNaN(maxUpdates)) {
+          queryPrivate += ` LIMIT ${maxUpdates}`;
+        }
 
         // Execute the query to fetch private event updates
         connection.query(queryPrivate, branchIds, function (err, privateRows, fields) {
@@ -199,6 +207,8 @@ router.get('/events', function (req, res, next) {
       return;
     }
 
+    const maxEvents = parseInt(req.query.max_events, 10);
+
     // Step 1: Retrieve all public events
     var queryPublicEvents = `
       SELECT
@@ -217,6 +227,10 @@ router.get('/events', function (req, res, next) {
         Event e
       WHERE
         e.is_public = 1`;
+
+      if (!isNaN(maxEvents)) {
+        queryPublicEvents += ` LIMIT ${maxEvents}`;
+      }
 
     connection.query(queryPublicEvents, function (err, publicEvents, fields) {
       if (err) {
@@ -277,6 +291,10 @@ router.get('/events', function (req, res, next) {
           WHERE
             e.is_public = 0
             AND e.branch_id IN (${placeholders})`;
+
+        if (!isNaN(maxEvents)) {
+          queryPrivateEvents += ` LIMIT ${maxEvents}`;
+        }
 
         // Execute the query to fetch private events
         connection.query(queryPrivateEvents, branchIds, function (err, privateEvents, fields) {

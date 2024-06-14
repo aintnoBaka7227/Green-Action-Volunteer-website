@@ -61,7 +61,7 @@
             methods: {
                 fetchEvents() {
                     const xhr = new XMLHttpRequest();
-                    xhr.open('GET', '/volunteers/events', true);
+                    xhr.open('GET', '/volunteers/events?max_events=2', true);
                     xhr.onreadystatechange = () => {
                         if (xhr.readyState === 4) {
                             if (xhr.status === 200) {
@@ -79,7 +79,7 @@
                 },
                 fetchUpdates() {
                     const xhr = new XMLHttpRequest();
-                    xhr.open('GET', '/volunteers/event-updates', true);
+                    xhr.open('GET', '/volunteers/event-updates?max_updates=2', true);
                     xhr.onreadystatechange = () => {
                         if (xhr.readyState === 4) {
                             if (xhr.status === 200) {
