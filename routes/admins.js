@@ -1,4 +1,5 @@
 var express = require('express');
+const bcrypt = require('bcrypt');
 var router = express.Router();
 const path = require('path');
 var { OAuth2Client } = require('google-auth-library');
@@ -394,7 +395,7 @@ router.post('/addNewUser', function (req, res, next) {
     // Check if email or phone_number already exist
     const checkDuplicateQuery = 'SELECT COUNT(*) AS count FROM User WHERE email = ? OR phone_number = ?';
     const checkDuplicateValues = [email, phone_number];
-    connection.query(checkDuplicateQuery, checkDuplicateValues, (err, results) => {
+    connection.query(checkDuplicateQuery, checkDuplicateValues, async (err, results) => {
       if (err) {
         connection.release();
         return res.status(500).json({ success: false, message: "Failed to check duplicate user.", error: err.message });
@@ -405,17 +406,28 @@ router.post('/addNewUser', function (req, res, next) {
         return res.status(400).json({ success: false, message: "Email or phone number already exists." });
       }
 
-      // If no duplicate, proceed to insert user
-      const userInfo = [first_name, last_name, email, phone_number, gender, password, DOB];
-      const addUserQuery = 'INSERT INTO User (first_name, last_name, email, phone_number, gender, password, DOB) VALUES (?, ?, ?, ?, ?, ?, ?)';
-      connection.query(addUserQuery, userInfo, (err, result) => {
-        connection.release();
-        if (err) {
-          return res.status(500).json({ success: false, message: "Failed to add user.", error: err.message });
-        }
+      try {
+        // Hash and salt the password
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        res.status(200).json({ success: true, message: "User added successfully.", user: result.insertId });
-      });
+        // If no duplicate, proceed to insert user
+        const userInfo = [first_name, last_name, email, phone_number, gender, hashedPassword, DOB];
+        const addUserQuery = 'INSERT INTO User (first_name, last_name, email, phone_number, gender, password, DOB) VALUES (?, ?, ?, ?, ?, ?, ?)';
+
+        connection.query(addUserQuery, userInfo, (err, result) => {
+          connection.release();
+          if (err) {
+            return res.status(500).json({ success: false, message: "Failed to add user.", error: err.message });
+          }
+
+          res.status(200).json({ success: true, message: "User added successfully.", user: result.insertId });
+        });
+      } catch (error) {
+        console.error("Error hashing password:", error);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+        connection.release();
+      }
     });
   });
 });
