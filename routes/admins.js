@@ -16,7 +16,7 @@ router.get('/getUsers', function (req, res, next) {
     }
 
     const userQuery = `
-    SELECT
+SELECT
     u.user_id,
     u.first_name,
     u.last_name,
@@ -24,26 +24,90 @@ router.get('/getUsers', function (req, res, next) {
     u.phone_number,
     u.gender,
     v.volunteer_id,
+    NULL AS manager_id,
+    NULL AS admin_id,
+    v.branch_id,
+    b.state,
+    'volunteer' AS user_type
+FROM
+    User u
+JOIN
+    Volunteer v ON u.user_id = v.user_id
+JOIN
+    Branch b ON v.branch_id = b.branch_id
+
+UNION ALL
+
+SELECT
+    u.user_id,
+    u.first_name,
+    u.last_name,
+    u.email,
+    u.phone_number,
+    u.gender,
+    NULL AS volunteer_id,
     m.manager_id,
+    NULL AS admin_id,
+    m.branch_id,
+    b.state,
+    'manager' AS user_type
+FROM
+    User u
+JOIN
+    Manager m ON u.user_id = m.user_id
+JOIN
+    Branch b ON m.branch_id = b.branch_id
+
+UNION ALL
+
+SELECT
+    u.user_id,
+    u.first_name,
+    u.last_name,
+    u.email,
+    u.phone_number,
+    u.gender,
+    NULL AS volunteer_id,
+    NULL AS manager_id,
     a.admin_id,
-    b.branch_id,
-    CASE
-        WHEN v.volunteer_id IS NOT NULL THEN 'Volunteer'
-        WHEN m.manager_id IS NOT NULL THEN 'Manager'
-        WHEN a.admin_id IS NOT NULL THEN 'Admin'
-        ELSE 'Role unassigned'
-    END AS user_type,
-    CASE
-        WHEN v.branch_id IS NOT NULL OR m.branch_id IS NOT NULL THEN b.state
-        WHEN a.admin_id IS NOT NULL OR (v.volunteer_id IS NULL AND m.manager_id IS NULL AND a.admin_id IS NULL) THEN 'Branch unassigned'
-        ELSE NULL
-    END AS state
-    FROM
-        User u
-    LEFT JOIN Volunteer v ON u.user_id = v.user_id
-    LEFT JOIN Manager m ON u.user_id = m.user_id
-    LEFT JOIN Admin a ON u.user_id = a.user_id
-    LEFT JOIN Branch b ON v.branch_id = b.branch_id OR m.branch_id = b.branch_id
+    NULL AS branch_id,
+    NULL AS state,
+    'admin' AS user_type
+FROM
+    User u
+JOIN
+    Admin a ON u.user_id = a.user_id
+
+UNION ALL
+
+SELECT
+    u.user_id,
+    u.first_name,
+    u.last_name,
+    u.email,
+    u.phone_number,
+    u.gender,
+    NULL AS volunteer_id,
+    NULL AS manager_id,
+    NULL AS admin_id,
+    NULL AS branch_id,
+    'Unassigned' AS state,
+    'Unassigned' AS user_type
+FROM
+    User u
+LEFT JOIN
+    Volunteer v ON u.user_id = v.user_id
+LEFT JOIN
+    Manager m ON u.user_id = m.user_id
+LEFT JOIN
+    Admin a ON u.user_id = a.user_id
+WHERE
+    v.user_id IS NULL
+    AND m.user_id IS NULL
+    AND a.user_id IS NULL
+
+ORDER BY
+    user_id, branch_id;
     `;
     connection.query(userQuery, function (err, results, fields) {
       if (err) {
