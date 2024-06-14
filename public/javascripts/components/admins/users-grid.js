@@ -244,13 +244,14 @@ Vue.component('admins-grid', {
             const tableRef = this.$refs.mytable;
             const userInfo = tableRef.selectedRows[0];
             const userCurrentType = userInfo.user_type;
-            const userNewType = this.newUserType;
-            console.log(userNewType);
 
-            // current branch id, user id, new branch id
+            // current branch id, new branch id, user id, user new type
             const userCurrentBranchID = userInfo.branch_id;
             const userNewBranchID = this.newBranch;
             const userID = userInfo.user_id;
+            const userNewType = this.newUserType;
+            console.log(userNewType);
+
 
             if (userCurrentType === userNewType && userCurrentBranchID === userNewBranchID) {
                 alert("no changes was made");
@@ -281,7 +282,12 @@ Vue.component('admins-grid', {
                 }
             };
 
-            updateXhr.send(JSON.stringify({ userNewType: userNewType,userCurrentBranchID: userCurrentBranchID, userNewBranchID: userNewBranchID, userID: userID}));
+            updateXhr.send(JSON.stringify({
+                current_branch_id: userCurrentBranchID ? parseInt(userCurrentBranchID) : null,
+                new_branch_id: userNewBranchID ? parseInt(userNewBranchID) : null,
+                user_id: parseInt(userID),
+                new_role: userNewType,
+            }));
         }
     },
     mounted() {

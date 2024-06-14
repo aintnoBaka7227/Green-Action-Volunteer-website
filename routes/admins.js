@@ -436,17 +436,144 @@ router.post('/createNewBranch', function(req, res, next) {
 });
 
 router.post('/updateUser', function(req, res, next) {
-  const {userNewType, userCurrentBranchID, userNewBranchID, userID} = req.body;
-  console.log(userNewType);
-  console.log(userCurrentBranchID);
-  console.log(userNewBranchID);
-  console.log(userID);
-  req.pool.getConnection(function(err, connection) {
-    if (err) {
-      return res.sendStatus(500);
-    }
+  const { current_branch_id, new_branch_id, user_id, new_role } = req.body;
+  console.log(current_branch_id);
+  console.log(new_branch_id);
+  console.log(user_id);
+  console.log(new_role);
+
+  if (!user_id || !new_role) {
+    return res.status(400).json({ error: 'Missing user_id or new_role parameters' });
+  }
+
+  // Get a database connection from the pool
+  req.pool.getConnection(function (err, connection) {
+      if (err) {
+          console.error('Error getting database connection:', err);
+          return res.sendStatus(500);
+      }
+
+      // Begin a transaction
+      connection.beginTransaction(function (err) {
+          if (err) {
+              connection.release();
+              return res.status(500).json({ error: 'Error starting transaction' });
+          }
+
+          const deleteManagerQuery = `
+              DELETE FROM Manager
+              WHERE branch_id = ? AND user_id = ?
+          `;
+          const deleteVolunteerQuery = `
+              DELETE FROM Volunteer
+              WHERE branch_id = ? AND user_id = ?
+          `;
+          const deleteAdminQuery = `
+              DELETE FROM Admin
+              WHERE user_id = ?
+          `;
+
+          // Define delete functions with nested callbacks
+          const deleteFromManager = (callback) => {
+              if (current_branch_id !== null) {
+                  connection.query(deleteManagerQuery, [current_branch_id, user_id], callback);
+              } else {
+                  callback(null);
+              }
+          };
+
+          const deleteFromVolunteer = (callback) => {
+              if (current_branch_id !== null) {
+                  connection.query(deleteVolunteerQuery, [current_branch_id, user_id], callback);
+              } else {
+                  callback(null);
+              }
+          };
+
+          const deleteFromAdmin = (callback) => {
+              if (current_branch_id === null) {
+                  connection.query(deleteAdminQuery, [user_id], callback);
+              } else {
+                  callback(null);
+              }
+          };
+
+          const insertIntoNewRole = (callback) => {
+              if (new_branch_id === null && new_role === 'Admin') {
+                  const insertAdminQuery = `
+                      INSERT INTO Admin (user_id)
+                      VALUES (?)
+                  `;
+                  connection.query(insertAdminQuery, [user_id], callback);
+              } else if (new_branch_id !== null) {
+                  const insertNewRoleQuery = `
+                      INSERT INTO ${connection.escapeId(new_role)} (branch_id, user_id)
+                      VALUES (?, ?)
+                  `;
+                  connection.query(insertNewRoleQuery, [new_branch_id, user_id], callback);
+              } else {
+                  callback(null);
+              }
+          };
+
+          // Execute the delete and insert operations in sequence
+          deleteFromManager((err) => {
+              if (err) {
+                  console.error('Error deleting from Manager:', err);
+                  return connection.rollback(() => {
+                      connection.release();
+                      res.status(500).json({ error: 'Error deleting from Manager' });
+                  });
+              }
+
+              deleteFromVolunteer((err) => {
+                  if (err) {
+                      console.error('Error deleting from Volunteer:', err);
+                      return connection.rollback(() => {
+                          connection.release();
+                          res.status(500).json({ error: 'Error deleting from Volunteer' });
+                      });
+                  }
+
+                  deleteFromAdmin((err) => {
+                      if (err) {
+                          console.error('Error deleting from Admin:', err);
+                          return connection.rollback(() => {
+                              connection.release();
+                              res.status(500).json({ error: 'Error deleting from Admin' });
+                          });
+                      }
+
+                      insertIntoNewRole((err) => {
+                          if (err) {
+                              console.error('Error inserting into new role:', err);
+                              return connection.rollback(() => {
+                                  connection.release();
+                                  res.status(500).json({ error: 'Error inserting into new role' });
+                              });
+                          }
+
+                          connection.commit((err) => {
+                              if (err) {
+                                  console.error('Error committing transaction:', err);
+                                  return connection.rollback(() => {
+                                      connection.release();
+                                      res.status(500).json({ error: 'Error committing transaction' });
+                                  });
+                              }
+
+                              // Release the connection and send a success response
+                              connection.release();
+                              res.json({ message: 'User role updated successfully' });
+                          });
+                      });
+                  });
+              });
+          });
+      });
   });
 });
+
 router.get('/getPeopleInfo', function (req, res, next) {
   // Get a database connection from the pool
   req.pool.getConnection(function(err, connection) {
