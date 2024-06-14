@@ -14,7 +14,6 @@ var rsvpCard = Vue.component('rsvp-card', {
           <div class="event-rsvp-text">Are you coming?</div>
       <div class="event-rsvp-buttons">
           <button type="button" class="event-rsvp-yes" @click="rsvpYes">Yes</button>
-          <button type="button" class="event-rsvp-no">No</button>
       </div>
       </div>
       <hr style="border: 1px solid black; color: black; margin-bottom: 25px;">

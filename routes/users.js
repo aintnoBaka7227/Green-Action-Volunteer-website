@@ -219,7 +219,11 @@ router.post('/glogin', async function (req, res) {
                             return;
                         }
 
-                        req.session.role = roleResults[0].role || 'volunteer';
+                        req.session.role = roleResults[0].role;
+                        console.log(roleResults);
+                        if(req.session.role === 'unknown'){
+                            req.session.role = 'volunteer';
+                        }
                         req.session.user_id = roleResults[0].user_id;
                         res.status(200).json({ status: "OK", role: req.session.role });
                     });
