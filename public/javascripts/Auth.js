@@ -25,11 +25,10 @@ function login() {
             } else if (response.role === 'manager') {
                 window.location.href = '/managers';
             } else {
-                document.getElementById("warning").innerText = "User not assinged a role";
+                document.getElementById("warning").innerText = "User not assigned a role";
             }
           } else if (this.status === 400) {
               document.getElementById("warning").innerText = "Wrong email or password";
-              console.log(JSON.parse(this.responseText));
           } else {
               document.getElementById("warning").innerText = "An error occurred. Please try again later.";
           }
