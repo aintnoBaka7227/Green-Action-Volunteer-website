@@ -29,7 +29,7 @@ SELECT
     NULL AS admin_id,
     v.branch_id,
     b.state,
-    'volunteer' AS user_type
+    'Volunteer' AS user_type
 FROM
     User u
 JOIN
@@ -51,7 +51,7 @@ SELECT
     NULL AS admin_id,
     m.branch_id,
     b.state,
-    'manager' AS user_type
+    'Manager' AS user_type
 FROM
     User u
 JOIN
@@ -73,7 +73,7 @@ SELECT
     a.admin_id,
     NULL AS branch_id,
     NULL AS state,
-    'admin' AS user_type
+    'Admin' AS user_type
 FROM
     User u
 JOIN
