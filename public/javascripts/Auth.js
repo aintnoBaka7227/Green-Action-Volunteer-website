@@ -29,6 +29,7 @@ function login() {
             }
           } else if (this.status === 400) {
               document.getElementById("warning").innerText = "Wrong email or password";
+              console.log(JSON.parse(this.responseText));
           } else {
               document.getElementById("warning").innerText = "An error occurred. Please try again later.";
           }
