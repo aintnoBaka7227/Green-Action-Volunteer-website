@@ -1,63 +1,63 @@
 <!DOCTYPE html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#8CBE47">
-    <title>Green Action</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../stylesheets/guest-style.css">
-    <link rel="stylesheet" href="../stylesheets/guest-updates-style.css">
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
-    <script src="../javascripts/Guest.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#8CBE47">
+  <title>Green Action</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../stylesheets/guest-style.css">
+  <link rel="stylesheet" href="../stylesheets/guest-updates-style.css">
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://kit.fontawesome.com/62cb943082.js" crossorigin="anonymous"></script>
+  <script src="../javascripts/Guest.js" defer></script>
 </head>
 
 <body>
-    <div id="app">
-      <header>
-        <a href="/guests/index.html" class="logo"><img src="../images/logo.png" alt="Logo" class="logo-image"></a>
-        <ul>
-          <div class="section">
-            <li><a id="nav-about" href="/guests/about.html">About Us</a></li>
-            <li><a id="nav-updates" href="/guests/updates.html">Updates</a></li>
-            <li><a id="nav-events" href="/guests/events.html">Events</a></li>
-          </div>
-          <div class="section">
-            <li><a href="../logins.html">Log In</a></li>
-            <li class="sign-up"><a href="../signups.html">Sign Up</a></li>
-            <div class="dropdown" :class="{ show: isDropdownVisible }">
-              <button type="button" class="dropdown-toggle" @click="toggleDropdown">{{ selectedBranch }}<i class="fas fa-chevron-down"></i></button>
-              <div class="dropdown-content">
-                <a href="#" v-for="branch in branches" :key="branch.branch_id" @click.prevent="selectBranch(branch)">{{ branch.state }}</a>
-              </div>
+  <div id="app">
+    <header>
+      <a href="/guests/index.html" class="logo"><img src="../images/logo.png" alt="Logo" class="logo-image"></a>
+      <ul>
+        <div class="section">
+          <li><a id="nav-about" href="/guests/about.html">About Us</a></li>
+          <li><a id="nav-updates" href="/guests/updates.html">Updates</a></li>
+          <li><a id="nav-events" href="/guests/events.html">Events</a></li>
+        </div>
+        <div class="section">
+          <li><a href="../logins.html">Log In</a></li>
+          <li class="sign-up"><a href="../signups.html">Sign Up</a></li>
+          <div class="dropdown" :class="{ show: isDropdownVisible }">
+            <button type="button" class="dropdown-toggle" @click="toggleDropdown">{{ selectedBranch }}<i
+                class="fas fa-chevron-down"></i></button>
+            <div class="dropdown-content">
+              <a href="#" v-for="branch in branches" :key="branch.branch_id" @click.prevent="selectBranch(branch)">{{
+                branch.state }}</a>
             </div>
           </div>
-        </ul>
-      </header>
-        <main>
-            <h1>Our latest updates</h1>
-            <div class="event-list">
-                <div class="event-card" v-for="update in updates">
-                    <img src="../images/event.png" alt="Event" class="event-image">
-                    <div class="event-content">
-                        <div>
-                            <h2>{{ update.update_title }}</h2>
-                            <p>{{ update.content }}</p>
-                        </div>
-                        <a href="readMoreLink" class="read-more-button">Read more</a>
-                    </div>
-                </div>
+        </div>
+      </ul>
+    </header>
+    <main>
+      <h1>Our latest updates</h1>
+      <div class="event-list">
+        <div class="event-card" v-for="update in updates">
+          <img src="../images/event.png" alt="Event" class="event-image">
+          <div class="event-content">
+            <div>
+              <h2>{{ update.update_title }}</h2>
+              <p>{{ update.content }}</p>
             </div>
-            <hr style="margin-top: 50px;">
-            <i class="fa-solid fa-angle-down"></i>
-            <a href="#" class="load-button">See more</a>
+            <a href="readMoreLink" class="read-more-button">Read more</a>
+          </div>
+        </div>
+      </div>
+      <hr style="margin-top: 50px;">
 
-        </main>
+    </main>
 
-        <footer></footer>
-    </div>
+    <footer></footer>
+  </div>
 </body>
