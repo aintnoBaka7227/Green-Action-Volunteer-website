@@ -1,4 +1,4 @@
-Green Action website
+#Green Action website
 
 **Auto commit/push/sync to GitHub is disabled by default in this template repository.**
 Enable the GitDoc extension to utilize this feature (configure it in your VSCode settings or in the Dev Container settings).
